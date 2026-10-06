@@ -1,5 +1,6 @@
 """Build a Tam-style wizard with isolated, unmodified Redhair scoring semantics."""
 import copy
+from build_formatters import build_formatters, STYLES
 import json
 import re
 from pathlib import Path
@@ -188,6 +189,10 @@ def build():
         if key not in supplied and (key.startswith('synced') or 'RegexPatterns' in key or key.endswith('StreamExpressions')):
             supplied[key] = []
     supplied['bitrate'] = {'useMetadataRuntime':True}
+    formatter_variants = build_formatters()
+    supplied['formatter'] = {'__switch':'inputs.formatterStyle',
+        'cases':{key:{'id':'custom','definitions':{'custom':value}} for key,value in formatter_variants.items()},
+        'default':supplied['formatter']}
     section_fields = {section: [] for section in SECTIONS}
     config = {}
     for key, value in supplied.items():
@@ -196,9 +201,9 @@ def build():
         condition = f'inputs.applyMode == full or inputs.applyMode == selected and inputs.sections.{section}'
         if section == 'sel': condition += ' or inputs.applyMode == selOnly'
         config[key] = {'__if':condition, '__value':value}
-    config['appliedTemplates'] = [{'id':'custom.redhair.complete','version':'1.2.0'}]
+    config['appliedTemplates'] = [{'id':'custom.redhair.complete','version':'1.3.0'}]
     template = {'metadata': {
-        'id':'custom.redhair.complete','name':'Redhair Quality — Complete Setup','version':'1.2.0',
+        'id':'custom.redhair.complete','name':'Redhair Quality — Complete Setup','version':'1.3.0',
         'description':'Redhair supplied defaults with independently selectable sections. Apply full setup, SEL/regex only, or selected sections. Unselected fields are omitted to preserve existing customizations. Never imports proxy settings, service credentials or variants. Default profiles: synced 2160p Remux and Anime Remux 1080p.',
         'author':'Local adaptation','source':'custom','category':'AIO',
         'services':[], 'serviceRequired':False,
@@ -209,11 +214,15 @@ def build():
             {'id':'sections','name':'Sections to apply','type':'subsection','subsectionIntent':'inline',
              '__if':'inputs.applyMode == selected','description':'Enabled sections replace their current settings. Disabled sections stay exactly as they are.',
              'subOptions':[{'id':key,'name':name,'description':description,'type':'boolean','default':True} for key,(name,description) in SECTIONS.items()]},
+            {'id':'formatterStyle','name':'Formatter style','type':'select','required':True,'default':'redhair',
+             '__if':'inputs.applyMode == full or inputs.applyMode == selected and inputs.sections.formatter',
+             'description':'Redhair’s original formatter or a Jeormatter layout adapted to Redhair’s normalized SEL score and SeaDex Best/Tier labels. Applied only when the formatter section is enabled.',
+             'options':[{'value':key,'label':label} for key,label in STYLES.items()]},
             {'id':'notice','name':'Your existing connections are preserved','type':'alert','intent':'info',
              'description':'Proxy settings, service credentials and variants are never imported. Configure services separately for a new setup. Importing add-ons replaces the add-on list and may prompt for connection details. SEL/regex includes synced 2160p Remux + Anime Remux 1080p and Redhair’s score overrides.'},
         ]}, 'config':config}
     (ROOT / 'Redhair-complete-setup-template.json').write_text(json.dumps(template,ensure_ascii=False,indent=2)+'\n')
     (ROOT / 'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
-    print(f'Built v1.2.0 with {len(SECTIONS)} independently selectable sections; proxy omitted.')
+    print(f'Built v1.3.0 with {len(SECTIONS)} independently selectable sections; proxy omitted.')
 
 if __name__ == '__main__': build()

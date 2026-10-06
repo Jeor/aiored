@@ -1,6 +1,6 @@
 # aiored — Redhair Quality Setup
 
-Version **1.2.0** uses the supplied Redhair configuration as its defaults, with independently selectable sections. Unselected sections are omitted from the update and preserve your existing settings.
+Version **1.3.0** uses the supplied Redhair configuration as its defaults, with independently selectable sections. Unselected sections are omitted from the update and preserve your existing settings.
 
 ## Import URL
 
@@ -12,7 +12,7 @@ https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-complete-setup-templa
 
 Featured template ID: `custom.redhair.complete`.
 
-Refresh/reimport the template to load version 1.2.0. Updating GitHub does not automatically reapply settings to an installed user configuration.
+Refresh/reimport the template to load version 1.3.0. Updating GitHub does not automatically reapply settings to an installed user configuration.
 
 ## Choose what to apply
 
@@ -36,6 +36,20 @@ The wizard’s **What to apply** menu offers:
 | Statistics and errors | Statistics and hidden error resources |
 
 Add-on-dependent catalog/fetching settings stay in the same section so an SEL update cannot accidentally replace them. If you enable a section, it replaces that section’s settings, including your own custom edits in that section. In particular, **SEL / regex only replaces custom SEL and regex edits**, but does not change your sorting; keep Stream Expression Score in your existing sort order to use the scores.
+
+## Formatter choices
+
+When the formatter section is enabled, choose **Redhair (default)**, **Jeormatter**, **Jeormatter Alt**, or **Jeormatter Filename**. The three Jeormatter layouts come from [Jeor/formatter](https://github.com/Jeor/formatter), with the title placement, technical/audio lines, source information, status icons and optional final filename line preserved.
+
+Their old named release-tier checks are removed. The status line uses Redhair’s actual Best/Tier rules:
+
+- SeaDex Best → **🌊 Best**; other SeaDex recommendations → **🌊 Tier 1**, taking priority over score labels.
+- Normalized SEL score: **95–100 Best**, **80–94 Tier 1**, **60–79 Tier 2**, **40–59 Tier 3**, **20–39 Tier 4**, **5–19 Tier 5**, **0–4 Subpar**.
+- When normalized score data is unavailable, the adapted layouts omit the score badge.
+
+`nSeScore` is relative to the highest positive SEL score in the result set; “Best” is a ranking label, not an absolute quality guarantee. The raw SEL score remains visible. iTunes/Movies Anywhere indicators now use Redhair’s `iT`/`MA` and enhancement-expression labels. Redhair’s own formatter is preserved unchanged.
+
+The selector is hidden for SEL-only imports and when the formatter section is off. Standalone formatter JSONs are also available in [formatters/](formatters/). Rendered fixture previews are in [validation/formatter-previews.json](validation/formatter-previews.json).
 
 ## Proxy, services and credentials
 
@@ -77,12 +91,17 @@ MAX_SEL_LENGTH=8000
 ```sh
 python scripts/build_template.py
 node --experimental-strip-types validation/verify-sections.mjs
+npm ci --ignore-scripts --prefix validation/formatter
+validation/formatter/node_modules/.bin/tsc -p validation/formatter/tsconfig.json
+node --experimental-strip-types validation/verify-formatters.mjs
 npm ci --ignore-scripts --prefix validation/sel
 npm run build --prefix validation/sel
 node --experimental-strip-types validation/verify.mjs
 ```
 
 Section validation uses AIOStreams’ actual conditional processor and the same top-level merge behavior as its import wizard. It checks all **1,024 section combinations**, unchanged full defaults, SEL-only and all-off imports, preservation of existing proxy/services/variants, and absence of add-on credential prompts when add-ons are skipped. The schema and optional bundled wizard retain their 198 configuration combinations and 95,904 expression comparisons. Results are in `validation/section-results.json` and `validation/results.json`.
+
+Formatter checks additionally render 51 threshold/SeaDex cases using AIOStreams’ formatter engine, check layout preservation and source-label mapping, and verify all four choices respect the formatter section switch. Results are in `validation/formatter-results.json`.
 
 These are local checks; a live import/playback test against your instance has not been performed.
 

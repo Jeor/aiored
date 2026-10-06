@@ -10,5 +10,9 @@
   "aiostreams": {
     "url": "https://github.com/Viren070/AIOStreams",
     "commit": "d61b9e3735b133eeb683b18c3ef6c07c3e4b82da"
+  },
+  "jeormatter": {
+    "url": "https://github.com/Jeor/formatter",
+    "commit": "a673b42ad82d84f131a66cb00ff181b2a74bbdd0"
   }
 }
