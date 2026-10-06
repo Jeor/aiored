@@ -22,29 +22,29 @@ These are actual formatter-engine renders of the same fictional cached 4K Remux 
 
 ```text
 Example Film (2025)
-✦ 4K · Remux · HDR10
+🏆 Best · ✦ 4K · Remux · HDR10
 ♬ Atmos/TrueHD 7.1 · EN · SUB EN
 ◈ 37.3 GiB · 50 Mbps
-⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix
+⛉ [TB] Torrentio · FraMeSToR (95000) · Netflix
 ```
 
 ## Jeormatter Alt
 
 ```text
 4K · Remux · HDR10
-✦ Example Film (2025)
+🏆 Best · ✦ Example Film (2025)
 ♬ Atmos/TrueHD 7.1 · EN · SUB EN
 ◈ 37.3 GiB · 50 Mbps
-⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix
+⛉ [TB] Torrentio · FraMeSToR (95000) · Netflix
 ```
 
 ## Jeormatter Filename
 
 ```text
 Example Film (2025)
-✦ 4K · Remux · HDR10
+🏆 Best · ✦ 4K · Remux · HDR10
 ♬ Atmos/TrueHD 7.1 · EN · SUB EN
 ◈ 37.3 GiB · 50 Mbps
-⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix
+⛉ [TB] Torrentio · FraMeSToR (95000) · Netflix
 Example.Film.2025.2160p.REMUX.mkv
 ```

@@ -38,7 +38,10 @@ for(const style of styles){
  const name=compileTemplate(formatter.name,hooks),description=compileTemplate(formatter.description,hooks);
  for(const {patch,label} of scenarios){
   const data={...base,stream:{...base.stream,...patch}};
-  const output=name(data)+'\n'+description(data);
+  const renderedDescription=description(data);
+  if(label)assert(renderedDescription.startsWith(label+' · '),`${style}: badge must begin first description line`);
+  else assert(!renderedDescription.startsWith(' · '));
+  const output=name(data)+'\n'+renderedDescription;
   assert(!output.includes('{stream.')&&!output.includes('::')&&!output.includes('unknown_propertyName'),`${style}: unrendered template syntax`);
   const badges=output.match(/(?:🏆|🌊) (?:Best|Tier [1-5])|🗑️ Subpar/g)||[];
   assert.deepEqual(badges,label?[label]:[],`${style} ${JSON.stringify(patch)} badge`);
@@ -56,10 +59,10 @@ assert.equal(Object.keys(previews).length,4);
 for(const [style,p] of Object.entries(previews)){
  assert(!JSON.stringify(p).includes('unknown_propertyName'));
  const alert=t.metadata.inputs.find(o=>o.id==='preview_'+style);
- assert(alert.description.includes(p.name)&&alert.description.includes(p.description));
+ assert.equal(alert.description,p.name+'\n'+p.description,'Preview must contain only formatter output');
  const alerts=t.metadata.inputs.filter(o=>o.id.startsWith('preview_'));
  assert.deepEqual(alerts.filter(o=>evaluateTemplateCondition(o.__if,{formatterEnabled:true,formatterStyle:style},[])).map(o=>o.id),['preview_'+style]);
  assert.equal(alerts.filter(o=>evaluateTemplateCondition(o.__if,{formatterEnabled:false,formatterStyle:style},[])).length,0);
 }
-writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.5.0',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
+writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.5.1',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
 console.log(`PASS: four formatter options; ${renders} rendered badge scenarios; layout, source labels and section isolation.`);

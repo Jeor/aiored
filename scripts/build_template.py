@@ -238,7 +238,7 @@ def build():
         section = section_for(key)
         section_fields[section].append(key)
         config[key] = {'__if':active(section),'__value':value}
-    config['appliedTemplates'] = [{'id':template_id,'version':'1.5.0'}]
+    config['appliedTemplates'] = [{'id':template_id,'version':'1.5.1'}]
     inputs = []
     inputs.append({'id':'notice','name':'Customize before applying','type':'alert','intent':'info',
         'description':'For a new setup, select your services. For updates that should keep existing accounts, use Skip on the Services step: service selection is separate from the switches below. Enable only the sections you want to replace; switch off the rest. For an SEL-only update, leave only SEL and regex on. Proxy settings and user variants are always preserved. Usenet add-ons and Meteor Usenet search are off by default.'})
@@ -266,7 +266,7 @@ def build():
             for style,preview in previews.items():
                 sub.append({'id':'preview_'+style,'type':'alert','intent':'info-basic','name':STYLES[style]+' preview',
                     '__if':active('formatter')+f' and inputs.formatterStyle == {style}',
-                    'description':'**Stream name**\n'+preview['name']+'\n\n**Stream description**\n'+preview['description']+'\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md).'})
+                    'description':preview['name']+'\n'+preview['description']})
         if group == 'display':
             # Subsection dialogs buffer local edits until Save. Keep the
             # selector and conditional previews at wizard level so they
@@ -282,7 +282,7 @@ def build():
     # Formatter choice is a top-level control for immediate preview updates.
     config['formatter']['__value']['__switch']='inputs.formatterStyle'
     metadata={'id':template_id,'name':'Redhair Quality — Setup and updater',
-        'version':'1.5.0','description':'One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.',
+        'version':'1.5.1','description':'One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.',
         'author':'Local adaptation','source':'custom','category':'AIO','serviceRequired':False,'inputs':inputs}
     templates.append({'metadata':metadata,'config':copy.deepcopy(config)})
     # One listed template. Legacy direct URLs alias the same ID and behavior.
@@ -292,6 +292,6 @@ def build():
         (ROOT/filename).write_text(json.dumps(templates[0],ensure_ascii=False,indent=2)+'\n')
     (ROOT/'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
     (ROOT/'validation/section-inputs.json').write_text(json.dumps(paths,indent=2)+'\n')
-    print('Built v1.5.0: one setup/updater with Usenet off by default, four settings groups and immediate formatter previews.')
+    print('Built v1.5.1: one setup/updater with Usenet off by default, four settings groups and immediate formatter previews.')
 
 if __name__ == '__main__': build()

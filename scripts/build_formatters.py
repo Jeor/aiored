@@ -12,7 +12,7 @@ def build_formatters():
     assert badge.startswith('{stream.seadexBest::istrue')
     assert all(f'::>={n}' in badge for n in (95,80,60,40,20,5))
     # Compact inline placement. Missing score data must not be labeled Subpar.
-    badge = badge.replace('["','[" · ').replace('stream.seadex::isfalse::and::stream.nSeScore', 'stream.seadex::isfalse::and::stream.nSeScore::exists::and::stream.nSeScore')
+    badge = badge.replace('"||"',' · "||"').replace('stream.seadex::isfalse::and::stream.nSeScore', 'stream.seadex::isfalse::and::stream.nSeScore::exists::and::stream.nSeScore')
     variants = {'redhair':red}
     for style in STYLES:
         if style == 'redhair':continue
@@ -33,8 +33,9 @@ def build_formatters():
                 fallback = fallback.replace("::in('iTunes')", "::in('iT','iTunes Enhancement')")
                 fallback = fallback.replace("::in('Movies Anywhere','MoviesAnywhere','MA')", "::in('MA','Movies Anywhere Enhancement')")
                 # Same network/edition fallback as before, still hidden for SeaDex.
-                text = text[:start] + badge + '{stream.seadex::istrue[""||"' + fallback + '"]}' + text[end:]
+                text = text[:start] + '{stream.seadex::istrue[""||"' + fallback + '"]}' + text[end:]
             adapted[key] = text
+        adapted['description'] = badge + adapted['description']
         assert not any(token in json.dumps(adapted) for token in ('Remux T1','HD Bluray T1','Web T1','SD Best','SD Alt'))
         assert adapted['description'].count('\n') == original['description'].count('\n')
         if style == 'jeormatter_filename':assert adapted['description'].endswith('\n{stream.filename}')

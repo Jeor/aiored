@@ -1,6 +1,6 @@
 # aiored — Redhair Quality Setup
 
-Version **1.5.0** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
+Version **1.5.1** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
 
 ## Import URL
 
@@ -12,7 +12,7 @@ https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-complete-setup-templa
 
 The URL now provides one template: **Redhair Quality — Setup and updater** (`custom.redhair.full`). Use it for both new setups and selective updates. The separate partial-update template has been removed from the list.
 
-Featured template ID: `custom.redhair.full`. Remove the old `custom.redhair.complete` featured ID if you added it. Refresh/reimport to load v1.5.0; GitHub changes do not automatically reapply your configuration.
+Featured template ID: `custom.redhair.full`. Remove the old `custom.redhair.complete` featured ID if you added it. Refresh/reimport to load v1.5.1; GitHub changes do not automatically reapply your configuration.
 
 The old direct full/update URLs remain compatibility aliases for the same updater and ID; they no longer expose different workflows.
 
@@ -51,7 +51,7 @@ Their old named release-tier checks are removed. The status line uses Redhair’
 - Normalized SEL score: **95–100 Best**, **80–94 Tier 1**, **60–79 Tier 2**, **40–59 Tier 3**, **20–39 Tier 4**, **5–19 Tier 5**, **0–4 Subpar**.
 - When normalized score data is unavailable, the adapted layouts omit the score badge.
 
-`nSeScore` is relative to the highest positive SEL score in the result set; “Best” is a ranking label, not an absolute quality guarantee. The raw SEL score remains visible. iTunes/Movies Anywhere indicators now use Redhair’s `iT`/`MA` and enhancement-expression labels. Redhair’s own formatter is preserved unchanged.
+`nSeScore` is relative to the highest positive SEL score in the result set; “Best” is a ranking label, not an absolute quality guarantee. The raw SEL score remains visible. In all three Jeormatter layouts, the Best / Tier badge is at the very beginning of the first description line. Preview panels show only the rendered formatter output, without stream-name or description labels. iTunes/Movies Anywhere indicators now use Redhair’s `iT`/`MA` and enhancement-expression labels. Redhair’s own formatter is preserved unchanged.
 
 The selector is hidden for SEL-only imports and when the formatter section is off. Standalone formatter JSONs are also available in [formatters/](formatters/). [Compare all four formatter previews](FORMATTER-PREVIEWS.md). The same rendered samples appear under the formatter selector; selecting a style changes its preview. These use a fictional stream and actual formatter-engine output, with client-dependent fonts and wrapping.
 
