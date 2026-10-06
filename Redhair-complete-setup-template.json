@@ -3,7 +3,7 @@
     "metadata": {
       "id": "custom.redhair.full",
       "name": "Redhair Quality — Setup and updater",
-      "version": "1.6.0",
+      "version": "1.6.1",
       "description": "One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.",
       "author": "Local adaptation",
       "source": "custom",
@@ -251,8 +251,15 @@
         },
         {
           "id": "formatterEnabled",
-          "name": "Replace Formatter and posters",
-          "description": "Default: Redhair layout and RPDB posters. Alternatives below change the stream layout. Off preserves your settings.",
+          "name": "Replace Formatter",
+          "description": "Default: Redhair stream layout, or choose an alternative below. Does not change posters. Off preserves your settings.",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "postersEnabled",
+          "name": "Replace Poster settings",
+          "description": "Default: RPDB poster service. Does not change the stream formatter. Off preserves your settings.",
           "type": "boolean",
           "default": true
         },
@@ -805,7 +812,7 @@
         }
       },
       "posterService": {
-        "__if": "inputs.formatterEnabled",
+        "__if": "inputs.postersEnabled",
         "__value": "rpdb"
       },
       "formatter": {
@@ -1798,7 +1805,7 @@
       "appliedTemplates": [
         {
           "id": "custom.redhair.full",
-          "version": "1.6.0"
+          "version": "1.6.1"
         }
       ]
     }

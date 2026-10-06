@@ -22,9 +22,13 @@ Redhair defaults: conjunctive caps of 3 results per service, 3 per resolution an
 
 Template default: 9 non-Usenet add-ons enabled. All Usenet entries and Meteor Usenet search are off; opt in below. This differs from Redhair’s supplied export, which enabled Usenet sources. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below.
 
-## Formatter and posters
+## Formatter
 
-Redhair defaults: original Redhair stream layout and RPDB poster service. The Jeormatter alternatives below change the stream layout while retaining Redhair Best/Tier scoring; the poster choice remains RPDB.
+Redhair default: original Redhair stream layout. Choose a Jeormatter alternative below to change the layout while retaining Redhair Best/Tier scoring. Does not change poster settings.
+
+## Poster settings
+
+Redhair default: RPDB poster service. Applies poster settings independently of the stream formatter.
 
 ## Metadata matching and SeaDex
 

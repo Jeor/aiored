@@ -145,7 +145,8 @@ SECTIONS = {
     'sorting': ('Sorting', 'Redhair defaults: cached first. Cached results prioritize library, resolution, quality, then SEL score; cached anime uses SeaDex then SEL score. Uncached order: stream type, seeders, matched expressions, SEL score, size. Replaces all sort orders.'),
     'limits': ('Result, size and bitrate limits', 'Redhair defaults: conjunctive caps of 3 results per service, 3 per resolution and 4 per quality; a stream must fit all caps. Global size range is 50 MB–100 GB for movies, series and anime; resolution-specific ranges also cap at 100 GB. Metadata runtime is used for bitrate calculation. SEL exclusions can impose additional limits.'),
     'addons': ('Add-ons, catalogs and fetching', 'Template default: 9 non-Usenet add-ons enabled. All Usenet entries and Meteor Usenet search are off; opt in below. This differs from Redhair’s supplied export, which enabled Usenet sources. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below.'),
-    'formatter': ('Formatter and posters', 'Redhair defaults: original Redhair stream layout and RPDB poster service. The Jeormatter alternatives below change the stream layout while retaining Redhair Best/Tier scoring; the poster choice remains RPDB.'),
+    'formatter': ('Formatter', 'Redhair default: original Redhair stream layout. Choose a Jeormatter alternative below to change the layout while retaining Redhair Best/Tier scoring. Does not change poster settings.'),
+    'posters': ('Poster settings', 'Redhair default: RPDB poster service. Applies poster settings independently of the stream formatter.'),
     'matching': ('Metadata matching and SeaDex', 'Redhair defaults: SeaDex enabled; year matching enabled with strict movie years and initial air dates; exact title matching for movies/series; strict season/episode matching. Episode-title matching request types and language-inference sources are empty.'),
     'deduplication': ('Deduplication', 'Redhair defaults: deduplicate by filename and info hash, per service for cached/uncached results, and a single result for P2P. Prefer library results. Duplicate merging and failover variants are enabled.'),
     'playback': ('Playback, downloads and failover', 'Redhair defaults: preload the first Usenet result; owned checks on; next-episode precaching and cache-and-play off. Failover supports Usenet/debrid across types, with 5 attempts and 1 in parallel, before limiting. Service wrapping is enabled for TorBox. Autoplay matching attributes: resolution, quality, encode and visual tags.'),
@@ -158,7 +159,8 @@ SHORT_DEFAULTS = {
     'sorting':'Default: cached first; library → resolution → quality → SEL score. Cached anime: SeaDex → SEL score.',
     'limits':'Default: simultaneous caps of 3/service, 3/resolution and 4/quality; global size 50 MB–100 GB. SEL may impose further limits.',
     'addons':'Default: 9 non-Usenet sources. Replaces sources, catalogs and colors; dynamic fetching and groups off.',
-    'formatter':'Default: Redhair layout and RPDB posters. Alternatives below change the stream layout.',
+    'formatter':'Default: Redhair stream layout, or choose an alternative below. Does not change posters.',
+    'posters':'Default: RPDB poster service. Does not change the stream formatter.',
     'matching':'Default: SeaDex on, exact movie/series titles, strict movie years and season/episode matching.',
     'deduplication':'Default: filename/info-hash duplicates per service; prefer library results; merging on.',
     'playback':'Default: first Usenet stream preloaded, owned checks on, next-episode precache/cache-and-play off; failover up to 5 attempts; TorBox wrapping on.',
@@ -174,7 +176,8 @@ def section_for(key):
         'sorting': ['sortCriteria'],
         'limits': ['resultLimits','size','bitrate'],
         'addons': ['presets','addonCategoryColors','catalogModifications','mergedCatalogs','dynamicAddonFetching','groups'],
-        'formatter': ['formatter','posterService','usePosterRedirectApi'],
+        'formatter': ['formatter'],
+        'posters': ['posterService','usePosterRedirectApi'],
         'matching': ['yearMatching','titleMatching','seasonEpisodeMatching','episodeTitleMatching','languageInference','enableSeadex'],
         'deduplication': ['deduplicator'],
         'playback': ['autoPlay','precacheNextEpisode','preloadStreams','cacheAndPlay','checkOwned','failover','serviceWrap'],
@@ -215,7 +218,7 @@ def build():
     groups = {
         'quality': ('Quality and ranking', ['sel','filters','sorting','limits','matching','deduplication']),
         'connections': ('Add-ons and connections', ['addons']),
-        'display': ('Appearance', ['formatter']),
+        'display': ('Appearance', ['formatter','posters']),
         'behavior': ('Playback and diagnostics', ['playback','diagnostics']),
     }
     paths = {section: section+'Enabled' for section in SECTIONS}
@@ -253,7 +256,7 @@ def build():
         section = section_for(key)
         section_fields[section].append(key)
         config[key] = {'__if':active(section),'__value':value}
-    config['appliedTemplates'] = [{'id':template_id,'version':'1.6.0'}]
+    config['appliedTemplates'] = [{'id':template_id,'version':'1.6.1'}]
     inputs = []
     inputs.append({'id':'notice','name':'Customize before applying','type':'alert','intent':'info',
         'description':'For a new setup, select your services. For updates that should keep existing accounts, use Skip on the Services step: service selection is separate from the switches below. Enable only the sections you want to replace; switch off the rest. For an SEL-only update, leave only SEL and regex on. Proxy settings and user variants are always preserved. Usenet add-ons and Meteor Usenet search are off by default.'})
@@ -302,7 +305,7 @@ def build():
     # Formatter choice is a top-level control for immediate preview updates.
     config['formatter']['__value']['__switch']='inputs.formatterStyle'
     metadata={'id':template_id,'name':'Redhair Quality — Setup and updater',
-        'version':'1.6.0','description':'One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.',
+        'version':'1.6.1','description':'One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.',
         'author':'Local adaptation','source':'custom','category':'AIO','serviceRequired':False,'inputs':inputs}
     templates.append({'metadata':metadata,'config':copy.deepcopy(config)})
     # One listed template. Legacy direct URLs alias the same ID and behavior.
@@ -312,6 +315,6 @@ def build():
         (ROOT/filename).write_text(json.dumps(templates[0],ensure_ascii=False,indent=2)+'\n')
     (ROOT/'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
     (ROOT/'validation/section-inputs.json').write_text(json.dumps(paths,indent=2)+'\n')
-    print('Built v1.6.0: one setup/updater with Usenet off by default, visible section switches, one advanced dialog and immediate formatter previews.')
+    print('Built v1.6.1: one setup/updater with Usenet off by default, visible section switches, one advanced dialog and immediate formatter previews.')
 
 if __name__ == '__main__': build()

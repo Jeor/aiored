@@ -27,6 +27,10 @@ for(const style of styles){
  for(const [field,text] of Object.entries(formatter))assert.deepEqual(parseTemplate(text).diagnostics,[],`${style}.${field} parse errors`);
  const full=applyTemplateConditionals(t.config,{formatterEnabled:true,formatterStyle:style},[]);
  assert.deepEqual(full.formatter,{id:'custom',definitions:{custom:formatter}});
+ assert(!('posterService' in full),'Formatter-only must preserve posters');
+ const postersOnly=applyTemplateConditionals(t.config,{formatterEnabled:false,postersEnabled:true},[]);
+ assert.equal(postersOnly.posterService,'rpdb');
+ assert(!('formatter' in postersOnly),'Posters-only must preserve formatter');
  for(const mode of ['selOnly','selected']){
   const cfg=applyTemplateConditionals(read('Redhair-update-template.json').config,{applyMode:mode,formatterStyle:style,formatterEnabled:false,quality:{sel:true}},[]);
   assert(!('formatter' in cfg));assert(!('posterService' in cfg));
@@ -64,5 +68,5 @@ for(const [style,p] of Object.entries(previews)){
  assert.deepEqual(alerts.filter(o=>evaluateTemplateCondition(o.__if,{formatterEnabled:true,formatterStyle:style},[])).map(o=>o.id),['preview_'+style]);
  assert.equal(alerts.filter(o=>evaluateTemplateCondition(o.__if,{formatterEnabled:false,formatterStyle:style},[])).length,0);
 }
-writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.6.0',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
+writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.6.1',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
 console.log(`PASS: four formatter options; ${renders} rendered badge scenarios; layout, source labels and section isolation.`);

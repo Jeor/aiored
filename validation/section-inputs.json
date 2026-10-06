@@ -5,6 +5,7 @@
   "limits": "limitsEnabled",
   "addons": "addonsEnabled",
   "formatter": "formatterEnabled",
+  "posters": "postersEnabled",
   "matching": "matchingEnabled",
   "deduplication": "deduplicationEnabled",
   "playback": "playbackEnabled",

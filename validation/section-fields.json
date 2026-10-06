@@ -89,8 +89,10 @@
     "catalogModifications"
   ],
   "formatter": [
-    "posterService",
     "formatter"
+  ],
+  "posters": [
+    "posterService"
   ],
   "matching": [
     "enableSeadex",
