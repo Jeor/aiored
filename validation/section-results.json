@@ -1,11 +1,13 @@
 {
-  "version": "1.3.0",
+  "version": "1.4.0",
   "result": "pass",
-  "sectionToggleCombinations": 1024,
-  "fullDefaultsMatchSanitizedSource": true,
+  "sectionToggleCombinations": 2048,
+  "templates": 2,
+  "inlineGroups": 4,
+  "individualAddonSelections": 40,
+  "redhairQualityDefaultsPreserved": true,
   "selOnlyPreservesOtherSections": true,
-  "allOffPreservesUserSettings": true,
   "proxyAbsent": true,
-  "serviceWizardSkipped": true,
+  "serviceWizardFullSetupOnly": true,
   "liveImportTested": false
 }

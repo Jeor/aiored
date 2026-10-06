@@ -1,0 +1,12 @@
+{
+  "sel": "quality.sel",
+  "filters": "quality.filters",
+  "sorting": "quality.sorting",
+  "limits": "quality.limits",
+  "matching": "quality.matching",
+  "deduplication": "quality.deduplication",
+  "addons": "connections.addons",
+  "formatter": "display.formatter",
+  "playback": "behavior.playback",
+  "diagnostics": "behavior.diagnostics"
+}

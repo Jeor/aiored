@@ -5,14 +5,14 @@ import {fileURLToPath} from 'node:url';
 import {compileTemplate} from './formatter/dist/formatters/engine/compile.js';
 import {parseTemplate} from './formatter/dist/formatters/engine/parser.js';
 import {comparatorFunctions} from './formatter/dist/formatters/engine/comparators.js';
-import {applyTemplateConditionals} from './conditionals.ts';
+import {evaluateTemplateCondition,applyTemplateConditionals} from './conditionals.ts';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=p=>JSON.parse(readFileSync(resolve(root,p),'utf8'));
-const t=read('Redhair-complete-setup-template.json');
+const t=read('Redhair-full-setup-template.json');
 const source=read('sources/redhair-default-config.json').formatter;
 const styles=['redhair','jeormatter','jeormatter_alt','jeormatter_filename'];
 assert.deepEqual(read('formatters/redhair.json'),source.definitions.custom);
-assert.equal(t.metadata.inputs.find(x=>x.id==='formatterStyle').default,'redhair');
+assert.equal(t.metadata.inputs.find(x=>x.id==='display').subOptions.find(x=>x.id==='style').default,'redhair');
 const hooks={comparators:comparatorFunctions,resolveVariable:()=>undefined,resolveValues:()=>undefined,onDepthExceeded:()=>{throw Error('Formatter nesting too deep');}};
 const base={stream:{title:'Example Film',year:2025,seasonEpisode:[],resolution:'2160p',quality:'BluRay REMUX',visualTags:['HDR10'],audioTags:['TrueHD','Atmos'],audioChannels:['7.1'],uLanguageCodes:['EN'],uSubtitleCodes:['EN'],library:false,preloading:false,seasonPack:false,size:40e9,folderSize:0,bitrate:50e6,proxied:false,type:'debrid',indexer:null,seeders:0,subbed:false,releaseGroup:'FraMeSToR',seScore:95000,nSeScore:95,seadex:false,seadexBest:false,rseMatched:[],network:'Netflix',editions:[],message:null,filename:'Example.Film.2025.2160p.REMUX.mkv'},addon:{name:'Torrentio'},service:{shortName:'TB',name:'TorBox',cached:true}};
 const scenarios=[
@@ -21,14 +21,14 @@ const scenarios=[
  {patch:{seadex:true,seadexBest:false,nSeScore:100},label:'🌊 Tier 1'},
  {patch:{nSeScore:null},label:null},
 ];
-let renders=0;const previews={};
+let renders=0;const previews=read('validation/formatter-previews.json');
 for(const style of styles){
  const formatter=read(`formatters/${style}.json`);
  for(const [field,text] of Object.entries(formatter))assert.deepEqual(parseTemplate(text).diagnostics,[],`${style}.${field} parse errors`);
- const full=applyTemplateConditionals(t.config,{applyMode:'full',formatterStyle:style},[]);
+ const full=applyTemplateConditionals(t.config,{display:{formatter:true,style}},[]);
  assert.deepEqual(full.formatter,{id:'custom',definitions:{custom:formatter}});
  for(const mode of ['selOnly','selected']){
-  const cfg=applyTemplateConditionals(t.config,{applyMode:mode,formatterStyle:style,sections:{sel:true,formatter:false}},[]);
+  const cfg=applyTemplateConditionals(read('Redhair-update-template.json').config,{applyMode:mode,display:{style,formatter:false},quality:{sel:true}},[]);
   assert(!('formatter' in cfg));assert(!('posterService' in cfg));
  }
  if(style==='redhair')continue;
@@ -50,8 +50,16 @@ for(const style of styles){
  assert(it.includes(' · iTunes'));
  const ma=description({...base,stream:{...base.stream,rseMatched:['MA'],network:null}});
  assert(ma.includes(' · MA'));
- previews[style]={name:name(base),description:description(base)};
+ assert.deepEqual(previews[style],{name:name(base),description:description(base)});
 }
-writeFileSync(resolve(root,'validation/formatter-previews.json'),JSON.stringify(previews,null,2)+'\n');
-writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.3.0',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
+assert.equal(Object.keys(previews).length,4);
+for(const [style,p] of Object.entries(previews)){
+ assert(!JSON.stringify(p).includes('unknown_propertyName'));
+ const alert=t.metadata.inputs.find(o=>o.id==='display').subOptions.find(o=>o.id==='preview_'+style);
+ assert(alert.description.includes(p.name)&&alert.description.includes(p.description));
+ const alerts=t.metadata.inputs.find(o=>o.id==='display').subOptions.filter(o=>o.id.startsWith('preview_'));
+ assert.deepEqual(alerts.filter(o=>evaluateTemplateCondition(o.__if,{display:{formatter:true,style}},[])).map(o=>o.id),['preview_'+style]);
+ assert.equal(alerts.filter(o=>evaluateTemplateCondition(o.__if,{display:{formatter:false,style}},[])).length,0);
+}
+writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.4.0',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
 console.log(`PASS: four formatter options; ${renders} rendered badge scenarios; layout, source labels and section isolation.`);

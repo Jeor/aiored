@@ -3,6 +3,7 @@ import copy
 from build_formatters import build_formatters, STYLES
 import json
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -193,36 +194,99 @@ def build():
     supplied['formatter'] = {'__switch':'inputs.formatterStyle',
         'cases':{key:{'id':'custom','definitions':{'custom':value}} for key,value in formatter_variants.items()},
         'default':supplied['formatter']}
+    subprocess.run(['node', str(ROOT/'scripts/render_previews.mjs')], check=True)
+    previews = json.loads((ROOT/'validation/formatter-previews.json').read_text())
     section_fields = {section: [] for section in SECTIONS}
-    config = {}
-    for key, value in supplied.items():
-        section = section_for(key)
-        section_fields[section].append(key)
-        condition = f'inputs.applyMode == full or inputs.applyMode == selected and inputs.sections.{section}'
-        if section == 'sel': condition += ' or inputs.applyMode == selOnly'
-        config[key] = {'__if':condition, '__value':value}
-    config['appliedTemplates'] = [{'id':'custom.redhair.complete','version':'1.3.0'}]
-    template = {'metadata': {
-        'id':'custom.redhair.complete','name':'Redhair Quality — Complete Setup','version':'1.3.0',
-        'description':'Redhair supplied defaults with independently selectable sections. Apply full setup, SEL/regex only, or selected sections. Unselected fields are omitted to preserve existing customizations. Never imports proxy settings, service credentials or variants. Default profiles: synced 2160p Remux and Anime Remux 1080p.',
-        'author':'Local adaptation','source':'custom','category':'AIO',
-        'services':[], 'serviceRequired':False,
-        'inputs':[
-            {'id':'applyMode','name':'What to apply','type':'select','required':True,'default':'full',
-             'description':'Full setup applies Redhair’s defaults. SEL/regex only preserves everything else. Choose sections enables individual switches.',
-             'options':[{'value':'full','label':'Full setup (Redhair defaults)'},{'value':'selOnly','label':'SEL / regex only'},{'value':'selected','label':'Choose sections'}]},
-            {'id':'sections','name':'Sections to apply','type':'subsection','subsectionIntent':'inline',
-             '__if':'inputs.applyMode == selected','description':'Enabled sections replace their current settings. Disabled sections stay exactly as they are.',
-             'subOptions':[{'id':key,'name':name,'description':description,'type':'boolean','default':True} for key,(name,description) in SECTIONS.items()]},
-            {'id':'formatterStyle','name':'Formatter style','type':'select','required':True,'default':'redhair',
-             '__if':'inputs.applyMode == full or inputs.applyMode == selected and inputs.sections.formatter',
-             'description':'Redhair’s original formatter or a Jeormatter layout adapted to Redhair’s normalized SEL score and SeaDex Best/Tier labels. Applied only when the formatter section is enabled.',
-             'options':[{'value':key,'label':label} for key,label in STYLES.items()]},
-            {'id':'notice','name':'Your existing connections are preserved','type':'alert','intent':'info',
-             'description':'Proxy settings, service credentials and variants are never imported. Configure services separately for a new setup. Importing add-ons replaces the add-on list and may prompt for connection details. SEL/regex includes synced 2160p Remux + Anime Remux 1080p and Redhair’s score overrides.'},
-        ]}, 'config':config}
-    (ROOT / 'Redhair-complete-setup-template.json').write_text(json.dumps(template,ensure_ascii=False,indent=2)+'\n')
-    (ROOT / 'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
-    print(f'Built v1.3.0 with {len(SECTIONS)} independently selectable sections; proxy omitted.')
+    groups = {
+        'quality': ('Quality and ranking', ['sel','filters','sorting','limits','matching','deduplication']),
+        'connections': ('Add-ons and connections', ['addons']),
+        'display': ('Appearance', ['formatter']),
+        'behavior': ('Playback and diagnostics', ['playback','diagnostics']),
+    }
+    paths = {section: f'{group}.{section}' for group,(_,sections) in groups.items() for section in sections}
+    original_presets = copy.deepcopy(supplied['presets'])
+    selected_default = [p['instanceId'] for p in original_presets if p['enabled']]
+    presets = []
+    for preset in original_presets:
+        preset = copy.deepcopy(preset)
+        preset['enabled'] = True
+        # Only selected add-ons reach the credential collector. Newly enabled
+        # custom/indexer connections must supply their own endpoint as well.
+        preset = json.loads(json.dumps(preset).replace('<optional_template_placeholder>', '<template_placeholder>'))
+        options = preset['options']
+        if 'services' in options:
+            options['services'] = {'__if':'inputs.connections.routing == redhair', '__value':options['services']}
+        options['timeout'] = {'__switch':'inputs.connections.timeout', 'cases':{'original':options['timeout'], '10000':10000, '20000':20000, '30000':30000},
+                              'default':options['timeout']}
+        presets.append({'__if':f"inputs.connections.addonIds includes {preset['instanceId']}", '__value':preset})
+    supplied['presets'] = presets
+    supplied['catalogModifications'] = [
+        {'__if':f"inputs.connections.addonIds includes {'2d1' if c['addonName']=='Library' else '6fd'} and inputs.connections.routing == redhair", '__value':c}
+        for c in supplied['catalogModifications']]
+    templates = []
+    for is_full in (True, False):
+        template_id = 'custom.redhair.full' if is_full else 'custom.redhair.complete'
+        def active(section):
+            condition = f'inputs.{paths[section]}'
+            if not is_full:
+                condition = 'inputs.applyMode != selOnly and ' + condition
+                if section == 'sel': condition += ' or inputs.applyMode == selOnly'
+            return condition
+        config = {}
+        for key,value in supplied.items():
+            section = section_for(key)
+            if is_full: section_fields[section].append(key)
+            config[key] = {'__if':active(section),'__value':value}
+        config['appliedTemplates'] = [{'id':template_id,'version':'1.4.0'}]
+        inputs = []
+        if not is_full:
+            inputs.append({'id':'applyMode','name':'What to update','type':'select','required':True,'default':'selOnly',
+                'description':'SEL / regex only preserves all other settings. Choose sections to update more; every switch remains editable.',
+                'options':[{'value':'selOnly','label':'SEL / regex only'},{'value':'selected','label':'Choose sections (Redhair defaults)'}]})
+        inputs.append({'id':'notice','name':'Customize before applying','type':'alert','intent':'info',
+            'description':('Choose your services in the Services step, then customize the four groups below. Switch off any section to preserve it. For SEL-only updates, choose the Update existing setup template instead. Service selection is applied separately from these section switches.' if is_full else
+            'Your services and credentials are preserved. Enabled sections replace their existing settings; disabled sections stay unchanged. For service onboarding, choose Full setup instead.') + ' Proxy settings and user variants are always preserved.'})
+        for group,(name,sections) in groups.items():
+            sub=[{'id':key,'name':'Apply '+SECTIONS[key][0],'description':SECTIONS[key][1]+' Off keeps your current settings.','type':'boolean','default':True} for key in sections]
+            if group == 'connections':
+                sub.extend([
+                    {'id':'addonIds','name':'Add-ons to include','type':'multi-select','default':selected_default,
+                     '__if':active('addons'),'description':'Starts with Redhair’s enabled add-ons. Select any optional add-ons too. This replaces the add-on list; deselected entries are omitted and do not request credentials. Enter your own endpoints on the Credentials screen.',
+                     'options':[{'value':p['instanceId'],'label':p['options']['name']+(' (optional)' if not p['enabled'] else '')} for p in original_presets]},
+                    {'id':'routing','name':'Add-on service assignments','type':'select','default':'enabled' if is_full else 'redhair',
+                     '__if':active('addons'),'description':'Use enabled services lets each add-on use your enabled services that it supports. Redhair assignments retains the original TorBox / AIOStreams / NZBDAV restrictions. Catalog customizations tied to those assignments are only applied in Redhair mode.',
+                     'options':[{'value':'enabled','label':'Use my enabled services (recommended for new setup)'},{'value':'redhair','label':'Redhair’s original service assignments'}]},
+                    {'id':'timeout','name':'Add-on timeout','type':'select','default':'original',
+                     '__if':active('addons'),'description':'Keep Redhair’s 4–5 second timeouts or allow slower sources more time.',
+                     'options':[{'value':'original','label':'Redhair defaults'},{'value':10000,'label':'10 seconds'},{'value':20000,'label':'20 seconds'},{'value':30000,'label':'30 seconds'}]},
+                ])
+            if group == 'display':
+                sub.append({'id':'style','name':'Formatter style','type':'select','required':True,'default':'redhair',
+                    '__if':active('formatter'),'description':'Select a style to see its sample below. All four use Redhair’s Best / Tier scoring. The three Jeormatter layouts keep their original structure.',
+                    'options':[{'value':key,'label':label} for key,label in STYLES.items()]})
+                for style,preview in previews.items():
+                    sub.append({'id':'preview_'+style,'type':'alert','intent':'info-basic','name':STYLES[style]+' preview',
+                        '__if':active('formatter')+f' and inputs.display.style == {style}',
+                        'description':'**Stream name**\n'+preview['name']+'\n\n**Stream description**\n'+preview['description']+'\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md).'})
+            option={'id':group,'name':name,'type':'subsection','subsectionIntent':'inline',
+                'description':'Enable the sections you want to replace; switch off anything you want to keep.', 'subOptions':sub}
+            if not is_full: option['__if']='inputs.applyMode != selOnly'
+            inputs.append(option)
+        # Keep formatter choice in its Appearance group (one subsection level).
+        config['formatter']['__value']['__switch']='inputs.display.style'
+        metadata={'id':template_id,'name':'Redhair Quality — '+('Full setup' if is_full else 'Update existing setup'),
+            'version':'1.4.0','description':('Customizable Redhair defaults with service onboarding, add-on selection and four formatter previews.' if is_full else
+                'Safely update SEL / regex only or selected sections while preserving services, credentials and unselected customizations.'),
+            'author':'Local adaptation','source':'custom','category':'AIO','serviceRequired':False,'inputs':inputs}
+        if not is_full: metadata['services']=[]
+        templates.append({'metadata':metadata,'config':copy.deepcopy(config)})
+    # AIOStreams supports arrays at template URLs. Keep the established URL so
+    # existing installations discover both workflows without changing settings.
+    (ROOT/'Redhair-complete-setup-template.json').write_text(json.dumps(templates,ensure_ascii=False,indent=2)+'\n')
+    for template,filename in zip(templates,('Redhair-full-setup-template.json','Redhair-update-template.json')):
+        (ROOT/filename).write_text(json.dumps(template,ensure_ascii=False,indent=2)+'\n')
+    (ROOT/'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
+    (ROOT/'validation/section-inputs.json').write_text(json.dumps(paths,indent=2)+'\n')
+    print('Built v1.4.0: full setup + safe updates, four inline groups and formatter previews.')
 
 if __name__ == '__main__': build()

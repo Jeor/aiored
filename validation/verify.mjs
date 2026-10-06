@@ -46,7 +46,7 @@ console.log(`PASS: ${combinations} profile/service/sort combinations, optional c
 const engine=process.argv[2] || resolve(root,'validation/sel/dist/vendor/streamExpression.js');
 const {StreamSelector}=await import(pathToFileURL(resolve(engine)));
 const {z}=createRequire(pathToFileURL(resolve(engine)))('zod');
-makeTemplateSchema(z).parse(publishedTemplate);
+for (const t of [publishedTemplate].flat()) makeTemplateSchema(z).parse(t);
 makeTemplateSchema(z).parse(template);
 console.log('PASS: upstream template metadata and wizard input schema.');
 const filenames=[
