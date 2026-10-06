@@ -1,0 +1,1267 @@
+[
+  {
+    "expression": "/*#Radarr*/ /*1080p Balanced Tier 1*/ queryType=='movie' ? quality(resolution(regexMatched(streams, \"hallowed\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 861000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Balanced Tier 1*/ queryType=='series' ? quality(resolution(regexMatched(streams, \"hallowed\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 861000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Balanced Tier 2*/ queryType=='movie' ? quality(resolution(regexMatched(streams, \"BHDStudio\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 860000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Balanced Tier 2*/ queryType=='series' ? quality(resolution(regexMatched(streams, \"BHDStudio\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 860000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Bluray HEVC Tier 1*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"HONE\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 900000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Compact Movie Bluray Tier 1*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"bluegreeen\", \"Chivaman\", \"edge2020\", \"noxxus\", \"R1GY3B\", \"Ralphy\", \"ToNaTo\", \"Vyndros\", \"YELLO\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 943000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Compact Movie Bluray Tier 2*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"dkore\", \"GRiMM\", \"TimeDistortion\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 942000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Compact Movie Bluray Tier 3*/ queryType=='movie' ? quality(resolution(negate(regexMatched(regexMatched(streams, \"DarQ\", \"Honeyvera\", \"LSt\", \"MNHD\", \"SARTRE\", \"Vialle\"), \"HONE\"), regexMatched(regexMatched(streams, \"DarQ\", \"Honeyvera\", \"LSt\", \"MNHD\", \"SARTRE\", \"Vialle\"), \"x265 (Efficient)\")), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 941000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Compact Movie Bluray Tier 4*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"NAN0\", \"QxR\", \"SQS\", \"TAoE\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 940000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Compact Movie WEB Tier 1*/ queryType=='movie' ? merge(quality(resolution(regexMatched(regexMatched(streams, \"QxR\", \"TAoE\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(streams, \"QxR\", \"TAoE\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 883000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Compact Movie WEB Tier 2*/ queryType=='movie' ? merge(quality(resolution(negate(regexMatched(regexMatched(streams, \"DarQ\", \"dkore\", \"LSt\", \"SQS\", \"TimeDistortion\"), \"HONE\"), regexMatched(regexMatched(streams, \"DarQ\", \"dkore\", \"LSt\", \"SQS\", \"TimeDistortion\"), \"x265 (Efficient)\")), \"1080p\"), \"WEB-DL\"), quality(resolution(negate(regexMatched(regexMatched(streams, \"DarQ\", \"dkore\", \"LSt\", \"SQS\", \"TimeDistortion\"), \"HONE\"), regexMatched(regexMatched(streams, \"DarQ\", \"dkore\", \"LSt\", \"SQS\", \"TimeDistortion\"), \"x265 (Efficient)\")), \"1080p\"), \"WEBRip\")) : []",
+    "score": 882000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Compact Movie WEB Tier 3*/ queryType=='movie' ? merge(quality(resolution(regexMatched(regexMatched(streams, \"edge2020\", \"R1GY3B\", \"ToNaTo\", \"Vyndros\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(streams, \"edge2020\", \"R1GY3B\", \"ToNaTo\", \"Vyndros\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 881000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p Compact Movie WEB Tier 4*/ queryType=='movie' ? merge(quality(resolution(regexMatched(regexMatched(streams, \"noxxus\", \"SARTRE\", \"Ralphy\", \"YELLO\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(streams, \"noxxus\", \"SARTRE\", \"Ralphy\", \"YELLO\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 880000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV Bluray Tier 1*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"iVy\", \"KONTRAST\", \"PHOCiS\", \"YAWNiX\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 905000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV Bluray Tier 2*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"Vyndros\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 904000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV Bluray Tier 3*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"bluegreeen\", \"cXcY\", \"edge2020\", \"R1GY3B\", \"Ralphy\", \"TimeDistortion\", \"ToNaTo\", \"YELLO\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 903000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV Bluray Tier 4*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"LSt\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 902000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV Bluray Tier 5*/ queryType=='series' ? quality(resolution(negate(regexMatched(regexMatched(streams, \"DarQ\", \"dkore\", \"GRiMM\", \"MNHD\"), \"HONE\"), regexMatched(regexMatched(streams, \"DarQ\", \"dkore\", \"GRiMM\", \"MNHD\"), \"x265 (Efficient)\")), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 901000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV Bluray Tier 6*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"NAN0\", \"QxR\", \"TAoE\", \"Vialle\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 900000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV Trash Tier 1*/ queryType=='series' ? quality(resolution(seasonPack(regexMatched(regexMatched(streams, \"PSA\", \"RARBG\"), \"x265 (Efficient)\"), \"seasonPack\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 881000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV Trash Tier 2*/ queryType=='series' ? merge(quality(resolution(seasonPack(regexMatched(regexMatched(streams, \"ELiTE\", \"MeGusta\", \"PSA\", \"RARBG\"), \"x265 (Efficient)\"), \"seasonPack\"), \"1080p\"), \"HDTV\"), quality(resolution(seasonPack(regexMatched(regexMatched(streams, \"ELiTE\", \"MeGusta\", \"PSA\", \"RARBG\"), \"x265 (Efficient)\"), \"seasonPack\"), \"1080p\"), \"WEB-DL\"), quality(resolution(seasonPack(regexMatched(regexMatched(streams, \"ELiTE\", \"MeGusta\", \"PSA\", \"RARBG\"), \"x265 (Efficient)\"), \"seasonPack\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 880000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV WEB Tier 1*/ queryType=='series' ? merge(quality(resolution(regexMatched(regexMatched(streams, \"QxR\", \"TAoE\", \"Vialle\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(streams, \"QxR\", \"TAoE\", \"Vialle\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 924000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV WEB Tier 2*/ queryType=='series' ? merge(quality(resolution(negate(regexMatched(regexMatched(streams, \"ARCADE\", \"DarQ\", \"LSt\", \"ToNaTo\"), \"HONE\"), regexMatched(regexMatched(streams, \"ARCADE\", \"DarQ\", \"LSt\", \"ToNaTo\"), \"x265 (Efficient)\")), \"1080p\"), \"WEB-DL\"), quality(resolution(negate(regexMatched(regexMatched(streams, \"ARCADE\", \"DarQ\", \"LSt\", \"ToNaTo\"), \"HONE\"), regexMatched(regexMatched(streams, \"ARCADE\", \"DarQ\", \"LSt\", \"ToNaTo\"), \"x265 (Efficient)\")), \"1080p\"), \"WEBRip\")) : []",
+    "score": 923000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV WEB Tier 3*/ queryType=='series' ? merge(quality(resolution(regexMatched(regexMatched(streams, \"edge2020\", \"GRiMM\", \"OnlyWeb\", \"YELLO\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(streams, \"edge2020\", \"GRiMM\", \"OnlyWeb\", \"YELLO\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 922000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV WEB Tier 4*/ queryType=='series' ? merge(quality(resolution(regexMatched(regexMatched(streams, \"bluegreeen\", \"bluespots\", \"dkore\", \"noxxus\", \"Ralphy\", \"TimeDistortion\", \"Vyndros\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(streams, \"bluegreeen\", \"bluespots\", \"dkore\", \"noxxus\", \"Ralphy\", \"TimeDistortion\", \"Vyndros\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 921000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p Compact TV WEB Tier 5*/ queryType=='series' ? merge(quality(resolution(regexMatched(regexMatched(streams, \"HODL\", \"iVy\", \"KONTRAST\", \"PHOCiS\", \"YAWNiX\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(streams, \"HODL\", \"iVy\", \"KONTRAST\", \"PHOCiS\", \"YAWNiX\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 920000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p HDTV*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"ProRes\"), regexMatched(streams, \"HDTV\")), \"1080p\"), \"HDTV\") : []",
+    "score": 80000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p HDTV*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"ProRes\"), regexMatched(streams, \"HDTV\")), \"1080p\"), \"HDTV\") : []",
+    "score": 80000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p HDTV Tier 1*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"CtrlHD\", \"EDPH\", \"NTb\", \"IMNEWHERE\"), \"HDTV\"), \"1080p\"), \"HDTV\") : []",
+    "score": 42000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p HDTV Tier 1*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"CtrlHD\", \"EDPH\", \"NTb\", \"IMNEWHERE\"), \"HDTV\"), \"1080p\"), \"HDTV\") : []",
+    "score": 42000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p HDTV Tier 2*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"BTN\", \"DARKFLiX\", \"ViETNAM\", \"CBFM\", \"PLUTONiUM\"), \"HDTV\"), \"1080p\"), \"HDTV\") : []",
+    "score": 41000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p HDTV Tier 2*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"BTN\", \"DARKFLiX\", \"ViETNAM\", \"CBFM\", \"PLUTONiUM\"), \"HDTV\"), \"1080p\"), \"HDTV\") : []",
+    "score": 41000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p HDTV Tier 3*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"HANDJOB\"), \"HDTV\"), \"1080p\"), \"HDTV\") : []",
+    "score": 40000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p HDTV Tier 3*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"HANDJOB\"), \"HDTV\"), \"1080p\"), \"HDTV\") : []",
+    "score": 40000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p WEB-DL (Efficient)*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"ProRes\"), regexMatched(streams, \"AVC\")), \"1080p\"), \"WEB-DL\") : []",
+    "score": 860000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*1080p WEB-DL (Efficient)*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"ProRes\"), regexMatched(streams, \"AVC\")), \"1080p\"), \"WEB-DL\") : []",
+    "score": 860000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*1080p WEB-DL HEVC Tier 1*/ queryType=='movie' ? quality(resolution(negate(regexMatched(regexMatched(streams, \"BYNDR\", \"CMRG\", \"FLUX\", \"HHWEB\", \"HONE\", \"Kitsune\", \"NTb\", \"MZABI\", \"playWEB\", \"SMURF\", \"TEPES\"), \"Weasley\"), regexMatched(regexMatched(streams, \"BYNDR\", \"CMRG\", \"FLUX\", \"HHWEB\", \"HONE\", \"Kitsune\", \"NTb\", \"MZABI\", \"playWEB\", \"SMURF\", \"TEPES\"), \"HEVC\")), \"1080p\"), \"WEB-DL\") : []",
+    "score": 920000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*3D*/ queryType=='movie' ? regexMatched(streams, \"3D\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*480p Bluray*/ queryType=='movie' ? quality(resolution(streams, \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 320000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*480p Bluray*/ queryType=='series' ? quality(resolution(streams, \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 320000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*480p Quality Tier 1*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"SoLaR\", \"ZoroSenpai\")), \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 83000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*480p Quality Tier 1*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"SoLaR\", \"ZoroSenpai\")), \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 83000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*480p Quality Tier 2*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"c0kE\", \"Dariush\", \"HaB\", \"TBB\")), \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 82000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*480p Quality Tier 2*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"c0kE\", \"Dariush\", \"HaB\", \"TBB\")), \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 82000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*480p Quality Tier 3*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"EDPH\", \"GS88\", \"KnG\", \"playSD\", \"PTer\", \"rttr\")), \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 81000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*480p Quality Tier 3*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"EDPH\", \"GS88\", \"KnG\", \"playSD\", \"PTer\", \"rttr\")), \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 81000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*480p Quality Tier 4*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"HANDJOB\", \"PTP\")), \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 80000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*480p Quality Tier 4*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"HANDJOB\", \"PTP\")), \"480p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 80000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*480p WEB-DL*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"576p\"), streams), \"480p\"), \"WEB-DL\") : []",
+    "score": 280000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*480p WEB-DL*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"576p\"), streams), \"480p\"), \"WEB-DL\") : []",
+    "score": 280000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*576p Bluray*/ queryType=='movie' ? quality(resolution(streams, \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 420000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*576p Bluray*/ queryType=='series' ? quality(resolution(streams, \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 420000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*576p Quality Tier 1*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"SoLaR\", \"ZoroSenpai\")), \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 103000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*576p Quality Tier 1*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"SoLaR\", \"ZoroSenpai\")), \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 103000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*576p Quality Tier 2*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"BV\", \"c0kE\", \"Dariush\", \"HaB\", \"TBB\", \"ZQ\")), \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 102000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*576p Quality Tier 2*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"BV\", \"c0kE\", \"Dariush\", \"HaB\", \"TBB\", \"ZQ\")), \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 102000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*576p Quality Tier 3*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"EDPH\", \"GS88\", \"KnG\", \"PTer\", \"rttr\", \"ZIMBO\")), \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 101000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*576p Quality Tier 3*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"EDPH\", \"GS88\", \"KnG\", \"PTer\", \"rttr\", \"ZIMBO\")), \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 101000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*576p Quality Tier 4*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"HANDJOB\", \"PTP\")), \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 100000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*576p Quality Tier 4*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"HANDJOB\", \"PTP\")), \"576p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 100000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*576p WEB-DL*/ queryType=='movie' ? regexMatched(regexMatched(streams, \"WEB-DL\"), \"576p\") : []",
+    "score": 300000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*576p WEB-DL*/ queryType=='series' ? regexMatched(regexMatched(streams, \"WEB-DL\"), \"576p\") : []",
+    "score": 300000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p Balanced Tier 1*/ queryType=='movie' ? quality(resolution(regexMatched(streams, \"BHDStudio\", \"hallowed\"), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 120000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p Balanced Tier 1*/ queryType=='series' ? quality(resolution(regexMatched(streams, \"BHDStudio\", \"hallowed\"), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 120000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p Bluray*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), streams), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 540000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p Bluray*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), streams), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 540000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p HDTV*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"ProRes\"), regexMatched(streams, \"HDTV\")), \"720p\"), \"HDTV\") : []",
+    "score": 40000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p HDTV*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"ProRes\"), regexMatched(streams, \"HDTV\")), \"720p\"), \"HDTV\") : []",
+    "score": 40000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p HDTV Tier 1*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"BMF\", \"CtrlHD\", \"DON\", \"EbP\", \"EDPH\", \"NTb\", \"IMNEWHERE\"), \"HDTV\"), \"720p\"), \"HDTV\") : []",
+    "score": 22000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p HDTV Tier 1*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"BMF\", \"CtrlHD\", \"DON\", \"EbP\", \"EDPH\", \"NTb\", \"IMNEWHERE\"), \"HDTV\"), \"720p\"), \"HDTV\") : []",
+    "score": 22000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p HDTV Tier 2*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"BTN\", \"DARKFLiX\", \"ViETNAM\", \"CBFM\", \"PLUTONiUM\"), \"HDTV\"), \"720p\"), \"HDTV\") : []",
+    "score": 21000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p HDTV Tier 2*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"BTN\", \"DARKFLiX\", \"ViETNAM\", \"CBFM\", \"PLUTONiUM\"), \"HDTV\"), \"720p\"), \"HDTV\") : []",
+    "score": 21000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p HDTV Tier 3*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(streams, \"HANDJOB\"), \"HDTV\"), \"720p\"), \"HDTV\") : []",
+    "score": 20000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p HDTV Tier 3*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(streams, \"HANDJOB\"), \"HDTV\"), \"720p\"), \"HDTV\") : []",
+    "score": 20000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p ProRes Quality Tier 1*/ queryType=='movie' ? merge(quality(resolution(regexMatched(regexMatched(streams, \"ZoroSenpai\"), \"ProRes\"), \"720p\"), \"HDTV\"), quality(resolution(regexMatched(regexMatched(streams, \"ZoroSenpai\"), \"ProRes\"), \"720p\"), \"WEB-DL\")) : []",
+    "score": 686000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p Quality Tier 1*/ queryType=='movie' ?merge(quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-f4725b00\")), \"720p\"), \"BluRay\", \"BluRay REMUX\"), quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-f4725b00\")), \"720p\"), \"WEBRip\")): []",
+    "score": 145000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p Quality Tier 1*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"DON\", \"REBORN\", \"SoLaR\", \"TeamSyndicate\", \"ZoroSenpai\")), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 145000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p Quality Tier 2*/ queryType=='movie' ?merge(quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-d4c689c4\")), \"720p\"), \"BluRay\", \"BluRay REMUX\"), quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-d4c689c4\")), \"720p\"), \"WEBRip\")): []",
+    "score": 144000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p Quality Tier 2*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"c0kE\", \"CRiSC\", \"CtrlHD\", \"EbP\", \"HiDt\", \"HiFi\", \"IDE\", \"SbR\", \"VietHD\", \"ZQ\", \"TayTO\", \"0BSiDiAN\")), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 144000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p Quality Tier 3*/ queryType=='movie' ?merge(quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-96303350\")), \"720p\"), \"BluRay\", \"BluRay REMUX\"), quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-96303350\")), \"720p\"), \"WEBRip\")): []",
+    "score": 143000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p Quality Tier 3*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"BMF\", \"Geek\", \"LolHD\", \"NCmt\", \"Positive\", \"RightSIZE\", \"TBB\")), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 143000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p Quality Tier 4*/ queryType=='movie' ?merge(quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-5a8aac10\")), \"720p\"), \"BluRay\", \"BluRay REMUX\"), quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-5a8aac10\")), \"720p\"), \"WEBRip\")): []",
+    "score": 142000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p Quality Tier 4*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Dariush\", \"decibeL\", \"D-Z0N3\", \"FoRM\", \"NTb\", \"PTer\", \"Skazhutin\", \"TDD\", \"ThD\")), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 142000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p Quality Tier 5*/ queryType=='movie' ?merge(quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-83f13a79\")), \"720p\"), \"BluRay\", \"BluRay REMUX\"), quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-83f13a79\")), \"720p\"), \"WEBRip\")): []",
+    "score": 141000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p Quality Tier 5*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"ATELiER\", \"BV\", \"Chotab\", \"de[42]\", \"EA\", \"EDPH\", \"E.N.D\", \"ESiR\", \"FraMeSToR\", \"GS88\", \"HDMaNiAcS\", \"HiP\", \"iFT\", \"KASHMiR\", \"LiNG\", \"LoRD\", \"nmd\", \"NyHD\", \"ORiGEN\", \"playHD\", \"RiCO\", \"RO\", \"rttr\", \"SaNcTi\", \"SPHD\", \"TnP\", \"W4NK3R\", \"WiLF\", \"WMING\", \"ZIMBO\", \"IMNEWHERE\", \"LAZY\", \"ENDSkY\", \"BAT1\", \"CRiME\", \"HDL\", \"REPTiLE\", \"SuBHD\", \"OmertaHD\", \"SillyBird\", \"FANDANGO\", \"NorTV\", \"iNFLiKTED\", \"PiPicK\", \"MDR\", \"HDV\", \"HDv0T\", \"Krispy\", \"Eby\", \"ToK\", \"PerfectionHD\", \"OB1\", \"ZiNC\", \"BBW\", \"iLL\", \"RDK123\", \"E76\", \"JewelBox\", \"HDxT\", \"FTO\", \"IMF\", \"GrapeHD\", \"O2STK\", \"DiRTY\", \"WiHD\", \"NoVA\", \"MCR\", \"Narkyy\", \"Kururun\", \"ARiN\", \"JKP\", \"NiP\", \"Cache\", \"CALiGARi\", \"greenHD\", \"Moshy\", \"ShAnKs\", \"WESTSiDE\", \"KamiKaze\", \"AZVD\", \"SPEED\", \"GutS\", \"Ivandro\", \"TAiCHi\", \"Friday\")), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 141000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p Quality Tier 6*/ queryType=='movie' ?merge(quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-7f024551\")), \"720p\"), \"BluRay\", \"BluRay REMUX\"), quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"Precompiled-7f024551\")), \"720p\"), \"WEBRip\")): []",
+    "score": 140000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p Quality Tier 6*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"EuReKA\", \"HANDJOB\", \"KnG\", \"LEGi0N\", \"Lulz\", \"MaG\", \"MTeam\", \"PTP\", \"PuTao\", \"Slappy\", \"WiKi\", \"MKu\", \"Uld\", \"ZAL\", \"eckomega\", \"CONSORTiUM\", \"Spekt0r\", \"SpaceHD\", \"Gyroscope\", \"PiG30N\", \"SaL\", \"Funner\", \"CREATiVE\", \"MySiLU\", \"EwT\")), \"720p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 140000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p WEB-DL*/ queryType=='movie' ? quality(resolution(negate(regexMatched(streams, \"ProRes\"), streams), \"720p\"), \"WEB-DL\") : []",
+    "score": 660000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*720p WEB-DL*/ queryType=='series' ? quality(resolution(negate(regexMatched(streams, \"ProRes\"), streams), \"720p\"), \"WEB-DL\") : []",
+    "score": 660000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*720p WEBRip*/ queryType=='movie' ? quality(resolution(streams, \"720p\"), \"WEBRip\") : []",
+    "score": 541000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*AAC*/ queryType=='movie' ? negate(regexMatched(regexMatched(streams, \"AAC\"), \"Dolby Digital\", \"Dolby Digital +\", \"DTS\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"AAC\")) : []",
+    "score": 200,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*AAC*/ queryType=='series' ? negate(regexMatched(regexMatched(streams, \"AAC\"), \"Dolby Digital\", \"Dolby Digital +\", \"DTS\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"AAC\")) : []",
+    "score": 200,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*AMZN*/ queryType=='movie' ? quality(regexMatched(streams, \"Amazon Prime\"), \"WEB-DL\") : []",
+    "score": 3000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*AMZN*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Amazon Prime\"), \"WEB-DL\"), quality(regexMatched(streams, \"Amazon Prime\"), \"WEBRip\")) : []",
+    "score": -1000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*ATV*/ queryType=='movie' ? quality(regexMatched(streams, \"Apple TV\"), \"WEB-DL\") : []",
+    "score": 2000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*ATV*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Apple TV\"), \"WEB-DL\"), quality(regexMatched(streams, \"Apple TV\"), \"WEBRip\")) : []",
+    "score": 2000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*ATVP*/ queryType=='movie' ? quality(regexMatched(streams, \"Apple TV+\"), \"WEB-DL\") : []",
+    "score": 2000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*ATVP*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Apple TV+\"), \"WEB-DL\"), quality(regexMatched(streams, \"Apple TV+\"), \"WEBRip\")) : []",
+    "score": 3000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*AV1*/ queryType=='movie' ? regexMatched(streams, \"AV1\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*AV1*/ queryType=='series' ? regexMatched(streams, \"AV1\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Amazon Channel Enhancement*/ queryType=='series' ? negate(resolution(regexMatched(regexMatched(streams, \"OnlyWeb\", \"GRiMM\", \"PrimeFix\"), \"Amazon Prime\"), \"2160p\"), regexMatched(regexMatched(streams, \"OnlyWeb\", \"GRiMM\", \"PrimeFix\"), \"Amazon Prime\")) : []",
+    "score": -3000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Audio Description*/ queryType=='movie' ? regexMatched(streams, \"Audio Description\", \"American Sign Language\", \"Black American Sign Language\", \"British Sign Language\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Audio Description*/ queryType=='series' ? regexMatched(streams, \"Audio Description\", \"American Sign Language\", \"Black American Sign Language\", \"British Sign Language\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*B&W*/ queryType=='movie' ? regexMatched(streams, \"Black & White\", \"Monochrome\", \"Noir\", \"Shush Cut\", \"Color\", \"Grayscale\", \"Darkness & Light\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*BCORE*/ queryType=='movie' ? quality(regexMatched(streams, \"Bravia Core\"), \"WEB-DL\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Banned Dual Audio Groups*/ queryType=='movie' ? regexMatched(regexMatched(streams, \"alfaHD\", \"SiGLA\"), \"Dual Audio\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Banned Dual Audio Groups*/ queryType=='series' ? regexMatched(regexMatched(streams, \"alfaHD\", \"SiGLA\"), \"Dual Audio\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Banned Groups*/ queryType=='movie' ? regexMatched(streams, \"4K4U\", \"AOC\", \"AROMA\", \"BeyondHD\", \"BiTOR\", \"BLASPHEMY\", \"BOLS\", \"BTM\", \"CLASSiCALHD\", \"CREATiVE24\", \"d3g\", \"DepraveD\", \"DeViSiVE\", \"DRX\", \"E\", \"FGT\", \"Flights\", \"HDS\", \"jennaortegaUHD\", \"KC\", \"LAMA\", \"MgB\", \"NAHOM\", \"NhaNc3\", \"NoGroup\", \"OEPlus\", \"SasukeducK\", \"SHD\", \"ShieldBearer\", \"STUTTERSHIT\", \"tarunk9c\", \"TEKNO3D\", \"Telly\", \"UnKn0wn\", \"VD0N\", \"VECTOR\", \"VisionXpert\", \"x0r\", \"YIFY\", \"YTS\", \"OFT\", \"nikt0\", \"SM737\", \"SumVision\", \"MAMA\", \"jff\", \"rbb\", \"Casius08\", \"NaNi\", \"NiCEHEVC\", \"Nostromo\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Banned Groups*/ queryType=='series' ? regexMatched(streams, \"4K4U\", \"AOC\", \"AROMA\", \"BeyondHD\", \"BiTOR\", \"BLASPHEMY\", \"BOLS\", \"BTM\", \"CLASSiCALHD\", \"CREATiVE24\", \"d3g\", \"DepraveD\", \"DeViSiVE\", \"DRX\", \"E\", \"FGT\", \"Flights\", \"HDS\", \"jennaortegaUHD\", \"KC\", \"LAMA\", \"MgB\", \"NAHOM\", \"NhaNc3\", \"NoGroup\", \"OEPlus\", \"SasukeducK\", \"SHD\", \"ShieldBearer\", \"STUTTERSHIT\", \"tarunk9c\", \"TEKNO3D\", \"Telly\", \"UnKn0wn\", \"VD0N\", \"VECTOR\", \"VisionXpert\", \"x0r\", \"YIFY\", \"YTS\", \"OFT\", \"nikt0\", \"SM737\", \"SumVision\", \"MAMA\", \"jff\", \"rbb\", \"Casius08\", \"NaNi\", \"NiCEHEVC\", \"Nostromo\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Banned Language Groups*/ queryType=='movie' ? regexMatched(streams, \"CYPHER\", \"TURG\", \"NIMA4K\", \"pmHD\", \"TvR\", \"tokar86a\", \"KiNGSMAN\", \"4kHdHub\", \"CPTN5DW\", \"PMI\", \"ViSTA\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Banned Language Groups*/ queryType=='series' ? regexMatched(streams, \"CYPHER\", \"TURG\", \"NIMA4K\", \"pmHD\", \"TvR\", \"tokar86a\", \"KiNGSMAN\", \"4kHdHub\", \"CPTN5DW\", \"PMI\", \"ViSTA\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Banned WEBRip (Efficient)*/ queryType=='movie' ? quality(negate(resolution(negate(resolution(negate(regexMatched(streams, \"UHD WEBRip Release Groups\"), streams), \"2160p\"), negate(regexMatched(streams, \"UHD WEBRip Release Groups\"), streams)), \"1080p\"), negate(resolution(negate(regexMatched(streams, \"UHD WEBRip Release Groups\"), streams), \"2160p\"), negate(regexMatched(streams, \"UHD WEBRip Release Groups\"), streams))), \"WEBRip\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Banned WEBRip (Efficient)*/ queryType=='series' ? quality(negate(resolution(negate(resolution(negate(regexMatched(streams, \"UHD WEBRip Release Groups\"), streams), \"2160p\"), negate(regexMatched(streams, \"UHD WEBRip Release Groups\"), streams)), \"1080p\"), negate(resolution(negate(regexMatched(streams, \"UHD WEBRip Release Groups\"), streams), \"2160p\"), negate(regexMatched(streams, \"UHD WEBRip Release Groups\"), streams))), \"WEBRip\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Better Theatricals*/ queryType=='movie' ? negate(regexMatched(regexMatched(regexMatched(streams, \"Better Theatricals\"), \"Theatrical Edition\"), \"Extended Clip\", \"IMAX\", \"Open Matte\", \"Sing Along\", \"Special Edition\"), regexMatched(regexMatched(streams, \"Better Theatricals\"), \"Theatrical Edition\")) : []",
+    "score": 1000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*CAM*/ queryType=='movie' ? regexMatched(streams, \"CAM\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*CRAV*/ queryType=='movie' ? quality(regexMatched(streams, \"Crave\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*CRAV*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Crave\"), \"WEB-DL\"), quality(regexMatched(streams, \"Crave\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*CRIT*/ queryType=='movie' ? quality(regexMatched(streams, \"Criterion Channel\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DRPO*/ queryType=='movie' ? quality(regexMatched(streams, \"Dropout TV\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DRPO*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Dropout TV\"), \"WEB-DL\"), quality(regexMatched(streams, \"Dropout TV\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DSCP*/ queryType=='movie' ? quality(regexMatched(streams, \"Discovery+\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DSCP*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Discovery+\"), \"WEB-DL\"), quality(regexMatched(streams, \"Discovery+\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DSNP*/ queryType=='movie' ? quality(regexMatched(streams, \"Disney+\"), \"WEB-DL\") : []",
+    "score": 2000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DSNP*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Disney+\"), \"WEB-DL\"), quality(regexMatched(streams, \"Disney+\"), \"WEBRip\")) : []",
+    "score": 2000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DTS*/ queryType=='movie' ? negate(regexMatched(regexMatched(streams, \"DTS\"), \"AAC\", \"Dolby Digital\", \"Dolby Digital +\", \"DTS-HD MA\", \"DTS-HD HRA ES\", \"DTS-X\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"DTS\")) : []",
+    "score": 300,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DTS*/ queryType=='series' ? negate(regexMatched(regexMatched(streams, \"DTS\"), \"AAC\", \"Dolby Digital\", \"Dolby Digital +\", \"DTS-HD MA\", \"DTS-HD HRA ES\", \"DTS-X\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"DTS\")) : []",
+    "score": 300,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DTS-ES*/ queryType=='movie' ? negate(regexMatched(regexMatched(streams, \"DTS-ES\"), \"AAC\", \"Dolby Digital\", \"Dolby Digital +\", \"DTS Basic\", \"DTS-X\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"DTS-ES\")) : []",
+    "score": 500,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DTS-ES*/ queryType=='series' ? negate(regexMatched(regexMatched(streams, \"DTS-ES\"), \"AAC\", \"Dolby Digital\", \"Dolby Digital +\", \"DTS Basic\", \"DTS-X\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"DTS-ES\")) : []",
+    "score": 500,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DTS-HD HRA*/ queryType=='movie' ? negate(regexMatched(regexMatched(streams, \"DTS-HD HRA\"), \"AAC\", \"Dolby Digital\", \"Dolby Digital +\", \"DTS Basic\", \"DTS-ES\", \"DTS-X\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"DTS-HD HRA\")) : []",
+    "score": 700,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DTS-HD HRA*/ queryType=='series' ? negate(regexMatched(regexMatched(streams, \"DTS-HD HRA\"), \"AAC\", \"Dolby Digital\", \"Dolby Digital +\", \"DTS Basic\", \"DTS-ES\", \"DTS-X\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"DTS-HD HRA\")) : []",
+    "score": 700,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DVD*/ queryType=='movie' ? quality(negate(regexMatched(streams, \"Remux\"), streams), \"DVDRip\", \"DVD REMUX\") : []",
+    "score": 200000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DVD*/ queryType=='series' ? quality(negate(regexMatched(streams, \"Remux\"), streams), \"DVDRip\", \"DVD REMUX\") : []",
+    "score": 200000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DVD Quality Tier 1*/ queryType=='movie' ? quality(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"TBB\", \"Dariush\")), \"DVDRip\", \"DVD REMUX\") : []",
+    "score": 61000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DVD Quality Tier 1*/ queryType=='series' ? quality(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"TBB\", \"Dariush\")), \"DVDRip\", \"DVD REMUX\") : []",
+    "score": 61000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DVD Quality Tier 2*/ queryType=='movie' ? quality(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"HANDJOB\")), \"DVDRip\", \"DVD REMUX\") : []",
+    "score": 60000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DVD Quality Tier 2*/ queryType=='series' ? quality(negate(regexMatched(streams, \"Remux\"), regexMatched(streams, \"HANDJOB\")), \"DVDRip\", \"DVD REMUX\") : []",
+    "score": 60000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*DVD Remux*/ queryType=='movie' ? quality(regexMatched(streams, \"Remux\"), \"DVDRip\", \"DVD REMUX\") : []",
+    "score": 220000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*DVD Remux*/ queryType=='series' ? quality(regexMatched(streams, \"Remux\"), \"DVDRip\", \"DVD REMUX\") : []",
+    "score": 220000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Dolby Atmos*/ queryType=='movie' ? negate(regexMatched(streams, \"TrueHD\"), regexMatched(streams, \"Atmos\")) : []",
+    "score": 400,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Dolby Atmos*/ queryType=='series' ? negate(regexMatched(streams, \"TrueHD\"), regexMatched(streams, \"Atmos\")) : []",
+    "score": 400,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Dolby Digital*/ queryType=='movie' ? negate(regexMatched(regexMatched(streams, \"Dolby Digital\"), \"AAC\", \"Dolby Digital +\", \"DTS\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"Dolby Digital\")) : []",
+    "score": 400,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Dolby Digital*/ queryType=='series' ? negate(regexMatched(regexMatched(streams, \"Dolby Digital\"), \"AAC\", \"Dolby Digital +\", \"DTS\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"Dolby Digital\")) : []",
+    "score": 400,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Dolby Digital +*/ queryType=='movie' ? negate(regexMatched(regexMatched(streams, \"Dolby Digital +\"), \"AAC\", \"DTS\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"Dolby Digital +\")) : []",
+    "score": 600,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Dolby Digital +*/ queryType=='series' ? negate(regexMatched(regexMatched(streams, \"Dolby Digital +\"), \"AAC\", \"DTS\", \"FLAC\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"Dolby Digital +\")) : []",
+    "score": 600,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Dolby Vision*/ queryType=='movie' ? regexMatched(streams, \"Dolby Vision\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Dolby Vision*/ queryType=='series' ? regexMatched(streams, \"Dolby Vision\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Extended Edition*/ queryType=='movie' ? regexMatched(negate(regexMatched(streams, \"Extended Clip\", \"IMAX\", \"Open Matte\", \"Sing Along\", \"Theatrical Edition\"), streams), \"Extended Edition\") : []",
+    "score": 1000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*FLAC*/ queryType=='movie' ? negate(regexMatched(regexMatched(streams, \"FLAC\"), \"AAC\", \"Dolby Digital\", \"Dolby Digital +\", \"DTS\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"FLAC\")) : []",
+    "score": 800,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*FLAC*/ queryType=='series' ? negate(regexMatched(regexMatched(streams, \"FLAC\"), \"AAC\", \"Dolby Digital\", \"Dolby Digital +\", \"DTS\", \"PCM\", \"TrueHD\"), regexMatched(streams, \"FLAC\")) : []",
+    "score": 800,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Full Disc*/ queryType=='movie' ? negate(quality(negate(quality(negate(quality(negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")), \"WEB-DL\"), negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\"))), \"WEBRip\"), negate(quality(negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")), \"WEB-DL\"), negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")))), \"HDTV\"), negate(quality(negate(quality(negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")), \"WEB-DL\"), negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\"))), \"WEBRip\"), negate(quality(negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")), \"WEB-DL\"), negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\"))))) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Full Disc*/ queryType=='series' ? negate(quality(negate(quality(negate(quality(negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")), \"WEB-DL\"), negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\"))), \"WEBRip\"), negate(quality(negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")), \"WEB-DL\"), negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")))), \"HDTV\"), negate(quality(negate(quality(negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")), \"WEB-DL\"), negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\"))), \"WEBRip\"), negate(quality(negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\")), \"WEB-DL\"), negate(regexMatched(regexMatched(streams, \"Full Disc\"), \"Remux\", \"x264\", \"x265\"), regexMatched(streams, \"Full Disc\"))))) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Full Disc (Quality Match)*/ queryType=='movie' ? quality(streams, \"BluRay\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*German DL*/ queryType=='movie' ? regexMatched(streams, \"German DL\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*German DL*/ queryType=='series' ? regexMatched(streams, \"German DL\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*HBO*/ queryType=='movie' ? quality(regexMatched(streams, \"HBO\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*HBO*/ queryType=='series' ? merge(quality(regexMatched(streams, \"HBO\"), \"WEB-DL\"), quality(regexMatched(streams, \"HBO\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*HDR*/ queryType=='movie' ? negate(regexMatched(streams, \"HDR10+\"), regexMatched(streams, \"HDR\")) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*HDR*/ queryType=='series' ? negate(regexMatched(streams, \"HDR10+\"), regexMatched(streams, \"HDR\")) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*HDR10+*/ queryType=='movie' ? regexMatched(streams, \"HDR10+\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*HDR10+*/ queryType=='series' ? regexMatched(streams, \"HDR10+\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*HMAX*/ queryType=='movie' ? quality(regexMatched(streams, \"HBO Max\"), \"WEB-DL\") : []",
+    "score": 2000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*HMAX*/ queryType=='series' ? merge(quality(regexMatched(streams, \"HBO Max\"), \"WEB-DL\"), quality(regexMatched(streams, \"HBO Max\"), \"WEBRip\")) : []",
+    "score": 2000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*HONE Bluray*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"HONE\"), streams), \"x265 (Efficient)\"), \"HONE\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 900000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*HONE WEB*/ queryType=='movie' ? quality(resolution(negate(regexMatched(regexMatched(negate(regexMatched(streams, \"HONE\"), streams), \"x265 (Efficient)\"), \"Weasley\"), regexMatched(regexMatched(negate(regexMatched(streams, \"HONE\"), streams), \"x265 (Efficient)\"), \"HONE\")), \"1080p\"), \"WEB-DL\") : []",
+    "score": 920000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*HTSR*/ queryType=='movie' ? quality(regexMatched(streams, \"Hotstar\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*HTSR*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Hotstar\"), \"WEB-DL\"), quality(regexMatched(streams, \"Hotstar\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*HULU*/ queryType=='movie' ? quality(regexMatched(streams, \"Hulu\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*HULU*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Hulu\"), \"WEB-DL\"), quality(regexMatched(streams, \"Hulu\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Lossless Audio*/ queryType=='movie' ?negate(resolution(regexMatched(streams, \"Precompiled-8e9b04f9\"), \"2160p\"), regexMatched(streams, \"Precompiled-8e9b04f9\")): []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Lossless Audio*/ queryType=='series' ?negate(resolution(regexMatched(streams, \"Precompiled-8e9b04f9\"), \"2160p\"), regexMatched(streams, \"Precompiled-8e9b04f9\")): []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*MA*/ queryType=='movie' ? quality(regexMatched(streams, \"Movies Anywhere\"), \"WEB-DL\") : []",
+    "score": 3000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*MAX*/ queryType=='movie' ? quality(regexMatched(streams, \"Max\"), \"WEB-DL\") : []",
+    "score": 2000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*MAX*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Max\"), \"WEB-DL\"), quality(regexMatched(streams, \"Max\"), \"WEBRip\")) : []",
+    "score": 2000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*MUBI*/ queryType=='movie' ? quality(regexMatched(streams, \"Mubi\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*MUBI*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Mubi\"), \"WEB-DL\"), quality(regexMatched(streams, \"Mubi\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*NF*/ queryType=='movie' ? quality(regexMatched(streams, \"Netflix\"), \"WEB-DL\") : []",
+    "score": 1000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*NF*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Netflix\"), \"WEB-DL\"), quality(regexMatched(streams, \"Netflix\"), \"WEBRip\")) : []",
+    "score": 1000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*NOW*/ queryType=='movie' ? quality(regexMatched(streams, \"Now\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*NOW*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Now\"), \"WEB-DL\"), quality(regexMatched(streams, \"Now\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Not Original or English*/ queryType=='movie' ? negate(merge(language(streams, \"Original\"), language(streams, \"English\")), streams) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Not Original or English*/ queryType=='series' ? negate(merge(language(streams, \"Original\"), language(streams, \"English\")), streams) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Opus*/ queryType=='movie' ? regexMatched(negate(regexMatched(streams, \"Opus (Negation)\"), streams), \"Opus\") : []",
+    "score": 700,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Opus*/ queryType=='series' ? regexMatched(negate(regexMatched(streams, \"Opus (Negation)\"), streams), \"Opus\") : []",
+    "score": 700,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*PCOK*/ queryType=='movie' ? quality(regexMatched(streams, \"Peacock TV\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*PCOK*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Peacock TV\"), \"WEB-DL\"), quality(regexMatched(streams, \"Peacock TV\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*PLAY*/ queryType=='movie' ? quality(regexMatched(streams, \"Google TV\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*PLAY*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Google TV\"), \"WEB-DL\"), quality(regexMatched(streams, \"Google TV\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*PMTP*/ queryType=='movie' ? quality(regexMatched(streams, \"Paramount+\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*PMTP*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Paramount+\"), \"WEB-DL\"), quality(regexMatched(streams, \"Paramount+\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*QxR Bluray*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"QxR\"), streams), \"QxR (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 940000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*QxR Bluray*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"QxR\"), streams), \"QxR (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 900000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*QxR WEB*/ queryType=='movie' ? merge(quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"QxR\"), streams), \"QxR (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"QxR\"), streams), \"QxR (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 883000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*QxR WEB*/ queryType=='series' ? merge(quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"QxR\"), streams), \"QxR (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"QxR\"), streams), \"QxR (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 924000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*ROKU*/ queryType=='movie' ? quality(regexMatched(streams, \"Roku\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*ROKU*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Roku\"), \"WEB-DL\"), quality(regexMatched(streams, \"Roku\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Remux*/ queryType=='movie' ? negate(quality(regexMatched(quality(streams, \"BluRay REMUX\", \"DVD REMUX\"), \"Remux\"), \"DVDRip\", \"DVD REMUX\"), regexMatched(quality(streams, \"BluRay REMUX\", \"DVD REMUX\"), \"Remux\")) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Remux*/ queryType=='series' ? negate(quality(regexMatched(streams, \"Remux\"), \"DVDRip\", \"DVD REMUX\"), regexMatched(streams, \"Remux\")) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Repack1*/ queryType=='movie' ? regexMatched(streams, \"Repack1\") : []",
+    "score": 6,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Repack1*/ queryType=='series' ? regexMatched(streams, \"Repack1\") : []",
+    "score": 6,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Repack2*/ queryType=='movie' ? regexMatched(streams, \"Repack2\") : []",
+    "score": 7,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Repack2*/ queryType=='series' ? regexMatched(streams, \"Repack2\") : []",
+    "score": 7,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Repack3*/ queryType=='movie' ? regexMatched(streams, \"Repack3\") : []",
+    "score": 8,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Repack3*/ queryType=='series' ? regexMatched(streams, \"Repack3\") : []",
+    "score": 8,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*SDTV*/ queryType=='movie' ? quality(negate(resolution(negate(resolution(negate(resolution(streams, \"1080p\"), streams), \"720p\"), negate(resolution(streams, \"1080p\"), streams)), \"2160p\"), negate(resolution(negate(resolution(streams, \"1080p\"), streams), \"720p\"), negate(resolution(streams, \"1080p\"), streams))), \"HDTV\") : []",
+    "score": 20000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*SDTV*/ queryType=='series' ? quality(negate(resolution(negate(resolution(negate(resolution(streams, \"1080p\"), streams), \"720p\"), negate(resolution(streams, \"1080p\"), streams)), \"2160p\"), negate(resolution(negate(resolution(streams, \"1080p\"), streams), \"720p\"), negate(resolution(streams, \"1080p\"), streams))), \"HDTV\") : []",
+    "score": 20000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*SDTV Tier 1*/ queryType=='movie' ? quality(negate(resolution(negate(resolution(negate(resolution(regexMatched(streams, \"NTb\", \"CtrlHD\"), \"1080p\"), regexMatched(streams, \"NTb\", \"CtrlHD\")), \"720p\"), negate(resolution(regexMatched(streams, \"NTb\", \"CtrlHD\"), \"1080p\"), regexMatched(streams, \"NTb\", \"CtrlHD\"))), \"2160p\"), negate(resolution(negate(resolution(regexMatched(streams, \"NTb\", \"CtrlHD\"), \"1080p\"), regexMatched(streams, \"NTb\", \"CtrlHD\")), \"720p\"), negate(resolution(regexMatched(streams, \"NTb\", \"CtrlHD\"), \"1080p\"), regexMatched(streams, \"NTb\", \"CtrlHD\")))), \"HDTV\") : []",
+    "score": 10000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*SDTV Tier 1*/ queryType=='series' ? quality(negate(resolution(negate(resolution(negate(resolution(regexMatched(streams, \"NTb\", \"CtrlHD\"), \"1080p\"), regexMatched(streams, \"NTb\", \"CtrlHD\")), \"720p\"), negate(resolution(regexMatched(streams, \"NTb\", \"CtrlHD\"), \"1080p\"), regexMatched(streams, \"NTb\", \"CtrlHD\"))), \"2160p\"), negate(resolution(negate(resolution(regexMatched(streams, \"NTb\", \"CtrlHD\"), \"1080p\"), regexMatched(streams, \"NTb\", \"CtrlHD\")), \"720p\"), negate(resolution(regexMatched(streams, \"NTb\", \"CtrlHD\"), \"1080p\"), regexMatched(streams, \"NTb\", \"CtrlHD\")))), \"HDTV\") : []",
+    "score": 10000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*SHO*/ queryType=='movie' ? quality(regexMatched(streams, \"Showtime\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*SHO*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Showtime\"), \"WEB-DL\"), quality(regexMatched(streams, \"Showtime\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*SKST*/ queryType=='movie' ? quality(regexMatched(streams, \"SkyShowTime\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*SKST*/ queryType=='series' ? merge(quality(regexMatched(streams, \"SkyShowTime\"), \"WEB-DL\"), quality(regexMatched(streams, \"SkyShowTime\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*STAN*/ queryType=='movie' ? quality(regexMatched(streams, \"Stan\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*STAN*/ queryType=='series' ? merge(quality(regexMatched(streams, \"Stan\"), \"WEB-DL\"), quality(regexMatched(streams, \"Stan\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Season Pack*/ queryType=='series' ? seasonPack(streams, \"seasonPack\") : []",
+    "score": 10,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Sing Along*/ queryType=='movie' ? regexMatched(streams, \"Sing Along\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Special Edition*/ queryType=='movie' ? negate(regexMatched(regexMatched(streams, \"Special Edition\"), \"IMAX\", \"Open Matte\", \"Theatrical Edition\", \"Extended Clip\", \"Sing Along\"), regexMatched(streams, \"Special Edition\")) : []",
+    "score": 1000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*TAoE Bluray*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"TAoE\"), streams), \"TAoE (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 940000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*TAoE Bluray*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"TAoE\"), streams), \"TAoE (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 900000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*TAoE WEB*/ queryType=='movie' ? merge(quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"TAoE\"), streams), \"TAoE (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"TAoE\"), streams), \"TAoE (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 883000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*TAoE WEB*/ queryType=='series' ? merge(quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"TAoE\"), streams), \"TAoE (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"TAoE\"), streams), \"TAoE (Title)\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 924000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*UHD Bluray (Efficient)*/ queryType=='movie' ? resolution(regexMatched(regexMatched(streams, \"UHD Bluray (Efficient)\"), \"Basic HDR Formats\"), \"1080p\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*UHD Bluray (Efficient)*/ queryType=='series' ? resolution(regexMatched(regexMatched(streams, \"UHD Bluray (Efficient)\"), \"Basic HDR Formats\"), \"1080p\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Upscale*/ queryType=='movie' ? regexMatched(streams, \"Movie Upscale\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Upscale*/ queryType=='series' ? regexMatched(streams, \"TV Upscale\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*VP9*/ queryType=='movie' ? regexMatched(streams, \"VP9\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*VP9*/ queryType=='series' ? regexMatched(streams, \"VP9\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*VVC*/ queryType=='movie' ? regexMatched(streams, \"VVC\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*VVC*/ queryType=='series' ? regexMatched(streams, \"VVC\") : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Vialle Bluray*/ queryType=='movie' ? quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"Vialle\"), streams), \"Vialle\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 941000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Vialle Bluray*/ queryType=='series' ? quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"Vialle\"), streams), \"Vialle\"), \"x265 (Efficient)\"), \"1080p\"), \"BluRay\", \"BluRay REMUX\") : []",
+    "score": 900000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Vialle WEB*/ queryType=='series' ? merge(quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"Vialle\"), streams), \"Vialle\"), \"x265 (Efficient)\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(regexMatched(negate(regexMatched(streams, \"Vialle\"), streams), \"Vialle\"), \"x265 (Efficient)\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 924000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*WEB-DL Tier 1*/ queryType=='movie' ? quality(regexMatched(streams, \"FLUX\", \"NTb\", \"TheFarm\"), \"WEB-DL\") : []",
+    "score": 100,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*WEB-DL Tier 1*/ queryType=='series' ? quality(regexMatched(streams, \"FLUX\", \"NTb\", \"TheFarm\"), \"WEB-DL\") : []",
+    "score": 100,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*WEB-DL Tier 2*/ queryType=='movie' ? quality(regexMatched(streams, \"BYNDR\", \"CMRG\", \"HONE\", \"Kitsune\", \"playWEB\", \"TEPES\"), \"WEB-DL\") : []",
+    "score": 80,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*WEB-DL Tier 2*/ queryType=='series' ? quality(regexMatched(streams, \"BYNDR\", \"CMRG\", \"HONE\", \"Kitsune\", \"playWEB\", \"TEPES\"), \"WEB-DL\") : []",
+    "score": 80,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*WEB-DL Tier 3*/ queryType=='movie' ? quality(regexMatched(streams, \"ABM\", \"AJP69\", \"BLUTONiUM\", \"BTW\", \"CasStudio\", \"Cinefeel\", \"CRFW\", \"CtrlHD\", \"HHWEB\", \"KHN\", \"KiNGS\", \"LAZY\", \"monkee\", \"MZABI\", \"NOSiViD\", \"NPMS\", \"NTG\", \"QOQ\", \"RAWR\", \"SA89\", \"SbR\", \"SMURF\", \"TeamSyndicate\", \"TOMMY\", \"TVSmash\", \"WELP\", \"XEBEC\", \"ZoroSenpai\", \"MADSKY\"), \"WEB-DL\") : []",
+    "score": 60,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*WEB-DL Tier 3*/ queryType=='series' ? quality(regexMatched(streams, \"ABM\", \"AJP69\", \"BLUTONiUM\", \"BTW\", \"CasStudio\", \"Cinefeel\", \"CRFW\", \"CtrlHD\", \"HHWEB\", \"KHN\", \"KiNGS\", \"LAZY\", \"monkee\", \"MZABI\", \"NOSiViD\", \"NPMS\", \"NTG\", \"QOQ\", \"RAWR\", \"SA89\", \"SbR\", \"SMURF\", \"TeamSyndicate\", \"TOMMY\", \"TVSmash\", \"WELP\", \"XEBEC\", \"ZoroSenpai\", \"MADSKY\"), \"WEB-DL\") : []",
+    "score": 60,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*WEB-DL Tier 4*/ queryType=='movie' ? quality(regexMatched(streams, \"APEX\", \"BTN\", \"dB\", \"PTP\", \"RTN\", \"SiC\", \"SPiRiT\", \"ViSUM\", \"BLOOM\"), \"WEB-DL\") : []",
+    "score": 40,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*WEB-DL Tier 4*/ queryType=='series' ? quality(regexMatched(streams, \"APEX\", \"BTN\", \"dB\", \"PTP\", \"RTN\", \"SiC\", \"SPiRiT\", \"ViSUM\", \"BLOOM\"), \"WEB-DL\") : []",
+    "score": 40,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*WEB-DL Tier 5*/ queryType=='movie' ? quality(regexMatched(streams, \"CRUD\", \"GNOME\", \"NINJACENTRAL\", \"PHOENiX\", \"ROCCaT\", \"SiGMA\", \"SwAgLaNdEr\"), \"WEB-DL\") : []",
+    "score": 20,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*WEB-DL Tier 5*/ queryType=='series' ? quality(regexMatched(streams, \"CRUD\", \"GNOME\", \"NINJACENTRAL\", \"PHOENiX\", \"ROCCaT\", \"SiGMA\", \"SwAgLaNdEr\"), \"WEB-DL\") : []",
+    "score": 20,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Weasley WEB*/ queryType=='movie' ? merge(quality(resolution(regexMatched(streams, \"Weasley\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(streams, \"Weasley\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 883000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Weasley WEB*/ queryType=='series' ? merge(quality(resolution(regexMatched(streams, \"Weasley\"), \"1080p\"), \"WEB-DL\"), quality(resolution(regexMatched(streams, \"Weasley\"), \"1080p\"), \"WEBRip\")) : []",
+    "score": 924000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*Xvid*/ queryType=='movie' ? negate(quality(negate(quality(regexMatched(streams, \"Xvid\"), \"DVDRip\", \"DVD REMUX\"), regexMatched(streams, \"Xvid\")), \"HDTV\"), negate(quality(regexMatched(streams, \"Xvid\"), \"DVDRip\", \"DVD REMUX\"), regexMatched(streams, \"Xvid\"))) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*Xvid*/ queryType=='series' ? negate(quality(negate(quality(regexMatched(streams, \"Xvid\"), \"DVDRip\", \"DVD REMUX\"), regexMatched(streams, \"Xvid\")), \"HDTV\"), negate(quality(regexMatched(streams, \"Xvid\"), \"DVDRip\", \"DVD REMUX\"), regexMatched(streams, \"Xvid\"))) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*h265 (Efficient)*/ queryType=='movie' ? negate(resolution(negate(resolution(regexMatched(streams, \"h265\"), \"2160p\"), regexMatched(streams, \"h265\")), \"1080p\"), negate(resolution(regexMatched(streams, \"h265\"), \"2160p\"), regexMatched(streams, \"h265\"))) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*h265 (Efficient)*/ queryType=='series' ? negate(resolution(negate(resolution(regexMatched(streams, \"h265\"), \"2160p\"), regexMatched(streams, \"h265\")), \"1080p\"), negate(resolution(regexMatched(streams, \"h265\"), \"2160p\"), regexMatched(streams, \"h265\"))) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*iP*/ queryType=='movie' ? quality(regexMatched(streams, \"BBC iPlayer\"), \"WEB-DL\") : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*iP*/ queryType=='series' ? merge(quality(regexMatched(streams, \"BBC iPlayer\"), \"WEB-DL\"), quality(regexMatched(streams, \"BBC iPlayer\"), \"WEBRip\")) : []",
+    "score": 0,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*iT*/ queryType=='movie' ? quality(regexMatched(streams, \"iTunes\"), \"WEB-DL\") : []",
+    "score": 1000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*iT*/ queryType=='series' ? merge(quality(regexMatched(streams, \"iTunes\"), \"WEB-DL\"), quality(regexMatched(streams, \"iTunes\"), \"WEBRip\")) : []",
+    "score": 1000,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Radarr*/ /*x265 (Efficient)*/ queryType=='movie' ? negate(resolution(negate(resolution(regexMatched(streams, \"x265\"), \"2160p\"), regexMatched(streams, \"x265\")), \"1080p\"), negate(resolution(regexMatched(streams, \"x265\"), \"2160p\"), regexMatched(streams, \"x265\"))) : []",
+    "score": -999999,
+    "enabled": true
+  },
+  {
+    "expression": "/*#Sonarr*/ /*x265 (Efficient)*/ queryType=='series' ? negate(resolution(negate(resolution(regexMatched(streams, \"x265\"), \"2160p\"), regexMatched(streams, \"x265\")), \"1080p\"), negate(resolution(regexMatched(streams, \"x265\"), \"2160p\"), regexMatched(streams, \"x265\"))) : []",
+    "score": -999999,
+    "enabled": true
+  }
+]

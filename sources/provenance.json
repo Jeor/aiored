@@ -1,0 +1,14 @@
+{
+  "tamtaro": {
+    "url": "https://github.com/Tam-Taro/SEL-Filtering-and-Sorting",
+    "commit": "3d88238868dd2d2df65dc65bca6f9180e1898a4c"
+  },
+  "redhair": {
+    "url": "https://github.com/Redhair777/AIO-Quality-Profiles",
+    "commit": "5910ee23348071058394cb4bfc3a05234bb6739d"
+  },
+  "aiostreams": {
+    "url": "https://github.com/Viren070/AIOStreams",
+    "commit": "d61b9e3735b133eeb683b18c3ef6c07c3e4b82da"
+  }
+}

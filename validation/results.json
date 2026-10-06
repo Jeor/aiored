@@ -1,0 +1,9 @@
+{
+  "template": "Redhair-complete-setup-template.json",
+  "profileCount": 13,
+  "combinations": 198,
+  "expressionEvaluations": 95904,
+  "fixtures": 4,
+  "result": "pass",
+  "limitations": "Local template processor and Redhair-vendored AIOStreams evaluator; no live instance import/playback test."
+}
