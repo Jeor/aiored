@@ -7,7 +7,8 @@ import {dirname, resolve} from 'node:path';
 import {applyTemplateConditionals} from './conditionals.ts';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = path => JSON.parse(readFileSync(resolve(root,path),'utf8'));
-const template = read('Redhair-complete-setup-template.json');
+const publishedTemplate = read('Redhair-complete-setup-template.json');
+const template = structuredClone(publishedTemplate);
 const inputs = {};
 function defaults(options, target) {
   for (const o of options) {
@@ -16,6 +17,21 @@ function defaults(options, target) {
   }
 }
 defaults(template.metadata.inputs, inputs);
+const exported=read('sources/redhair-default-config.json');
+const defaultConfig=applyTemplateConditionals(template.config,inputs,['torbox','aiostreams']);
+for(const [key,value] of Object.entries(exported)) {
+ if(key==='services') continue;
+ assert.deepEqual(defaultConfig[key],value,`Export default differs: ${key}`);
+}
+assert(!('services' in defaultConfig));
+assert(!('presets' in applyTemplateConditionals(template.config,{...inputs,importExportAddons:false},['torbox'])));
+assert.equal(defaultConfig.rankedStreamExpressions.length,2);
+assert.equal(defaultConfig.syncedRankedStreamExpressionUrls.length,2);
+assert.equal(defaultConfig.selOverrides.length,9);
+console.log('PASS: supplied defaults preserved, credential-free service onboarding, optional add-on retention.');
+inputs.setupMode='custom';
+// Unwrap only the outer mode directive; keep the original wizard directives for its full matrix.
+template.config=Object.fromEntries(Object.entries(template.config).map(([k,v])=>[k,v?.__switch==='inputs.setupMode'?v.cases.custom:v]));
 const slugs=readdirSync(resolve(root,'sources/redhair')).filter(x=>x.endsWith('.expressions.json')).map(x=>x.replace('.expressions.json',''));
 const movie=slugs.filter(x=>!x.startsWith('anime-'));
 const anime=['none',...slugs.filter(x=>x.startsWith('anime-'))];
@@ -45,7 +61,7 @@ console.log(`PASS: ${combinations} profile/service/sort combinations, optional c
 const engine=process.argv[2] || resolve(root,'validation/sel/dist/vendor/streamExpression.js');
 const {StreamSelector}=await import(pathToFileURL(resolve(engine)));
 const {z}=createRequire(pathToFileURL(resolve(engine)))('zod');
-makeTemplateSchema(z).parse(template);
+makeTemplateSchema(z).parse(publishedTemplate);
 console.log('PASS: upstream template metadata and wizard input schema.');
 const filenames=[
  ['Example.2025.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb.mkv','1080p','WEB-DL','AVC'],
@@ -88,6 +104,6 @@ for(const slug of slugs){
 }
 const selector=new StreamSelector({queryType:'movie',isAnime:false});
 for(const item of optional.excludedStreamExpressions) await selector.select([fixture(filenames[0],[])],item.expression);
-const report={template:'Redhair-complete-setup-template.json',profileCount:slugs.length,combinations,expressionEvaluations:evaluations,fixtures:filenames.length,result:'pass',limitations:'Local template processor and Redhair-vendored AIOStreams evaluator; no live instance import/playback test.'};
+const report={template:'Redhair-complete-setup-template.json',defaultConfiguration:'supplied Redhair export; all non-service fields equal sanitized source',profileCount:slugs.length,combinations,expressionEvaluations:evaluations,fixtures:filenames.length,result:'pass',limitations:'Local template processor and Redhair-vendored AIOStreams evaluator; no live instance import/playback test.'};
 writeFileSync(resolve(root,'validation/results.json'),JSON.stringify(report,null,2)+'\n');
 console.log(`PASS: ${evaluations} original/adapted expression evaluations.`);

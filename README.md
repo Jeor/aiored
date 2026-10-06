@@ -1,93 +1,77 @@
-# Redhair Quality — Complete Setup
+# aiored — Redhair Quality Setup
 
-Import **`Redhair-complete-setup-template.json`** into AIOStreams. This is a local adaptation of Tam’s complete setup wizard using all 13 profiles from Redhair’s AIO Quality Profiles repository. It is not an official release by either author.
+Version **1.1.0** defaults to the Redhair configuration supplied by the repository owner. The existing template URL and featured ID are unchanged.
 
 ## Import
 
-Paste this public URL into **Save & Install → Import Template → URL**:
+In **AIOStreams → Save & Install → Import Template → URL**, use:
 
 ```text
 https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-complete-setup-template.json
 ```
 
-Or download the JSON and import from a file:
+For the instance’s **Template URLs** setting, use the same URL. The **Featured template ID** is:
 
-1. In AIOStreams, open **Save & Install → Import Template → Import from File** and select `Redhair-complete-setup-template.json`.
-2. Load **Redhair Quality — Complete Setup** and select your services, or skip services for P2P.
-3. Choose **one Movie / TV Quality Profile** and **one Anime Quality Profile**, or disable anime scoring.
-4. Select languages, add-ons, formatter, and any device exclusions. To preserve existing add-ons, choose **None (Use Your Current Addons)**. Enter credentials in AIOStreams when prompted.
-5. Load the template, review the resulting configuration, then save and install.
+```text
+custom.redhair.complete
+```
 
-Defaults are **1080p Balanced + Anime 1080p**. All 11 movie/TV profiles and both anime profiles are available in the wizard; profiles in the same category are alternatives and must not be stacked.
+Refresh/reimport the template and select **Redhair supplied configuration (default)**. Choose services and enter credentials in AIOStreams. Updating the repository does not automatically rewrite an already-installed user configuration.
 
-This file has been tested locally, but has not been imported into your live AIOStreams instance or tested for playback. The selected instance must allow the required regexes and expression sizes below.
+## Default configuration
 
-## Instance requirements
+The supplied export is the source of truth for filters, sorting, formatter, matching, deduplication, score overrides, limits, add-on configuration and enabled/disabled states:
 
-The bundled profiles use inline regex and SEL entries. Public hosts may restrict these. The current AIOStreams source defaults to 50,000 total expression characters and 3,000 characters per expression; these are too small for some bundled selections. A self-hosted instance can accommodate every selection in this snapshot with:
+- Synced **2160p Remux** movie/TV profile and **Anime Remux 1080p** profile, using the original Redhair URLs.
+- Original resolution, source-quality and visual-tag exclusions; uncached streams excluded.
+- Original bitrate filter, conditional low-score exclusion, ongoing-season-pack filter, and disabled test expression.
+- Original two inline language score expressions (Original/English/Tamil) and all nine SEL overrides.
+- Original cached/uncached sorting, including SeaDex-first cached anime sorting.
+- Conjunctive result limits: **3 per service, 3 per resolution, 4 per quality**.
+- Original formatter, size limits, matching and playback settings.
+
+The wizard defaults to importing the supplied add-ons. Turn **Import Redhair add-ons** off to retain your current add-on list. The supplied presets include TorBox/AIOStreams service assignments and indexer URL placeholders; those require your own corresponding services, credentials and reachable indexer instance. Missing add-on credentials must be entered in AIOStreams before those add-ons work.
+
+## Credential handling and migration
+
+The original uploaded export is **not** published. `sources/redhair-default-config.json` is the sanitized input snapshot.
+
+Two disabled custom add-ons contained encoded configuration URLs. One decoded URL contained non-empty credential-like fields, so **both complete manifest URLs are replaced with optional placeholders**. Their disabled states are preserved. No encoded URL or its decoded contents are included in this repository.
+
+Local NZBHydra endpoint URLs are also replaced with credential-input placeholders (required for enabled indexers, optional for disabled ones). Enter your complete indexer URL, including any desired indexer-selection query, in AIOStreams. Local hostnames and original endpoint query values are not published in the sanitized snapshot.
+
+The export’s empty service credential objects are omitted from the generated template so service selection and credentials are handled by AIOStreams’ wizard. Filter/sync fields absent from the export are explicitly cleared when needed to prevent the previous bundled ranking system from stacking with the new defaults. The prior template’s extra bitrate caps and variants are cleared. No account keys are embedded.
+
+The default intentionally retains the supplied sync URLs and overrides as provided; it does not apply the optional bundled mode’s regex-name isolation. Upstream profile updates can therefore change default-mode scores over time, and same-name patterns across upstream profiles retain the behavior of the supplied setup.
+
+## Optional previous wizard
+
+Select **Custom bundled-profile wizard** to use the previous 13-profile Tam-style wizard instead. Its options and limits are documented in [BUNDLED-PROFILES.md](BUNDLED-PROFILES.md). It remains a fixed snapshot and is not combined with the default synced configuration.
+
+The instance must permit the selected mode’s regexes/SEL sources. If your host reports expression-size errors, its administrator must adjust the relevant limits. For all optional bundled-mode selections, the previously documented settings remain:
 
 ```dotenv
 MAX_STREAM_EXPRESSIONS_TOTAL_CHARACTERS=150000
 MAX_SEL_LENGTH=8000
 ```
 
-Regex use must also be allowed for your account (for example, an administrator-approved trusted account or `REGEX_FILTER_ACCESS=all` on your own instance). No SEL sync permission is needed because this template has no remote profile sync URLs.
-
-The largest possible selection, including every offered device exclusion, requires at most **126,056 expression characters** and **6,736 characters in one expression**. There are at most 401 expressions in a selection, but the inspected current server excludes ranked expressions from its 200-expression *count* check. Older versions or host-specific validation may differ. Instance restrictions cannot be bypassed by a template.
-
-## What is preserved and what changes
-
-| Area | Behavior |
-| --- | --- |
-| Setup experience | Tam’s service setup, optional add-on presets, language/subtitle choices, credentials, formatter choices, metadata matching, and deduplication settings |
-| Quality rules | Redhair’s complete regex patterns, expression bodies, query-type guards, enabled flags, and numeric scores for the selected profiles |
-| Regex isolation | Internal regex names and their SEL references are prefixed with the profile ID to prevent same-name patterns in movie/TV and anime profiles from affecting each other |
-| Movie/TV sorting | Cached first, then resolution → quality → Redhair SEL score → seeders; optional score-first mode |
-| Anime sorting | Cached first, then SeaDex → Redhair SEL score → resolution → quality → seeders |
-| Result pruning | Tam’s SELect engine, score cutoffs, passthroughs, pins, quality boosts and backup logic are removed because they depend on a different scoring system |
-| Optional limits | Final maximum result count and device exclusions; no automatic minimum-score cutoff |
-| Sync | Bundled snapshot, not automatic upstream sync; rebuild and reimport for updates |
-
-Selecting a profile does **not** impose a hard resolution cap, file-size range, or minimum acceptable score. Redhair’s exported files contain custom-format scoring, not a complete Radarr/Sonarr quality ladder and cutoff configuration. Negative scores lower ranking; they do not automatically exclude streams. The default resolution/quality-first sort can place a higher-resolution result ahead of a higher-scoring lower-resolution result; choose score-first if desired.
-
-Anime scoring depends on AIOStreams classifying the request as `anime.movie` or `anime.series`. Disabling anime scoring does not hide anime streams or remove anime add-ons; the add-on wizard has a separate No Anime option.
-
-Tam’s old Tam/Vidhin/French score sources, synced exclusions, SEL overrides, regex overrides, and variant presets are cleared. Hardcoded 100 GB / 250 Mbps limits and default 3D exclusion are removed. Preferred format lists remain as sort metadata, but the new sort order uses only the criteria listed above. Device exclusions that depended on Tam/Vidhin regex or named-expression matches are omitted. Tam’s display styles remain available, although some decorative tags specific to the old rules will no longer appear.
-
-Import applies configuration changes, including filters and sorting. Existing add-ons and formatter can be retained using their wizard options. The template is designed to replace the previous quality configuration; it does not merge existing custom scoring into Redhair scores.
-
-## Rebuild and verification
-
-The `sources/` folder contains the exact input snapshots. `sources/provenance.json` records upstream commits. To regenerate without network access:
+## Rebuild and validate
 
 ```sh
 python scripts/build_template.py
-```
-
-To run validation with Node 22.6+:
-
-```sh
 npm ci --ignore-scripts --prefix validation/sel
 npm run build --prefix validation/sel
 node --experimental-strip-types validation/verify.mjs
 ```
 
-Validation covers:
+Validation compares every non-service field of the resolved default mode against the sanitized supplied configuration. It also checks service credential handling and add-on retention, validates the upstream template schema, and reruns the optional wizard’s 198 configuration combinations and 95,904 expression comparisons. Results are in `validation/results.json`.
 
-- 198 movie/TV, anime, service and sort combinations using AIOStreams’ actual template conditional processor.
-- The upstream template metadata and wizard-input schema.
-- Unchanged patterns, scores, flags, and expressions after reversing only the name prefixes.
-- 95,904 original/adapted expression evaluations across four sample releases and all four query types, including opposite-category regex matches to test isolation.
-- Optional device exclusions, result limits, retaining add-ons/formatter, and removal of stale sync URLs.
+This is local validation, not a live import or playback test of your instance. The supplied configuration’s live sync behavior and private add-on connectivity require the actual instance.
 
-This is not an exhaustive release corpus or a live instance test. The SEL evaluator is the snapshot vendored by Redhair (upstream AIOStreams commit `6b9ee1c8eaf9fb200c69d083315a58bf4ea54018`); the template processor/schema are from the separate current AIOStreams commit recorded in provenance. `validation/results.json` records the latest successful run.
+## Attribution
 
-For updates, replace `sources/redhair/*.json` with a reviewed, consistent Redhair snapshot, update its provenance, rebuild, rerun validation, and reimport. The generator fails on unresolved regex references. Do not add the original Redhair sync URLs on top of the bundled entries: doing so would duplicate scores and undo name isolation.
+- [Redhair777/AIO-Quality-Profiles](https://github.com/Redhair777/AIO-Quality-Profiles): quality profiles and verification infrastructure.
+- [Tam-Taro/SEL-Filtering-and-Sorting](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting): the optional wizard’s setup structure and supporting settings.
+- [Viren070/AIOStreams](https://github.com/Viren070/AIOStreams): template processor, schema and evaluator.
 
-## Sources and attribution
-
-- [Tam-Taro’s complete template](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting/blob/main/AIOStreams%20Templates/Tamtaro-complete-setup-template.json) — wizard, add-on presets, display styles and supporting settings.
-- [Redhair777’s AIO Quality Profiles](https://github.com/Redhair777/AIO-Quality-Profiles) — regexes, SEL profiles and vendored evaluator verification infrastructure; sourced upstream from Dictionarry, Dumpstarr and trash-pcd as documented there.
-- [AIOStreams](https://github.com/Viren070/AIOStreams) — template processor/schema and underlying evaluator.
-
-The source snapshots and verification code retain their original attribution. No claim of ownership or endorsement is made over upstream work.
+This is a community adaptation, not an official release by those authors. Original snapshot commits are recorded in `sources/provenance.json`.

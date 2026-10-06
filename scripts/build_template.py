@@ -34,7 +34,7 @@ def rename_references(expression, names):
     return ''.join(result)
 
 
-def build():
+def build_custom():
     template = json.loads((ROOT / 'sources/tamtaro-complete.json').read_text())
     cfg = template['config']
     original_inputs = template['metadata']['inputs']
@@ -133,8 +133,48 @@ def build():
     collect(inputs)
     refs = set(re.findall(r'inputs\.([\w.]+)', json.dumps(template)))
     assert not refs-declared, refs-declared
+    return template
+
+
+def build():
+    template = build_custom()
+    supplied = json.loads((ROOT / 'sources/redhair-default-config.json').read_text())
+    original = copy.deepcopy(supplied)
+    # Credentials are collected by AIOStreams' service wizard, never overwritten by empty exports.
+    supplied.pop('services', None)
+    supplied['appliedTemplates'] = [{'id':'custom.redhair.complete', 'version':'1.1.0'}]
+    supplied['presets'] = {'__if':'inputs.importExportAddons', '__value': supplied['presets']}
+    # Clear the prior template's fields absent from the export, so old scoring cannot stack.
+    for key in template['config']:
+        if key not in supplied and (key.startswith('synced') or 'RegexPatterns' in key or key.endswith('StreamExpressions')):
+            supplied[key] = []
+    supplied['bitrate'] = {'useMetadataRuntime':True}
+    supplied['variants'] = []
+    custom = template['config']
+    template['config'] = {key: {'__switch':'inputs.setupMode',
+        'cases':{'custom':custom.get(key, {'__remove':True})},
+        'default':supplied.get(key, {'__remove':True})}
+        for key in sorted(set(custom) | set(supplied))}
+    template['config']['appliedTemplates'] = supplied['appliedTemplates']
+    for option in template['metadata']['inputs']:
+        prior = option.get('__if')
+        option['__if'] = 'inputs.setupMode == custom' + (f' and {prior}' if prior else '')
+    template['metadata']['inputs'][:0] = [
+        {'id':'setupMode','name':'Setup Defaults','description':'Use the supplied Redhair configuration, or customize the previous bundled-profile wizard.',
+         'type':'select','required':True,'default':'redhair','options':[
+             {'value':'redhair','label':'Redhair supplied configuration (default)'},
+             {'value':'custom','label':'Custom bundled-profile wizard'}]},
+        {'id':'exportNotice','name':'Redhair supplied defaults','type':'alert','intent':'info',
+         '__if':'inputs.setupMode == redhair',
+         'description':'2160p Remux + Anime Remux 1080p, synced from Redhair. Uses the supplied filters, score overrides, sorting, formatter and result limits. Choose services and enter credentials separately. Local indexer addresses require your own connection URLs. Disabled custom add-on URLs have been replaced with placeholders.'},
+        {'id':'importExportAddons','name':'Import Redhair add-ons','type':'boolean','default':True,
+         '__if':'inputs.setupMode == redhair',
+         'description':'Import the supplied add-on list (including TorBox/AIOStreams assignments and indexer URL placeholders). Disable to keep your current add-ons. Enter missing keys and connection URLs in AIOStreams.'},
+    ]
+    template['metadata']['version'] = '1.1.0'
+    template['metadata']['description'] = 'Defaults to the supplied Redhair configuration: synced 2160p Remux and Anime Remux 1080p, its filters, scores, sorting, formatter and limits. Service credentials are entered separately. Optional custom mode retains the earlier Tam-style bundled-profile wizard. Encoded custom add-on URLs are replaced with placeholders. Community adaptation, not an official Redhair release.'
     output = ROOT / 'Redhair-complete-setup-template.json'
     output.write_text(json.dumps(template,ensure_ascii=False,indent=2)+'\n')
-    print(f'Built {output.name}: {len(slugs)} profiles, {output.stat().st_size:,} bytes')
+    print(f'Built {output.name} v1.1.0')
 
 if __name__ == '__main__': build()
