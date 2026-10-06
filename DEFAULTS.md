@@ -18,9 +18,13 @@ Redhair defaults: cached first. Cached results prioritize library, resolution, q
 
 Redhair defaults: conjunctive caps of 3 results per service, 3 per resolution and 4 per quality; a stream must fit all caps. Global size range is 50 MB–100 GB for movies, series and anime; resolution-specific ranges also cap at 100 GB. Metadata runtime is used for bitrate calculation. SEL exclusions can impose additional limits.
 
-## Add-ons, catalogs and fetching
+## Add-ons and fetching
 
-Template default: 9 non-Usenet add-ons enabled. All Usenet entries and Meteor Usenet search are off; opt in below. This differs from Redhair’s supplied export, which enabled Usenet sources. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below.
+Template default: 9 non-Usenet add-ons enabled. All Usenet entries and Meteor Usenet search are off; opt in below. This differs from Redhair’s supplied export, which enabled Usenet sources. Applying replaces the add-on list and fetching settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below.
+
+## Catalog appearance
+
+Off by default: preserve catalog overrides, merged catalogs and category colors. When enabled, applies Redhair’s red Debrid/lime Usenet colors and supplied Library/Store catalog overrides. Those overrides target the original Library/Store catalog IDs; use only with the matching catalogs. Does not replace add-ons.
 
 ## Formatter
 
@@ -28,7 +32,7 @@ Redhair default: original Redhair stream layout. Choose a Jeormatter alternative
 
 ## Poster settings
 
-Redhair default: RPDB poster service. Applies poster settings independently of the stream formatter.
+Off by default: preserve your poster service. When enabled, applies Redhair’s RPDB poster service independently of the stream formatter.
 
 ## Metadata matching and SeaDex
 
@@ -40,7 +44,15 @@ Redhair defaults: deduplicate by filename and info hash, per service for cached/
 
 ## Playback, downloads and failover
 
-Redhair defaults: preload the first Usenet result; owned checks on; next-episode precaching and cache-and-play off. Failover supports Usenet/debrid across types, with 5 attempts and 1 in parallel, before limiting. Service wrapping is enabled for TorBox. Autoplay matching attributes: resolution, quality, encode and visual tags.
+Redhair defaults: owned checks on; next-episode precaching and cache-and-play off. Failover supports Usenet/debrid across types, with 5 attempts and 1 in parallel, before limiting. Usenet preloading and service wrapping have separate opt-in switches. Autoplay matching attributes: resolution, quality, encode and visual tags.
+
+## Service wrapping
+
+Off by default: preserve existing service wrapping. When enabled, applies Redhair’s TorBox-only wrapping with service reconfiguration disabled. Independent of playback and failover.
+
+## Usenet preloading
+
+Off by default: do not enable Usenet preloading or replace existing preloading settings. Opt in to apply Redhair’s preload of the first Usenet result, limited to a single stream. Requires Usenet results and a compatible service; does not enable Usenet add-ons.
 
 ## Statistics and errors
 

@@ -1,7 +1,7 @@
 {
-  "version": "1.6.1",
+  "version": "1.7.0",
   "result": "pass",
-  "sectionToggleCombinations": 2048,
+  "sectionToggleCombinations": 16384,
   "templates": 1,
   "settingsGroups": 4,
   "subsectionDialogs": 1,

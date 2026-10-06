@@ -2,7 +2,7 @@
   "metadata": {
     "id": "custom.redhair.full",
     "name": "Redhair Quality — Setup and updater",
-    "version": "1.6.1",
+    "version": "1.7.0",
     "description": "One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.",
     "author": "Local adaptation",
     "source": "custom",
@@ -15,6 +15,13 @@
         "type": "alert",
         "intent": "info",
         "description": "For a new setup, select your services. For updates that should keep existing accounts, use Skip on the Services step: service selection is separate from the switches below. Enable only the sections you want to replace; switch off the rest. For an SEL-only update, leave only SEL and regex on. Proxy settings and user variants are always preserved. Usenet add-ons and Meteor Usenet search are off by default."
+      },
+      {
+        "id": "versionChanges",
+        "name": "Changed in v1.7.0",
+        "type": "alert",
+        "intent": "info-basic",
+        "description": "Posters now default to preserve. Catalog appearance, service wrapping and Usenet preloading have independent switches, all off by default. Playback and add-on updates no longer replace those settings. Enable only the new sections you want to apply. [Version history](https://github.com/Jeor/aiored/blob/main/CHANGELOG.md)."
       },
       {
         "id": "qualityHeader",
@@ -74,8 +81,8 @@
       },
       {
         "id": "addonsEnabled",
-        "name": "Replace Add-ons, catalogs and fetching",
-        "description": "Default: 9 non-Usenet sources. Replaces sources, catalogs and colors; dynamic fetching and groups off. Off preserves your settings.",
+        "name": "Replace Add-ons and fetching",
+        "description": "Default: 9 non-Usenet sources; dynamic fetching and groups off. Catalog appearance is separate. Off preserves your settings.",
         "type": "boolean",
         "default": true
       },
@@ -201,7 +208,7 @@
             "type": "select",
             "default": "enabled",
             "__if": "inputs.addonsEnabled",
-            "description": "Use my enabled services (default): each add-on uses your enabled accounts that it supports. Redhair assignments (optional): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Redhair’s Library/Store catalog customizations apply only in Redhair mode. This controls add-on routing, not your saved accounts.",
+            "description": "Use my enabled services (default): each add-on uses your enabled accounts that it supports. Redhair assignments (optional): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Catalog appearance is controlled by its own switch. This controls add-on routing, not your saved accounts.",
             "options": [
               {
                 "value": "enabled",
@@ -258,9 +265,16 @@
       {
         "id": "postersEnabled",
         "name": "Replace Poster settings",
-        "description": "Default: RPDB poster service. Does not change the stream formatter. Off preserves your settings.",
+        "description": "Off by default. On applies RPDB posters without changing the formatter. Off preserves your settings.",
         "type": "boolean",
-        "default": true
+        "default": false
+      },
+      {
+        "id": "catalogsEnabled",
+        "name": "Replace Catalog appearance",
+        "description": "Off by default. On applies red/lime category colors and Redhair Library/Store catalog overrides; requires matching catalog IDs. Off preserves your settings.",
+        "type": "boolean",
+        "default": false
       },
       {
         "id": "formatterStyle",
@@ -331,9 +345,23 @@
       {
         "id": "playbackEnabled",
         "name": "Replace Playback, downloads and failover",
-        "description": "Default: first Usenet stream preloaded, owned checks on, next-episode precache/cache-and-play off; failover up to 5 attempts; TorBox wrapping on. Off preserves your settings.",
+        "description": "Default: owned checks on, next-episode precache/cache-and-play off; failover up to 5 attempts. Preloading and wrapping are separate. Off preserves your settings.",
         "type": "boolean",
         "default": true
+      },
+      {
+        "id": "wrappingEnabled",
+        "name": "Replace Service wrapping",
+        "description": "Off by default. On applies TorBox-only wrapping, without service reconfiguration. Off preserves your settings.",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "id": "preloadingEnabled",
+        "name": "Replace Usenet preloading",
+        "description": "Off by default. On preloads only the first Usenet result; requires a compatible service. Does not enable Usenet sources. Off preserves your settings.",
+        "type": "boolean",
+        "default": false
       },
       {
         "id": "diagnosticsEnabled",
@@ -1029,7 +1057,7 @@
       "__value": false
     },
     "preloadStreams": {
-      "__if": "inputs.playbackEnabled",
+      "__if": "inputs.preloadingEnabled",
       "__value": {
         "enabled": true,
         "selector": "slice(type(streams, 'usenet'), 0, 1)",
@@ -1649,59 +1677,50 @@
       ]
     },
     "addonCategoryColors": {
-      "__if": "inputs.addonsEnabled",
+      "__if": "inputs.catalogsEnabled",
       "__value": {
         "Debrid": "red",
         "Usenet": "lime"
       }
     },
     "catalogModifications": {
-      "__if": "inputs.addonsEnabled",
+      "__if": "inputs.catalogsEnabled",
       "__value": [
         {
-          "__if": "inputs.addonIds includes 2d1 and inputs.connections.routing == redhair",
-          "__value": {
-            "id": "2d11a2c.aiostreams::library.aiostreams",
-            "type": "library",
-            "name": "AIOStreams",
-            "shuffle": false,
-            "enabled": true,
-            "usePosterService": false,
-            "hideable": true,
-            "genreRequired": false,
-            "searchable": true,
-            "addonName": "Library"
-          }
+          "id": "2d11a2c.aiostreams::library.aiostreams",
+          "type": "library",
+          "name": "AIOStreams",
+          "shuffle": false,
+          "enabled": true,
+          "usePosterService": false,
+          "hideable": true,
+          "genreRequired": false,
+          "searchable": true,
+          "addonName": "Library"
         },
         {
-          "__if": "inputs.addonIds includes 6fd and inputs.connections.routing == redhair",
-          "__value": {
-            "id": "6fd791b.st:store:tb",
-            "type": "other",
-            "name": "Store TB",
-            "shuffle": false,
-            "enabled": true,
-            "usePosterService": false,
-            "hideable": true,
-            "genreRequired": false,
-            "searchable": true,
-            "addonName": "Store"
-          }
+          "id": "6fd791b.st:store:tb",
+          "type": "other",
+          "name": "Store TB",
+          "shuffle": false,
+          "enabled": true,
+          "usePosterService": false,
+          "hideable": true,
+          "genreRequired": false,
+          "searchable": true,
+          "addonName": "Store"
         },
         {
-          "__if": "inputs.addonIds includes 6fd and inputs.connections.routing == redhair",
-          "__value": {
-            "id": "6fd791b.st:store:tb-webdl",
-            "type": "other",
-            "name": "Store TB-WEBDL",
-            "shuffle": false,
-            "enabled": true,
-            "usePosterService": false,
-            "hideable": true,
-            "genreRequired": false,
-            "searchable": true,
-            "addonName": "Store"
-          }
+          "id": "6fd791b.st:store:tb-webdl",
+          "type": "other",
+          "name": "Store TB-WEBDL",
+          "shuffle": false,
+          "enabled": true,
+          "usePosterService": false,
+          "hideable": true,
+          "genreRequired": false,
+          "searchable": true,
+          "addonName": "Store"
         }
       ]
     },
@@ -1734,7 +1753,7 @@
       }
     },
     "serviceWrap": {
-      "__if": "inputs.playbackEnabled",
+      "__if": "inputs.wrappingEnabled",
       "__value": {
         "enabled": true,
         "services": [
@@ -1804,7 +1823,7 @@
     "appliedTemplates": [
       {
         "id": "custom.redhair.full",
-        "version": "1.6.1"
+        "version": "1.7.0"
       }
     ]
   }

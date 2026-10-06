@@ -84,7 +84,9 @@
   "addons": [
     "dynamicAddonFetching",
     "groups",
-    "presets",
+    "presets"
+  ],
+  "catalogs": [
     "addonCategoryColors",
     "catalogModifications"
   ],
@@ -108,11 +110,15 @@
   "playback": [
     "autoPlay",
     "precacheNextEpisode",
-    "preloadStreams",
     "cacheAndPlay",
     "checkOwned",
-    "failover",
+    "failover"
+  ],
+  "wrapping": [
     "serviceWrap"
+  ],
+  "preloading": [
+    "preloadStreams"
   ],
   "diagnostics": [
     "hideErrorsForResources",

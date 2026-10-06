@@ -68,5 +68,5 @@ for(const [style,p] of Object.entries(previews)){
  assert.deepEqual(alerts.filter(o=>evaluateTemplateCondition(o.__if,{formatterEnabled:true,formatterStyle:style},[])).map(o=>o.id),['preview_'+style]);
  assert.equal(alerts.filter(o=>evaluateTemplateCondition(o.__if,{formatterEnabled:false,formatterStyle:style},[])).length,0);
 }
-writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.6.1',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
+writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.7.0',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
 console.log(`PASS: four formatter options; ${renders} rendered badge scenarios; layout, source labels and section isolation.`);

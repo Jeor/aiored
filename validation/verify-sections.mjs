@@ -19,12 +19,20 @@ let combinations=0;
 for(const t of templates){
  makeTemplateSchema(z).parse(t);
  const isFull=t.metadata.id==='custom.redhair.full';
- assert.equal(t.metadata.version,'1.6.1');
+ assert.equal(t.metadata.version,'1.7.0');
  assert.equal(t.metadata.inputs.filter(o=>o.type==='subsection').length,1);
  if(isFull)assert(!('services' in t.metadata));else assert.deepEqual(t.metadata.services,[]);
  const d=defaults(t);
  const resolveConfig=(inputs,svcs=[])=>applyTemplateConditionals(t.config,inputs,svcs);
- const full=resolveConfig(d);
+ const initial=resolveConfig(d);
+ for(const [section,field] of [['posters','posterService'],['catalogs','catalogModifications'],['wrapping','serviceWrap'],['preloading','preloadStreams']]){
+  assert.equal(d[paths[section]],false);
+  assert(!(field in initial),`Default must preserve ${field}`);
+  const opted=resolveConfig({...d,[paths[section]]:true});
+  assert.deepEqual(opted[field],source[field]);
+ }
+ const allOn={...d,...Object.fromEntries(Object.values(paths).map(k=>[k,true]))};
+ const full=resolveConfig(allOn);
  for(const key of ['proxy','services','trusted','variants','showChanges'])assert(!(key in full));
  for(const [key,value] of Object.entries(source)){
   if(['proxy','services','trusted','variants','showChanges','presets','catalogModifications'].includes(key))continue;
@@ -33,7 +41,13 @@ for(const t of templates){
  const expectedPresets=structuredClone(source.presets.filter(p=>p.enabled&&p.category!=='Usenet'));
  for(const p of expectedPresets){delete p.options.services;if(p.type==='meteor')p.options.usenet.enabled=false;}
  assert.deepEqual(full.presets,expectedPresets);
- assert.deepEqual(full.catalogModifications,isFull?[]:source.catalogModifications);
+ assert.deepEqual(full.catalogModifications,source.catalogModifications);
+ assert.deepEqual(sections.wrapping,['serviceWrap']);
+ assert.deepEqual(sections.preloading,['preloadStreams']);
+ assert(!sections.addons.includes('catalogModifications'));
+ assert(!sections.addons.includes('addonCategoryColors'));
+ assert(!sections.playback.includes('serviceWrap'));
+ assert(!sections.playback.includes('preloadStreams'));
  const existing=Object.fromEntries(Object.keys(full).map(k=>[k,{keep:`user-custom-${k}`} ]));
  Object.assign(existing,{proxy:{enabled:true,url:'https://example.invalid/proxy'},services:[{id:'torbox',credentials:{apiKey:'test-only'}}],variants:[{id:'user-variant'}],addonName:'My custom name',trusted:true});
  for(let mask=0;mask<(1<<keys.length);mask++){
@@ -67,10 +81,10 @@ for(const t of templates){
   assert.equal(cfg.presets.length,1);assert.equal(cfg.presets[0].instanceId,p.instanceId);
   assert.equal(cfg.presets[0].enabled,true);assert.equal(cfg.presets[0].options.timeout,20000);
   assert(!JSON.stringify(cfg).includes('<optional_template_placeholder>'));
-  for(const c of cfg.catalogModifications)assert.equal(c.addonName,p.options.name);
+  assert(!('catalogModifications' in cfg));
  }
  const empty=structuredClone(d);empty.addonIds=[];
- const cfg=resolveConfig(empty);assert.deepEqual(cfg.presets,[]);assert.deepEqual(cfg.catalogModifications,[]);
+ const cfg=resolveConfig(empty);assert.deepEqual(cfg.presets,[]);assert(!('catalogModifications' in cfg));
  assert(!JSON.stringify(cfg).includes('template_placeholder'));
  // Enabled routing omits the restriction. An empty array would disable every
  // service in getUsableServices, so explicitly guard against that regression.
@@ -82,6 +96,6 @@ for(const t of templates){
  const declared=new Set(t.metadata.inputs.flatMap(o=>[o.id,...(o.subOptions||[]).map(s=>o.id+'.'+s.id)]));
  assert(refs.every(r=>declared.has(r)),`Undeclared inputs: ${refs.filter(r=>!declared.has(r))}`);
 }
-const report={version:'1.6.1',result:'pass',sectionToggleCombinations:combinations,templates:1,settingsGroups:4,subsectionDialogs:1,appearanceInline:true,individualAddonSelections:20,redhairQualityDefaultsPreserved:true,selOnlyPreservesOtherSections:true,proxyAbsent:true,serviceSelectionOptional:true,usenetOffByDefault:true,liveImportTested:false};
+const report={version:'1.7.0',result:'pass',sectionToggleCombinations:combinations,templates:1,settingsGroups:4,subsectionDialogs:1,appearanceInline:true,individualAddonSelections:20,redhairQualityDefaultsPreserved:true,selOnlyPreservesOtherSections:true,proxyAbsent:true,serviceSelectionOptional:true,usenetOffByDefault:true,liveImportTested:false};
 writeFileSync(resolve(root,'validation/section-results.json'),JSON.stringify(report,null,2)+'\n');
 console.log(`PASS: ${combinations} section combinations, 20 addon selections, schemas, defaults, service routing and safe updates.`);

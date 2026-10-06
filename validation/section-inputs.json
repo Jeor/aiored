@@ -4,10 +4,13 @@
   "sorting": "sortingEnabled",
   "limits": "limitsEnabled",
   "addons": "addonsEnabled",
+  "catalogs": "catalogsEnabled",
   "formatter": "formatterEnabled",
   "posters": "postersEnabled",
   "matching": "matchingEnabled",
   "deduplication": "deduplicationEnabled",
   "playback": "playbackEnabled",
+  "wrapping": "wrappingEnabled",
+  "preloading": "preloadingEnabled",
   "diagnostics": "diagnosticsEnabled"
 }

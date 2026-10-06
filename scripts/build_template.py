@@ -144,12 +144,15 @@ SECTIONS = {
     'filters': ('Basic filters', 'Redhair defaults: exclude uncached streams, 240p/144p, CAM/SCR/TS/TC and 3D; prefer 2160p then 1080p, Remux/WEB-DL/WEBRip and debrid/Usenet. Digital-release filtering is enabled. Clears other basic filter lists to the supplied defaults.'),
     'sorting': ('Sorting', 'Redhair defaults: cached first. Cached results prioritize library, resolution, quality, then SEL score; cached anime uses SeaDex then SEL score. Uncached order: stream type, seeders, matched expressions, SEL score, size. Replaces all sort orders.'),
     'limits': ('Result, size and bitrate limits', 'Redhair defaults: conjunctive caps of 3 results per service, 3 per resolution and 4 per quality; a stream must fit all caps. Global size range is 50 MB–100 GB for movies, series and anime; resolution-specific ranges also cap at 100 GB. Metadata runtime is used for bitrate calculation. SEL exclusions can impose additional limits.'),
-    'addons': ('Add-ons, catalogs and fetching', 'Template default: 9 non-Usenet add-ons enabled. All Usenet entries and Meteor Usenet search are off; opt in below. This differs from Redhair’s supplied export, which enabled Usenet sources. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below.'),
+    'addons': ('Add-ons and fetching', 'Template default: 9 non-Usenet add-ons enabled. All Usenet entries and Meteor Usenet search are off; opt in below. This differs from Redhair’s supplied export, which enabled Usenet sources. Applying replaces the add-on list and fetching settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below.'),
+    'catalogs': ('Catalog appearance', 'Off by default: preserve catalog overrides, merged catalogs and category colors. When enabled, applies Redhair’s red Debrid/lime Usenet colors and supplied Library/Store catalog overrides. Those overrides target the original Library/Store catalog IDs; use only with the matching catalogs. Does not replace add-ons.'),
     'formatter': ('Formatter', 'Redhair default: original Redhair stream layout. Choose a Jeormatter alternative below to change the layout while retaining Redhair Best/Tier scoring. Does not change poster settings.'),
-    'posters': ('Poster settings', 'Redhair default: RPDB poster service. Applies poster settings independently of the stream formatter.'),
+    'posters': ('Poster settings', 'Off by default: preserve your poster service. When enabled, applies Redhair’s RPDB poster service independently of the stream formatter.'),
     'matching': ('Metadata matching and SeaDex', 'Redhair defaults: SeaDex enabled; year matching enabled with strict movie years and initial air dates; exact title matching for movies/series; strict season/episode matching. Episode-title matching request types and language-inference sources are empty.'),
     'deduplication': ('Deduplication', 'Redhair defaults: deduplicate by filename and info hash, per service for cached/uncached results, and a single result for P2P. Prefer library results. Duplicate merging and failover variants are enabled.'),
-    'playback': ('Playback, downloads and failover', 'Redhair defaults: preload the first Usenet result; owned checks on; next-episode precaching and cache-and-play off. Failover supports Usenet/debrid across types, with 5 attempts and 1 in parallel, before limiting. Service wrapping is enabled for TorBox. Autoplay matching attributes: resolution, quality, encode and visual tags.'),
+    'playback': ('Playback, downloads and failover', 'Redhair defaults: owned checks on; next-episode precaching and cache-and-play off. Failover supports Usenet/debrid across types, with 5 attempts and 1 in parallel, before limiting. Usenet preloading and service wrapping have separate opt-in switches. Autoplay matching attributes: resolution, quality, encode and visual tags.'),
+    'wrapping': ('Service wrapping', 'Off by default: preserve existing service wrapping. When enabled, applies Redhair’s TorBox-only wrapping with service reconfiguration disabled. Independent of playback and failover.'),
+    'preloading': ('Usenet preloading', 'Off by default: do not enable Usenet preloading or replace existing preloading settings. Opt in to apply Redhair’s preload of the first Usenet result, limited to a single stream. Requires Usenet results and a compatible service; does not enable Usenet add-ons.'),
     'diagnostics': ('Statistics and errors', 'Redhair defaults: show add-on, filtering and timing statistics at the bottom. No resource errors are hidden.'),
 }
 
@@ -158,12 +161,15 @@ SHORT_DEFAULTS = {
     'filters':'Default: hide uncached streams, 240p/144p, CAM/SCR/TS/TC and 3D; prefer 2160p/1080p. Digital-release filtering on.',
     'sorting':'Default: cached first; library → resolution → quality → SEL score. Cached anime: SeaDex → SEL score.',
     'limits':'Default: simultaneous caps of 3/service, 3/resolution and 4/quality; global size 50 MB–100 GB. SEL may impose further limits.',
-    'addons':'Default: 9 non-Usenet sources. Replaces sources, catalogs and colors; dynamic fetching and groups off.',
+    'addons':'Default: 9 non-Usenet sources; dynamic fetching and groups off. Catalog appearance is separate.',
+    'catalogs':'Off by default. On applies red/lime category colors and Redhair Library/Store catalog overrides; requires matching catalog IDs.',
     'formatter':'Default: Redhair stream layout, or choose an alternative below. Does not change posters.',
-    'posters':'Default: RPDB poster service. Does not change the stream formatter.',
+    'posters':'Off by default. On applies RPDB posters without changing the formatter.',
     'matching':'Default: SeaDex on, exact movie/series titles, strict movie years and season/episode matching.',
     'deduplication':'Default: filename/info-hash duplicates per service; prefer library results; merging on.',
-    'playback':'Default: first Usenet stream preloaded, owned checks on, next-episode precache/cache-and-play off; failover up to 5 attempts; TorBox wrapping on.',
+    'playback':'Default: owned checks on, next-episode precache/cache-and-play off; failover up to 5 attempts. Preloading and wrapping are separate.',
+    'wrapping':'Off by default. On applies TorBox-only wrapping, without service reconfiguration.',
+    'preloading':'Off by default. On preloads only the first Usenet result; requires a compatible service. Does not enable Usenet sources.',
     'diagnostics':'Default: add-on/filter/timing statistics at the bottom; no resource errors hidden.',
 }
 
@@ -175,12 +181,15 @@ def section_for(key):
     explicit = {
         'sorting': ['sortCriteria'],
         'limits': ['resultLimits','size','bitrate'],
-        'addons': ['presets','addonCategoryColors','catalogModifications','mergedCatalogs','dynamicAddonFetching','groups'],
+        'addons': ['presets','dynamicAddonFetching','groups'],
+        'catalogs': ['addonCategoryColors','catalogModifications','mergedCatalogs'],
         'formatter': ['formatter'],
         'posters': ['posterService','usePosterRedirectApi'],
         'matching': ['yearMatching','titleMatching','seasonEpisodeMatching','episodeTitleMatching','languageInference','enableSeadex'],
         'deduplication': ['deduplicator'],
-        'playback': ['autoPlay','precacheNextEpisode','preloadStreams','cacheAndPlay','checkOwned','failover','serviceWrap'],
+        'playback': ['autoPlay','precacheNextEpisode','cacheAndPlay','checkOwned','failover'],
+        'wrapping': ['serviceWrap'],
+        'preloading': ['preloadStreams'],
         'diagnostics': ['statistics','hideErrorsForResources'],
     }
     for section, keys in explicit.items():
@@ -218,8 +227,8 @@ def build():
     groups = {
         'quality': ('Quality and ranking', ['sel','filters','sorting','limits','matching','deduplication']),
         'connections': ('Add-ons and connections', ['addons']),
-        'display': ('Appearance', ['formatter','posters']),
-        'behavior': ('Playback and diagnostics', ['playback','diagnostics']),
+        'display': ('Appearance', ['formatter','posters','catalogs']),
+        'behavior': ('Playback and diagnostics', ['playback','wrapping','preloading','diagnostics']),
     }
     paths = {section: section+'Enabled' for section in SECTIONS}
     paths['formatter'] = 'formatterEnabled'
@@ -243,9 +252,6 @@ def build():
         # Keep the preset fields beside __if rather than inside __value.
         presets.append({'__if':f"inputs.addonIds includes {preset['instanceId']}", **preset})
     supplied['presets'] = presets
-    supplied['catalogModifications'] = [
-        {'__if':f"inputs.addonIds includes {'2d1' if c['addonName']=='Library' else '6fd'} and inputs.connections.routing == redhair", '__value':c}
-        for c in supplied['catalogModifications']]
     templates = []
     template_id = 'custom.redhair.full'
     def active(section):
@@ -256,12 +262,14 @@ def build():
         section = section_for(key)
         section_fields[section].append(key)
         config[key] = {'__if':active(section),'__value':value}
-    config['appliedTemplates'] = [{'id':template_id,'version':'1.6.1'}]
+    config['appliedTemplates'] = [{'id':template_id,'version':'1.7.0'}]
     inputs = []
     inputs.append({'id':'notice','name':'Customize before applying','type':'alert','intent':'info',
         'description':'For a new setup, select your services. For updates that should keep existing accounts, use Skip on the Services step: service selection is separate from the switches below. Enable only the sections you want to replace; switch off the rest. For an SEL-only update, leave only SEL and regex on. Proxy settings and user variants are always preserved. Usenet add-ons and Meteor Usenet search are off by default.'})
+    inputs.append({'id':'versionChanges','name':'Changed in v1.7.0','type':'alert','intent':'info-basic',
+        'description':'Posters now default to preserve. Catalog appearance, service wrapping and Usenet preloading have independent switches, all off by default. Playback and add-on updates no longer replace those settings. Enable only the new sections you want to apply. [Version history](https://github.com/Jeor/aiored/blob/main/CHANGELOG.md).'})
     for group,(name,sections) in groups.items():
-        sub=[{'id':paths[key],'name':'Replace '+SECTIONS[key][0],'description':SHORT_DEFAULTS[key]+' Off preserves your settings.','type':'boolean','default':True} for key in sections]
+        sub=[{'id':paths[key],'name':'Replace '+SECTIONS[key][0],'description':SHORT_DEFAULTS[key]+' Off preserves your settings.','type':'boolean','default':key not in ('posters','catalogs','wrapping','preloading')} for key in sections]
         if group == 'connections':
             sub.extend([
                 {'id':'addonIds','name':'Add-ons to include','type':'multi-select','default':selected_default,
@@ -271,7 +279,7 @@ def build():
                  '__if':active('addons')+' and inputs.addonIds includes eca',
                  'description':'Off by default: Meteor searches without its Usenet option. Enable only if you want Usenet results and have a compatible service. Other Usenet add-ons must be explicitly selected above.'},
                 {'id':'routing','name':'Add-on service assignments','type':'select','default':'enabled',
-                 '__if':active('addons'),'description':'Use my enabled services (default): each add-on uses your enabled accounts that it supports. Redhair assignments (optional): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Redhair’s Library/Store catalog customizations apply only in Redhair mode. This controls add-on routing, not your saved accounts.',
+                 '__if':active('addons'),'description':'Use my enabled services (default): each add-on uses your enabled accounts that it supports. Redhair assignments (optional): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Catalog appearance is controlled by its own switch. This controls add-on routing, not your saved accounts.',
                  'options':[{'value':'enabled','label':'Use my enabled services (recommended for new setup)'},{'value':'redhair','label':'Redhair’s original service assignments'}]},
                 {'id':'timeout','name':'Add-on timeout','type':'select','default':'original',
                  '__if':active('addons'),'description':'Redhair defaults: Debridio waits up to 4 seconds; every other bundled add-on waits up to 5 seconds. The 10 / 20 / 30 second choices give every selected add-on that same timeout. Longer waits can include slower sources but may delay results. This does not change playback timeouts.',
@@ -305,7 +313,7 @@ def build():
     # Formatter choice is a top-level control for immediate preview updates.
     config['formatter']['__value']['__switch']='inputs.formatterStyle'
     metadata={'id':template_id,'name':'Redhair Quality — Setup and updater',
-        'version':'1.6.1','description':'One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.',
+        'version':'1.7.0','description':'One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.',
         'author':'Local adaptation','source':'custom','category':'AIO','serviceRequired':False,'inputs':inputs}
     templates.append({'metadata':metadata,'config':copy.deepcopy(config)})
     # One listed template. Legacy direct URLs alias the same ID and behavior.
@@ -315,6 +323,6 @@ def build():
         (ROOT/filename).write_text(json.dumps(templates[0],ensure_ascii=False,indent=2)+'\n')
     (ROOT/'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
     (ROOT/'validation/section-inputs.json').write_text(json.dumps(paths,indent=2)+'\n')
-    print('Built v1.6.1: one setup/updater with Usenet off by default, visible section switches, one advanced dialog and immediate formatter previews.')
+    print('Built v1.7.0: one setup/updater with Usenet off by default, visible section switches, one advanced dialog and immediate formatter previews.')
 
 if __name__ == '__main__': build()
