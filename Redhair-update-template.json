@@ -1,38 +1,20 @@
 {
   "metadata": {
-    "id": "custom.redhair.complete",
-    "name": "Redhair Quality — Update existing setup",
-    "version": "1.4.2",
-    "description": "Safely update SEL / regex only or selected sections while preserving services, credentials and unselected customizations.",
+    "id": "custom.redhair.full",
+    "name": "Redhair Quality — Setup and updater",
+    "version": "1.5.0",
+    "description": "One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.",
     "author": "Local adaptation",
     "source": "custom",
     "category": "AIO",
     "serviceRequired": false,
     "inputs": [
       {
-        "id": "applyMode",
-        "name": "What to update",
-        "type": "select",
-        "required": true,
-        "default": "selOnly",
-        "description": "SEL / regex only preserves all other settings. Choose sections to update more; every switch remains editable.",
-        "options": [
-          {
-            "value": "selOnly",
-            "label": "SEL / regex only"
-          },
-          {
-            "value": "selected",
-            "label": "Choose sections (Redhair defaults)"
-          }
-        ]
-      },
-      {
         "id": "notice",
         "name": "Customize before applying",
         "type": "alert",
         "intent": "info",
-        "description": "Your services and credentials are preserved. Enabled sections replace their existing settings; disabled sections stay unchanged. For service onboarding, choose Full setup instead. Proxy settings and user variants are always preserved."
+        "description": "For a new setup, select your services. For updates that should keep existing accounts, use Skip on the Services step: service selection is separate from the switches below. Enable only the sections you want to replace; switch off the rest. For an SEL-only update, leave only SEL and regex on. Proxy settings and user variants are always preserved. Usenet add-ons and Meteor Usenet search are off by default."
       },
       {
         "id": "quality",
@@ -83,8 +65,7 @@
             "type": "boolean",
             "default": true
           }
-        ],
-        "__if": "inputs.applyMode != selOnly"
+        ]
       },
       {
         "id": "connections",
@@ -96,7 +77,7 @@
           {
             "id": "addons",
             "name": "Apply Add-ons, catalogs and fetching",
-            "description": "Redhair defaults: 14 enabled add-ons, with 6 disabled entries offered as optional choices below. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below. Off keeps your current settings.",
+            "description": "Template default: 9 non-Usenet add-ons enabled. All Usenet entries and Meteor Usenet search are off; opt in below. This differs from Redhair’s supplied export, which enabled Usenet sources. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           },
@@ -106,7 +87,6 @@
             "type": "multi-select",
             "default": [
               "6fd",
-              "2d1",
               "870",
               "aaf",
               "07f",
@@ -114,14 +94,10 @@
               "8d2",
               "eca",
               "da0",
-              "75a",
-              "119",
-              "06f",
-              "4f9",
-              "16b"
+              "75a"
             ],
-            "__if": "inputs.applyMode != selOnly and inputs.connections.addons",
-            "description": "Default selection: Store, Library, SeaDex, nekoBT, Torz, Debridio, Torrentio, Meteor, Comet, M-Fusion, Althub, U-Crawler, N-Central, NZBNest. Optional (off by default): T-Rasa, D-Slug, AmeNZB, OnePace, Indexarr, Amatsu. Selected entries replace the add-on list; deselected entries do not request credentials. Supply your own endpoints on the Credentials screen.",
+            "__if": "inputs.connections.addons",
+            "description": "Default selection: Store, SeaDex, nekoBT, Torz, Debridio, Torrentio, Meteor, Comet, M-Fusion. Optional (off by default, including all Usenet entries): Library, Althub, U-Crawler, N-Central, NZBNest, T-Rasa, D-Slug, AmeNZB, OnePace, Indexarr, Amatsu. Selected entries replace the add-on list; deselected entries do not request credentials. Supply your own endpoints on the Credentials screen.",
             "options": [
               {
                 "value": "6fd",
@@ -129,7 +105,7 @@
               },
               {
                 "value": "2d1",
-                "label": "Library"
+                "label": "Library (optional)"
               },
               {
                 "value": "870",
@@ -165,19 +141,19 @@
               },
               {
                 "value": "119",
-                "label": "Althub"
+                "label": "Althub (optional)"
               },
               {
                 "value": "06f",
-                "label": "U-Crawler"
+                "label": "U-Crawler (optional)"
               },
               {
                 "value": "4f9",
-                "label": "N-Central"
+                "label": "N-Central (optional)"
               },
               {
                 "value": "16b",
-                "label": "NZBNest"
+                "label": "NZBNest (optional)"
               },
               {
                 "value": "4c5",
@@ -206,12 +182,20 @@
             ]
           },
           {
+            "id": "meteorUsenet",
+            "name": "Enable Meteor Usenet search",
+            "type": "boolean",
+            "default": false,
+            "__if": "inputs.connections.addons and inputs.connections.addonIds includes eca",
+            "description": "Off by default: Meteor searches without its Usenet option. Enable only if you want Usenet results and have a compatible service. Other Usenet add-ons must be explicitly selected above."
+          },
+          {
             "id": "routing",
             "name": "Add-on service assignments",
             "type": "select",
-            "default": "redhair",
-            "__if": "inputs.applyMode != selOnly and inputs.connections.addons",
-            "description": "Use my enabled services (Full setup default): each add-on uses your enabled accounts that it supports. Redhair assignments (Update default): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Redhair’s Library/Store catalog customizations apply only in Redhair mode. This controls add-on routing, not your saved accounts.",
+            "default": "enabled",
+            "__if": "inputs.connections.addons",
+            "description": "Use my enabled services (default): each add-on uses your enabled accounts that it supports. Redhair assignments (optional): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Redhair’s Library/Store catalog customizations apply only in Redhair mode. This controls add-on routing, not your saved accounts.",
             "options": [
               {
                 "value": "enabled",
@@ -228,7 +212,7 @@
             "name": "Add-on timeout",
             "type": "select",
             "default": "original",
-            "__if": "inputs.applyMode != selOnly and inputs.connections.addons",
+            "__if": "inputs.connections.addons",
             "description": "Redhair defaults: Debridio waits up to 4 seconds; every other bundled add-on waits up to 5 seconds. The 10 / 20 / 30 second choices give every selected add-on that same timeout. Longer waits can include slower sources but may delay results. This does not change playback timeouts.",
             "options": [
               {
@@ -249,24 +233,21 @@
               }
             ]
           }
-        ],
-        "__if": "inputs.applyMode != selOnly"
+        ]
       },
       {
         "id": "appearanceHeader",
         "name": "Appearance",
         "type": "alert",
         "intent": "info-basic",
-        "description": "Choose a formatter and view its sample here without opening a settings dialog.",
-        "__if": "inputs.applyMode != selOnly"
+        "description": "Choose a formatter and view its sample here without opening a settings dialog."
       },
       {
         "id": "formatterEnabled",
         "name": "Apply Formatter and posters",
         "description": "Redhair defaults: original Redhair stream layout and RPDB poster service. The Jeormatter alternatives below change the stream layout while retaining Redhair Best/Tier scoring; the poster choice remains RPDB. Off keeps your current settings.",
         "type": "boolean",
-        "default": true,
-        "__if": "inputs.applyMode != selOnly"
+        "default": true
       },
       {
         "id": "formatterStyle",
@@ -274,7 +255,7 @@
         "type": "select",
         "required": true,
         "default": "redhair",
-        "__if": "inputs.applyMode != selOnly and inputs.formatterEnabled",
+        "__if": "inputs.formatterEnabled",
         "description": "Preview updates when you select a style. Redhair (default): multi-line name with source, resolution, score and size. Jeormatter: title as the name, compact technical details below. Alt: quality as the name, title below. Filename: Jeormatter plus the complete filename. All use Redhair’s Best/Tier scoring.",
         "options": [
           {
@@ -300,7 +281,7 @@
         "type": "alert",
         "intent": "info-basic",
         "name": "Redhair (default) preview",
-        "__if": "inputs.applyMode != selOnly and inputs.formatterEnabled and inputs.formatterStyle == redhair",
+        "__if": "inputs.formatterEnabled and inputs.formatterStyle == redhair",
         "description": "**Stream name**\n⚡Torrentio\n✨ 4K\n🍁 Debrid\n🏆 SE Score: 95000\n\n**Stream description**\n💾 TorBox 📂  40 GB\n🎟️ Example Film (2025) \n 🏷️ FraMeSToR \n🎥 BluRay REMUX 📺 HDR10 🎞️ HEVC \n🎧 TrueHD | Atmos \n📣 ᴇɴɢ\n🏆 Best | 🔓\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
       },
       {
@@ -308,7 +289,7 @@
         "type": "alert",
         "intent": "info-basic",
         "name": "Jeormatter preview",
-        "__if": "inputs.applyMode != selOnly and inputs.formatterEnabled and inputs.formatterStyle == jeormatter",
+        "__if": "inputs.formatterEnabled and inputs.formatterStyle == jeormatter",
         "description": "**Stream name**\nExample Film (2025)\n\n**Stream description**\n✦ 4K · Remux · HDR10\n♬ Atmos/TrueHD 7.1 · EN · SUB EN\n◈ 37.3 GiB · 50 Mbps\n⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
       },
       {
@@ -316,7 +297,7 @@
         "type": "alert",
         "intent": "info-basic",
         "name": "Jeormatter Alt preview",
-        "__if": "inputs.applyMode != selOnly and inputs.formatterEnabled and inputs.formatterStyle == jeormatter_alt",
+        "__if": "inputs.formatterEnabled and inputs.formatterStyle == jeormatter_alt",
         "description": "**Stream name**\n4K · Remux · HDR10\n\n**Stream description**\n✦ Example Film (2025)\n♬ Atmos/TrueHD 7.1 · EN · SUB EN\n◈ 37.3 GiB · 50 Mbps\n⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
       },
       {
@@ -324,7 +305,7 @@
         "type": "alert",
         "intent": "info-basic",
         "name": "Jeormatter Filename preview",
-        "__if": "inputs.applyMode != selOnly and inputs.formatterEnabled and inputs.formatterStyle == jeormatter_filename",
+        "__if": "inputs.formatterEnabled and inputs.formatterStyle == jeormatter_filename",
         "description": "**Stream name**\nExample Film (2025)\n\n**Stream description**\n✦ 4K · Remux · HDR10\n♬ Atmos/TrueHD 7.1 · EN · SUB EN\n◈ 37.3 GiB · 50 Mbps\n⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix\nExample.Film.2025.2160p.REMUX.mkv\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
       },
       {
@@ -348,37 +329,35 @@
             "type": "boolean",
             "default": true
           }
-        ],
-        "__if": "inputs.applyMode != selOnly"
+        ]
       }
-    ],
-    "services": []
+    ]
   },
   "config": {
     "excludedResolutions": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": [
         "240p",
         "144p"
       ]
     },
     "includedResolutions": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "requiredResolutions": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredResolutions": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": [
         "2160p",
         "1080p"
       ]
     },
     "excludedQualities": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": [
         "CAM",
         "SCR",
@@ -387,15 +366,15 @@
       ]
     },
     "includedQualities": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "requiredQualities": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredQualities": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": [
         "BluRay REMUX",
         "WEB-DL",
@@ -403,162 +382,162 @@
       ]
     },
     "excludedLanguages": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "includedLanguages": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "requiredLanguages": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredLanguages": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludedSubtitles": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "includedSubtitles": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "requiredSubtitles": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredSubtitles": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludedVisualTags": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": [
         "3D"
       ]
     },
     "includedVisualTags": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "requiredVisualTags": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredVisualTags": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludedAudioTags": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "includedAudioTags": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "requiredAudioTags": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredAudioTags": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludedAudioChannels": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "includedAudioChannels": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "requiredAudioChannels": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredAudioChannels": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludedStreamTypes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "includedStreamTypes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "requiredStreamTypes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredStreamTypes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": [
         "debrid",
         "usenet"
       ]
     },
     "excludedEncodes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "includedEncodes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "requiredEncodes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredEncodes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredRegexPatterns": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "syncedRankedRegexUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": [
         "https://raw.githubusercontent.com/Redhair777/AIO-Quality-Profiles/main/profiles/2160p-remux.regexes.json",
         "https://raw.githubusercontent.com/Redhair777/AIO-Quality-Profiles/main/profiles/anime-remux-1080p.regexes.json"
       ]
     },
     "syncedRankedStreamExpressionUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": [
         "https://raw.githubusercontent.com/Redhair777/AIO-Quality-Profiles/refs/heads/main/profiles/2160p-remux.expressions.json",
         "https://raw.githubusercontent.com/Redhair777/AIO-Quality-Profiles/refs/heads/main/profiles/anime-remux-1080p.expressions.json"
       ]
     },
     "includedKeywords": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "preferredKeywords": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": [
         "Authentic.BW"
       ]
     },
     "seederRangeTypes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "ageRangeTypes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": [
         "usenet"
       ]
     },
     "digitalReleaseFilter": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": {
         "enabled": true,
         "tolerance": 1,
@@ -571,39 +550,39 @@
       }
     },
     "enableSeadex": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.matching",
+      "__if": "inputs.quality.matching",
       "__value": true
     },
     "excludeCachedFromAddons": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludeCachedFromServices": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludeCachedFromStreamTypes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludeUncached": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": true
     },
     "excludeUncachedFromAddons": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludeUncachedFromServices": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludeUncachedFromStreamTypes": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.filters",
+      "__if": "inputs.quality.filters",
       "__value": []
     },
     "excludedStreamExpressions": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": [
         {
           "expression": "/*Remove Anime 4K*/queryType == 'anime.series' ? resolution(streams, '2160p') : []",
@@ -628,11 +607,11 @@
       ]
     },
     "preferredStreamExpressions": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "rankedStreamExpressions": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": [
         {
           "expression": "/*#Radarr*/ /*Not Original or English or Tamil*/ queryType=='movie' ? negate(merge(language(streams, \"Original\"), language(streams, \"English\"), language(streams, \"Tamil\")), streams) : []",
@@ -647,15 +626,15 @@
       ]
     },
     "rankedRegexPatterns": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "regexOverrides": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "selOverrides": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": [
         {
           "expression": "/*HDR10+*/ isAnime ? [] : visualTag(streams,'HDR10+')",
@@ -730,14 +709,14 @@
       ]
     },
     "dynamicAddonFetching": {
-      "__if": "inputs.applyMode != selOnly and inputs.connections.addons",
+      "__if": "inputs.connections.addons",
       "__value": {
         "enabled": false,
         "condition": "(queryType=='anime.series')?((count(seadex(cached(totalStreams),'best'))>=1 and count(totalStreams)>=5) or (totalTimeTaken>=5000 and (count(regexMatched(cached(totalStreams),'Anime BD T1','Anime Web T1'))>=4 or count(resolution(cached(totalStreams),'1080p'))>=12)) or totalTimeTaken>=7000) : (queryType=='anime.movie' or (queryType == 'anime.series' or queryType == 'anime.movie'))?((count(seadex(cached(totalStreams),'best'))>=1 and count(totalStreams)>=5) or (totalTimeTaken>=5000 and (count(regexMatched(cached(totalStreams),'Anime BD T1'))>=3 or count(resolution(cached(totalStreams),'2160p'))>=6)) or totalTimeTaken>=7000) : (queryType=='movie')?((count(totalStreams)>=5 and ('N-Central' in queriedAddons or 'Althub' in queriedAddons or 'U-Crawler' in queriedAddons) and (count(type(totalStreams,'usenet','debrid'))>=1 or count(regexMatched(cached(totalStreams),'Remux T1','Bluray T1'))>=2 or count(resolution(cached(totalStreams),'2160p'))>=8)) or (count(totalStreams)>=20 and ('Debridio' in queriedAddons or 'Torz' in queriedAddons or 'Torrentio' in queriedAddons) and count(regexMatched(cached(totalStreams),'Remux T1','Bluray T1'))>=5) or totalTimeTaken>=7000) : ((count(totalStreams)>=5 and ('N-Central' in queriedAddons or 'Althub' in queriedAddons or 'U-Crawler' in queriedAddons) and (count(type(totalStreams,'usenet','debrid'))>=1 or count(regexMatched(cached(totalStreams),'Web T1','Remux T1'))>=2 or count(resolution(cached(totalStreams),'2160p','1080p'))>=15)) or totalTimeTaken>=7000)"
       }
     },
     "groups": {
-      "__if": "inputs.applyMode != selOnly and inputs.connections.addons",
+      "__if": "inputs.connections.addons",
       "__value": {
         "enabled": false,
         "groupings": [],
@@ -745,7 +724,7 @@
       }
     },
     "sortCriteria": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sorting",
+      "__if": "inputs.quality.sorting",
       "__value": {
         "global": [
           {
@@ -814,11 +793,11 @@
       }
     },
     "posterService": {
-      "__if": "inputs.applyMode != selOnly and inputs.formatterEnabled",
+      "__if": "inputs.formatterEnabled",
       "__value": "rpdb"
     },
     "formatter": {
-      "__if": "inputs.applyMode != selOnly and inputs.formatterEnabled",
+      "__if": "inputs.formatterEnabled",
       "__value": {
         "__switch": "inputs.formatterStyle",
         "cases": {
@@ -871,7 +850,7 @@
       }
     },
     "resultLimits": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.limits",
+      "__if": "inputs.quality.limits",
       "__value": {
         "service": 3,
         "resolution": 3,
@@ -880,7 +859,7 @@
       }
     },
     "size": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.limits",
+      "__if": "inputs.quality.limits",
       "__value": {
         "global": {
           "movies": [
@@ -925,11 +904,11 @@
       }
     },
     "hideErrorsForResources": {
-      "__if": "inputs.applyMode != selOnly and inputs.behavior.diagnostics",
+      "__if": "inputs.behavior.diagnostics",
       "__value": []
     },
     "statistics": {
-      "__if": "inputs.applyMode != selOnly and inputs.behavior.diagnostics",
+      "__if": "inputs.behavior.diagnostics",
       "__value": {
         "enabled": true,
         "position": "bottom",
@@ -941,7 +920,7 @@
       }
     },
     "yearMatching": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.matching",
+      "__if": "inputs.quality.matching",
       "__value": {
         "enabled": true,
         "strict": true,
@@ -958,7 +937,7 @@
       }
     },
     "titleMatching": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.matching",
+      "__if": "inputs.quality.matching",
       "__value": {
         "mode": "exact",
         "similarityThreshold": 0.95,
@@ -971,7 +950,7 @@
       }
     },
     "seasonEpisodeMatching": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.matching",
+      "__if": "inputs.quality.matching",
       "__value": {
         "enabled": true,
         "strict": true,
@@ -984,20 +963,20 @@
       }
     },
     "episodeTitleMatching": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.matching",
+      "__if": "inputs.quality.matching",
       "__value": {
         "requestTypes": [],
         "addons": []
       }
     },
     "languageInference": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.matching",
+      "__if": "inputs.quality.matching",
       "__value": {
         "sources": []
       }
     },
     "deduplicator": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.deduplication",
+      "__if": "inputs.quality.deduplication",
       "__value": {
         "enabled": true,
         "excludeAddons": [],
@@ -1017,7 +996,7 @@
       }
     },
     "autoPlay": {
-      "__if": "inputs.applyMode != selOnly and inputs.behavior.playback",
+      "__if": "inputs.behavior.playback",
       "__value": {
         "attributes": [
           "resolution",
@@ -1028,11 +1007,11 @@
       }
     },
     "precacheNextEpisode": {
-      "__if": "inputs.applyMode != selOnly and inputs.behavior.playback",
+      "__if": "inputs.behavior.playback",
       "__value": false
     },
     "preloadStreams": {
-      "__if": "inputs.applyMode != selOnly and inputs.behavior.playback",
+      "__if": "inputs.behavior.playback",
       "__value": {
         "enabled": true,
         "selector": "slice(type(streams, 'usenet'), 0, 1)",
@@ -1040,7 +1019,7 @@
       }
     },
     "presets": {
-      "__if": "inputs.applyMode != selOnly and inputs.connections.addons",
+      "__if": "inputs.connections.addons",
       "__value": [
         {
           "__if": "inputs.connections.addonIds includes 6fd",
@@ -1263,7 +1242,7 @@
             "useMultipleInstances": false,
             "mediaTypes": [],
             "usenet": {
-              "enabled": true
+              "enabled": "{{inputs.connections.meteorUsenet}}"
             },
             "services": {
               "__if": "inputs.connections.routing == redhair",
@@ -1652,14 +1631,14 @@
       ]
     },
     "addonCategoryColors": {
-      "__if": "inputs.applyMode != selOnly and inputs.connections.addons",
+      "__if": "inputs.connections.addons",
       "__value": {
         "Debrid": "red",
         "Usenet": "lime"
       }
     },
     "catalogModifications": {
-      "__if": "inputs.applyMode != selOnly and inputs.connections.addons",
+      "__if": "inputs.connections.addons",
       "__value": [
         {
           "__if": "inputs.connections.addonIds includes 2d1 and inputs.connections.routing == redhair",
@@ -1709,18 +1688,18 @@
       ]
     },
     "cacheAndPlay": {
-      "__if": "inputs.applyMode != selOnly and inputs.behavior.playback",
+      "__if": "inputs.behavior.playback",
       "__value": {
         "enabled": false,
         "streamTypes": []
       }
     },
     "checkOwned": {
-      "__if": "inputs.applyMode != selOnly and inputs.behavior.playback",
+      "__if": "inputs.behavior.playback",
       "__value": true
     },
     "failover": {
-      "__if": "inputs.applyMode != selOnly and inputs.behavior.playback",
+      "__if": "inputs.behavior.playback",
       "__value": {
         "enabled": true,
         "contentTypes": [
@@ -1737,7 +1716,7 @@
       }
     },
     "serviceWrap": {
-      "__if": "inputs.applyMode != selOnly and inputs.behavior.playback",
+      "__if": "inputs.behavior.playback",
       "__value": {
         "enabled": true,
         "services": [
@@ -1747,67 +1726,67 @@
       }
     },
     "excludedRegexPatterns": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "syncedExcludedRegexUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "includedRegexPatterns": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "requiredRegexPatterns": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "syncedPreferredRegexUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "syncedPreferredStreamExpressionUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "syncedExcludedStreamExpressionUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "syncedIncludedStreamExpressionUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "requiredStreamExpressions": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "includedStreamExpressions": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "syncedIncludedRegexUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "syncedRequiredRegexUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "syncedRequiredStreamExpressionUrls": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.sel or inputs.applyMode == selOnly",
+      "__if": "inputs.quality.sel",
       "__value": []
     },
     "bitrate": {
-      "__if": "inputs.applyMode != selOnly and inputs.quality.limits",
+      "__if": "inputs.quality.limits",
       "__value": {
         "useMetadataRuntime": true
       }
     },
     "appliedTemplates": [
       {
-        "id": "custom.redhair.complete",
-        "version": "1.4.2"
+        "id": "custom.redhair.full",
+        "version": "1.5.0"
       }
     ]
   }

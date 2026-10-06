@@ -1,15 +1,16 @@
 {
-  "version": "1.4.2",
+  "version": "1.5.0",
   "result": "pass",
-  "sectionToggleCombinations": 2048,
-  "templates": 2,
+  "sectionToggleCombinations": 1024,
+  "templates": 1,
   "settingsGroups": 4,
   "subsectionDialogs": 3,
   "appearanceInline": true,
-  "individualAddonSelections": 40,
+  "individualAddonSelections": 20,
   "redhairQualityDefaultsPreserved": true,
   "selOnlyPreservesOtherSections": true,
   "proxyAbsent": true,
-  "serviceWizardFullSetupOnly": true,
+  "serviceSelectionOptional": true,
+  "usenetOffByDefault": true,
   "liveImportTested": false
 }

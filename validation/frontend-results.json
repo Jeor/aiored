@@ -1,15 +1,9 @@
 {
-  "version": "1.4.2",
+  "version": "1.5.0",
   "result": "pass",
   "templates": [
     {
       "id": "custom.redhair.full",
-      "isValid": true,
-      "warnings": [],
-      "errors": []
-    },
-    {
-      "id": "custom.redhair.complete",
       "isValid": true,
       "warnings": [],
       "errors": []

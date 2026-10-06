@@ -13,14 +13,16 @@ const sections=read('validation/section-fields.json'), paths=read('validation/se
 const keys=Object.keys(sections);
 const {z}=createRequire(resolve(root,'validation/sel/package.json'))('zod');
 export function defaults(t){return Object.fromEntries(t.metadata.inputs.filter(o=>'default' in o||o.subOptions).map(o=>[o.id,o.subOptions?Object.fromEntries(o.subOptions.filter(s=>'default' in s).map(s=>[s.id,s.default])):o.default]));}
+assert.equal(templates.length,1);
+assert.equal(templates[0].metadata.id,'custom.redhair.full');
 let combinations=0;
 for(const t of templates){
  makeTemplateSchema(z).parse(t);
  const isFull=t.metadata.id==='custom.redhair.full';
- assert.equal(t.metadata.version,'1.4.2');
+ assert.equal(t.metadata.version,'1.5.0');
  assert.equal(t.metadata.inputs.filter(o=>o.type==='subsection').length,3);
  if(isFull)assert(!('services' in t.metadata));else assert.deepEqual(t.metadata.services,[]);
- const d=defaults(t);d.applyMode='selected';
+ const d=defaults(t);
  const resolveConfig=(inputs,svcs=[])=>applyTemplateConditionals(t.config,inputs,svcs);
  const full=resolveConfig(d);
  for(const key of ['proxy','services','trusted','variants','showChanges'])assert(!(key in full));
@@ -28,8 +30,8 @@ for(const t of templates){
   if(['proxy','services','trusted','variants','showChanges','presets','catalogModifications'].includes(key))continue;
   assert.deepEqual(full[key],value,`Changed Redhair default: ${key}`);
  }
- const expectedPresets=structuredClone(source.presets.filter(p=>p.enabled));
- if(isFull)for(const p of expectedPresets)delete p.options.services;
+ const expectedPresets=structuredClone(source.presets.filter(p=>p.enabled&&p.category!=='Usenet'));
+ for(const p of expectedPresets){delete p.options.services;if(p.type==='meteor')p.options.usenet.enabled=false;}
  assert.deepEqual(full.presets,expectedPresets);
  assert.deepEqual(full.catalogModifications,isFull?[]:source.catalogModifications);
  const existing=Object.fromEntries(Object.keys(full).map(k=>[k,{keep:`user-custom-${k}`} ]));
@@ -46,11 +48,17 @@ for(const t of templates){
   if(!input.connections.addons)assert(!JSON.stringify(patch).includes('template_placeholder'));
   combinations++;
  }
- if(!isFull){
-  const only=resolveConfig(defaults(t));
-  assert.deepEqual(new Set(Object.keys(only)),new Set(['appliedTemplates',...sections.sel]));
-  assert(!JSON.stringify(only).includes('template_placeholder'));
- }
+ const sel=structuredClone(d);
+ for(const [k,path] of Object.entries(paths)){const [g,s]=path.split('.');if(s)sel[g][s]=k==='sel';else sel[g]=k==='sel';}
+ const only=resolveConfig(sel);
+ assert.deepEqual(new Set(Object.keys(only)),new Set(['appliedTemplates',...sections.sel]));
+ assert(!JSON.stringify(only).includes('template_placeholder'));
+ assert(!full.presets.some(p=>p.category==='Usenet'||p.type==='newznab'));
+ assert.equal(full.presets.find(p=>p.type==='meteor').options.usenet.enabled,false);
+ const meteor=structuredClone(d);meteor.connections.meteorUsenet=true;
+ assert.equal(resolveConfig(meteor).presets.find(p=>p.type==='meteor').options.usenet.enabled,true);
+ assert(!t.metadata.inputs.some(o=>o.id==='applyMode'));
+ assert.equal(t.metadata.serviceRequired,false);
  // Each addon can be included alone; optional selections become enabled and
  // require a fresh endpoint. No other addon or stale catalog entry remains.
  for(const p of source.presets){
@@ -74,6 +82,6 @@ for(const t of templates){
  const declared=new Set(t.metadata.inputs.flatMap(o=>[o.id,...(o.subOptions||[]).map(s=>o.id+'.'+s.id)]));
  assert(refs.every(r=>declared.has(r)),`Undeclared inputs: ${refs.filter(r=>!declared.has(r))}`);
 }
-const report={version:'1.4.2',result:'pass',sectionToggleCombinations:combinations,templates:2,settingsGroups:4,subsectionDialogs:3,appearanceInline:true,individualAddonSelections:40,redhairQualityDefaultsPreserved:true,selOnlyPreservesOtherSections:true,proxyAbsent:true,serviceWizardFullSetupOnly:true,liveImportTested:false};
+const report={version:'1.5.0',result:'pass',sectionToggleCombinations:combinations,templates:1,settingsGroups:4,subsectionDialogs:3,appearanceInline:true,individualAddonSelections:20,redhairQualityDefaultsPreserved:true,selOnlyPreservesOtherSections:true,proxyAbsent:true,serviceSelectionOptional:true,usenetOffByDefault:true,liveImportTested:false};
 writeFileSync(resolve(root,'validation/section-results.json'),JSON.stringify(report,null,2)+'\n');
-console.log(`PASS: ${combinations} section combinations, 40 addon selections, schemas, defaults, service routing and safe updates.`);
+console.log(`PASS: ${combinations} section combinations, 20 addon selections, schemas, defaults, service routing and safe updates.`);

@@ -1,9 +1,9 @@
 {
   "metadata": {
     "id": "custom.redhair.full",
-    "name": "Redhair Quality — Full setup",
-    "version": "1.4.2",
-    "description": "Customizable Redhair defaults with service onboarding, add-on selection and four formatter previews.",
+    "name": "Redhair Quality — Setup and updater",
+    "version": "1.5.0",
+    "description": "One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.",
     "author": "Local adaptation",
     "source": "custom",
     "category": "AIO",
@@ -14,7 +14,7 @@
         "name": "Customize before applying",
         "type": "alert",
         "intent": "info",
-        "description": "Choose your services in the Services step, then customize the four groups below. Switch off any section to preserve it. For SEL-only updates, choose the Update existing setup template instead. Service selection is applied separately from these section switches. Proxy settings and user variants are always preserved."
+        "description": "For a new setup, select your services. For updates that should keep existing accounts, use Skip on the Services step: service selection is separate from the switches below. Enable only the sections you want to replace; switch off the rest. For an SEL-only update, leave only SEL and regex on. Proxy settings and user variants are always preserved. Usenet add-ons and Meteor Usenet search are off by default."
       },
       {
         "id": "quality",
@@ -77,7 +77,7 @@
           {
             "id": "addons",
             "name": "Apply Add-ons, catalogs and fetching",
-            "description": "Redhair defaults: 14 enabled add-ons, with 6 disabled entries offered as optional choices below. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below. Off keeps your current settings.",
+            "description": "Template default: 9 non-Usenet add-ons enabled. All Usenet entries and Meteor Usenet search are off; opt in below. This differs from Redhair’s supplied export, which enabled Usenet sources. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           },
@@ -87,7 +87,6 @@
             "type": "multi-select",
             "default": [
               "6fd",
-              "2d1",
               "870",
               "aaf",
               "07f",
@@ -95,14 +94,10 @@
               "8d2",
               "eca",
               "da0",
-              "75a",
-              "119",
-              "06f",
-              "4f9",
-              "16b"
+              "75a"
             ],
             "__if": "inputs.connections.addons",
-            "description": "Default selection: Store, Library, SeaDex, nekoBT, Torz, Debridio, Torrentio, Meteor, Comet, M-Fusion, Althub, U-Crawler, N-Central, NZBNest. Optional (off by default): T-Rasa, D-Slug, AmeNZB, OnePace, Indexarr, Amatsu. Selected entries replace the add-on list; deselected entries do not request credentials. Supply your own endpoints on the Credentials screen.",
+            "description": "Default selection: Store, SeaDex, nekoBT, Torz, Debridio, Torrentio, Meteor, Comet, M-Fusion. Optional (off by default, including all Usenet entries): Library, Althub, U-Crawler, N-Central, NZBNest, T-Rasa, D-Slug, AmeNZB, OnePace, Indexarr, Amatsu. Selected entries replace the add-on list; deselected entries do not request credentials. Supply your own endpoints on the Credentials screen.",
             "options": [
               {
                 "value": "6fd",
@@ -110,7 +105,7 @@
               },
               {
                 "value": "2d1",
-                "label": "Library"
+                "label": "Library (optional)"
               },
               {
                 "value": "870",
@@ -146,19 +141,19 @@
               },
               {
                 "value": "119",
-                "label": "Althub"
+                "label": "Althub (optional)"
               },
               {
                 "value": "06f",
-                "label": "U-Crawler"
+                "label": "U-Crawler (optional)"
               },
               {
                 "value": "4f9",
-                "label": "N-Central"
+                "label": "N-Central (optional)"
               },
               {
                 "value": "16b",
-                "label": "NZBNest"
+                "label": "NZBNest (optional)"
               },
               {
                 "value": "4c5",
@@ -187,12 +182,20 @@
             ]
           },
           {
+            "id": "meteorUsenet",
+            "name": "Enable Meteor Usenet search",
+            "type": "boolean",
+            "default": false,
+            "__if": "inputs.connections.addons and inputs.connections.addonIds includes eca",
+            "description": "Off by default: Meteor searches without its Usenet option. Enable only if you want Usenet results and have a compatible service. Other Usenet add-ons must be explicitly selected above."
+          },
+          {
             "id": "routing",
             "name": "Add-on service assignments",
             "type": "select",
             "default": "enabled",
             "__if": "inputs.connections.addons",
-            "description": "Use my enabled services (Full setup default): each add-on uses your enabled accounts that it supports. Redhair assignments (Update default): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Redhair’s Library/Store catalog customizations apply only in Redhair mode. This controls add-on routing, not your saved accounts.",
+            "description": "Use my enabled services (default): each add-on uses your enabled accounts that it supports. Redhair assignments (optional): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Redhair’s Library/Store catalog customizations apply only in Redhair mode. This controls add-on routing, not your saved accounts.",
             "options": [
               {
                 "value": "enabled",
@@ -1239,7 +1242,7 @@
             "useMultipleInstances": false,
             "mediaTypes": [],
             "usenet": {
-              "enabled": true
+              "enabled": "{{inputs.connections.meteorUsenet}}"
             },
             "services": {
               "__if": "inputs.connections.routing == redhair",
@@ -1783,7 +1786,7 @@
     "appliedTemplates": [
       {
         "id": "custom.redhair.full",
-        "version": "1.4.2"
+        "version": "1.5.0"
       }
     ]
   }

@@ -32,4 +32,4 @@ for(const t of templates){
  assert.deepEqual(report.warnings,['"torrentio" is not available or disabled on this instance.']);
 }
 writeFileSync(new URL('validation/frontend-results.json',root),JSON.stringify({version:templates[0].metadata.version,result:'pass',templates:reports,unavailableAddonIdentifiedByType:true,liveInstanceTested:false},null,2)+'\n');
-console.log('PASS: real frontend validator accepts both templates without errors or spurious warnings.');
+console.log('PASS: real frontend validator accepts the updater without errors or spurious warnings.');

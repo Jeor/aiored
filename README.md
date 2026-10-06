@@ -1,6 +1,6 @@
 # aiored — Redhair Quality Setup
 
-Version **1.4.2** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
+Version **1.5.0** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
 
 ## Import URL
 
@@ -10,18 +10,15 @@ Keep this URL in your instance’s **Template URLs** setting:
 https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-complete-setup-template.json
 ```
 
-It now provides two setup choices:
+The URL now provides one template: **Redhair Quality — Setup and updater** (`custom.redhair.full`). Use it for both new setups and selective updates. The separate partial-update template has been removed from the list.
 
-- **Redhair Quality — Full setup** (`custom.redhair.full`): normal AIOStreams service selection and credentials, followed by four settings groups on one Options screen.
-- **Redhair Quality — Update existing setup** (`custom.redhair.complete`): defaults to **SEL / regex only**. Choose sections to update other settings. Services and their credentials are always preserved.
+Featured template ID: `custom.redhair.full`. Remove the old `custom.redhair.complete` featured ID if you added it. Refresh/reimport to load v1.5.0; GitHub changes do not automatically reapply your configuration.
 
-Featured template IDs: `custom.redhair.full` and `custom.redhair.complete`. Refresh/reimport to load v1.4.2; GitHub changes do not automatically reapply your configuration.
-
-For a direct single-template import, use [Full setup](https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-full-setup-template.json) or [Update existing setup](https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-update-template.json).
+The old direct full/update URLs remain compatibility aliases for the same updater and ID; they no longer expose different workflows.
 
 ## Four groups, one Options screen
 
-All section switches work in **Full setup** too. On replaces that section; off preserves your existing settings. The switches start on, using Redhair’s defaults.
+Choose exactly which sections to apply. On replaces that section; off preserves your existing settings. The switches start on, using Redhair’s defaults.
 
 | Group | Independent switches and controls |
 | --- | --- |
@@ -30,19 +27,19 @@ All section switches work in **Full setup** too. On replaces that section; off p
 | Appearance | Apply formatter / posters, choose one of four formatters, see its preview |
 | Playback and diagnostics | Apply playback / download / failover settings; apply statistics / error settings |
 
-Full setup adds only the normal **Services** step. Updates skip it. Quality, connections and playback controls open their settings dialogs. Appearance stays directly on the Options screen so choosing a formatter immediately changes the visible preview; no Save or reopening is needed. No additional wizard steps are added. Proxy settings, variants and account trust are omitted from both workflows.
+On the optional **Services** step, choose services for a new setup or click **Skip** to preserve existing accounts during an update. Quality, connections and playback controls open their settings dialogs. Appearance stays directly on the Options screen so choosing a formatter immediately changes the visible preview; no Save or reopening is needed. No additional wizard steps are added. Proxy settings, variants and account trust are omitted from the updater.
 
 SEL-only updates preserve add-ons, formatter, sorting and every other section, but replace your custom SEL / regex edits. Keep Stream Expression Score in your existing sort order to use the updated scores.
 
 ## Customize add-ons and services
 
-The add-on selector starts with the **14 enabled add-ons** in Redhair’s export. The six previously disabled entries are available as optional choices. Selected entries are enabled; deselected entries are omitted and do not prompt for connection details. Applying this section replaces the add-on list, catalogs, category colors, groups and fetching settings. Turn it off to preserve your own add-ons.
+The default selection contains **9 non-Usenet add-ons**: Store, SeaDex, nekoBT, Torz, Debridio, Torrentio, Meteor, Comet and M-Fusion. All Usenet entries, including the AIOStreams Library entry, are off by default. Meteor’s Usenet option also defaults off and has its own opt-in switch. The remaining 11 entries are available as optional choices. Selected entries are enabled; deselected entries are omitted and do not prompt for connection details. Applying this section replaces the add-on list, catalogs, category colors, groups and fetching settings. Turn it off to preserve your own add-ons.
 
-Choose **Use my enabled services** to let each add-on use the services it supports from your enabled accounts. This is the full-setup default, so the configuration works with your service selection instead of restricting it to Redhair’s accounts. **Redhair’s original service assignments** retains the original TorBox / AIOStreams / NZBDAV restrictions and is the update-template default. Catalog customizations tied to those assignments are retained only in Redhair mode, and only for selected add-ons.
+Choose **Use my enabled services** to let each add-on use the services it supports from your enabled accounts. This is the full-setup default, so the configuration works with your service selection instead of restricting it to Redhair’s accounts. **Redhair’s original service assignments** retains the original TorBox / AIOStreams / NZBDAV restrictions and is an optional alternative. Catalog customizations tied to those assignments are retained only in Redhair mode, and only for selected add-ons.
 
 The default timeout is **4 seconds for Debridio and 5 seconds for every other bundled add-on**. Choosing **10, 20 or 30 seconds** applies that timeout to every selected add-on. Longer timeouts allow slower sources more time but can delay results. Each section description now lists the concrete Redhair settings it applies; switching the section off preserves your settings instead. The Credentials screen asks for your own required indexer endpoints, custom manifests and other add-on credentials. Select only the sources you intend to configure.
 
-Service selection is separate from the section switches in Full setup. Use **Update existing setup** for partial updates that must preserve services. This separation is necessary because AIOStreams selects services before template options and can otherwise replace services even during an SEL-only import.
+Service selection is separate from the section switches. **Click Skip on the Services step to preserve your existing services and credentials.** Leaving a configuration section off does not undo an explicit service selection. For an SEL-only update, skip services, leave SEL / regex on and switch off the other nine sections.
 
 ## Formatter choices
 
@@ -60,9 +57,9 @@ The selector is hidden for SEL-only imports and when the formatter section is of
 
 ## Proxy and credentials
 
-Neither template contains proxy configuration or saved API keys. Existing proxy settings are preserved. If an earlier import enabled an unwanted proxy, disable or correct it once in AIOStreams.
+The updater contains proxy configuration or saved API keys. Existing proxy settings are preserved. If an earlier import enabled an unwanted proxy, disable or correct it once in AIOStreams.
 
-The original uploaded export is not published. `sources/redhair-default-config.json` is sanitized: proxy removed, encoded custom manifests and private indexer URLs replaced with placeholders. The full setup collects your own service credentials using AIOStreams’ native credential screen; updates never import services or their credentials.
+The original uploaded export is not published. `sources/redhair-default-config.json` is sanitized: proxy removed, encoded custom manifests and private indexer URLs replaced with placeholders. When you select services, the updater collects your own credentials using AIOStreams’ native credential screen. Clicking Skip preserves existing services and credentials.
 
 ## Redhair defaults
 
@@ -104,7 +101,7 @@ npm run build --prefix validation/sel
 node --experimental-strip-types validation/verify.mjs
 ```
 
-Section validation uses AIOStreams’ actual conditional processor and top-level merge behavior. It checks **2,048 section combinations** across both workflows, **40 individual add-on selections**, empty selections, timeout controls, service routing, preserved Redhair quality defaults, SEL-only updates and skipped credentials. Both template schemas and the actual frontend wizard validator are checked, including dropdown value types and add-on availability inspection. Results are in `validation/section-results.json`.
+Section validation uses AIOStreams’ actual conditional processor and top-level merge behavior. It checks **1,024 section combinations**, **20 individual add-on selections**, empty selections, timeout controls, service routing, preserved Redhair quality defaults, SEL-only updates and skipped credentials. The template schema and the actual frontend wizard validator are checked, including dropdown value types and add-on availability inspection. Results are in `validation/section-results.json`.
 
 Formatter checks render **51 threshold / SeaDex scenarios**, verify all four previews, layout preservation, source-label mapping and section isolation. The optional bundled-profile checks retain their 198 combinations and 95,904 expression comparisons. Results are in `validation/formatter-results.json` and `validation/results.json`.
 
