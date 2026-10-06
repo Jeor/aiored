@@ -1,0 +1,20 @@
+{
+  "version": "1.4.1",
+  "result": "pass",
+  "templates": [
+    {
+      "id": "custom.redhair.full",
+      "isValid": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "id": "custom.redhair.complete",
+      "isValid": true,
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "unavailableAddonIdentifiedByType": true,
+  "liveInstanceTested": false
+}

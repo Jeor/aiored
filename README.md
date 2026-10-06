@@ -1,6 +1,6 @@
 # aiored — Redhair Quality Setup
 
-Version **1.4.0** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
+Version **1.4.1** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
 
 ## Import URL
 
@@ -15,7 +15,7 @@ It now provides two setup choices:
 - **Redhair Quality — Full setup** (`custom.redhair.full`): normal AIOStreams service selection and credentials, followed by four customizable groups on one Options screen.
 - **Redhair Quality — Update existing setup** (`custom.redhair.complete`): defaults to **SEL / regex only**. Choose sections to update other settings. Services and their credentials are always preserved.
 
-Featured template IDs: `custom.redhair.full` and `custom.redhair.complete`. Refresh/reimport to load v1.4.0; GitHub changes do not automatically reapply your configuration.
+Featured template IDs: `custom.redhair.full` and `custom.redhair.complete`. Refresh/reimport to load v1.4.1; GitHub changes do not automatically reapply your configuration.
 
 For a direct single-template import, use [Full setup](https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-full-setup-template.json) or [Update existing setup](https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-update-template.json).
 
@@ -96,13 +96,14 @@ npm ci --ignore-scripts --prefix validation/formatter
 validation/formatter/node_modules/.bin/tsc -p validation/formatter/tsconfig.json
 npm ci --ignore-scripts --prefix validation/sel
 python scripts/build_template.py
+node --experimental-strip-types validation/verify-frontend.mjs
 node --experimental-strip-types validation/verify-sections.mjs
 node --experimental-strip-types validation/verify-formatters.mjs
 npm run build --prefix validation/sel
 node --experimental-strip-types validation/verify.mjs
 ```
 
-Section validation uses AIOStreams’ actual conditional processor and top-level merge behavior. It checks **2,048 section combinations** across both workflows, **40 individual add-on selections**, empty selections, timeout controls, service routing, preserved Redhair quality defaults, SEL-only updates and skipped credentials. Both template schemas are validated. Results are in `validation/section-results.json`.
+Section validation uses AIOStreams’ actual conditional processor and top-level merge behavior. It checks **2,048 section combinations** across both workflows, **40 individual add-on selections**, empty selections, timeout controls, service routing, preserved Redhair quality defaults, SEL-only updates and skipped credentials. Both template schemas and the actual frontend wizard validator are checked, including dropdown value types and add-on availability inspection. Results are in `validation/section-results.json`.
 
 Formatter checks render **51 threshold / SeaDex scenarios**, verify all four previews, layout preservation, source-label mapping and section isolation. The optional bundled-profile checks retain their 198 combinations and 95,904 expression comparisons. Results are in `validation/formatter-results.json` and `validation/results.json`.
 

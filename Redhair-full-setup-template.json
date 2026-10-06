@@ -2,7 +2,7 @@
   "metadata": {
     "id": "custom.redhair.full",
     "name": "Redhair Quality — Full setup",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "Customizable Redhair defaults with service onboarding, add-on selection and four formatter previews.",
     "author": "Local adaptation",
     "source": "custom",
@@ -217,15 +217,15 @@
                 "label": "Redhair defaults"
               },
               {
-                "value": 10000,
+                "value": "10000",
                 "label": "10 seconds"
               },
               {
-                "value": 20000,
+                "value": "20000",
                 "label": "20 seconds"
               },
               {
-                "value": 30000,
+                "value": "30000",
                 "label": "30 seconds"
               }
             ]
@@ -1022,650 +1022,610 @@
       "__value": [
         {
           "__if": "inputs.connections.addonIds includes 6fd",
-          "__value": {
-            "type": "stremthruStore",
-            "instanceId": "6fd",
-            "enabled": true,
-            "options": {
-              "name": "Store",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "stremthruStore",
+          "instanceId": "6fd",
+          "enabled": true,
+          "options": {
+            "name": "Store",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "resources": [
-                "stream",
-                "catalog",
-                "meta"
-              ],
-              "services": {
-                "__if": "inputs.connections.routing == redhair",
-                "__value": [
-                  "torbox"
-                ]
-              },
-              "mediaTypes": [],
-              "usenet": false,
-              "webDl": true
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "resources": [
+              "stream",
+              "catalog",
+              "meta"
+            ],
+            "services": {
+              "__if": "inputs.connections.routing == redhair",
+              "__value": [
+                "torbox"
+              ]
+            },
+            "mediaTypes": [],
+            "usenet": false,
+            "webDl": true
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes 2d1",
-          "__value": {
-            "type": "library",
-            "instanceId": "2d1",
-            "enabled": true,
-            "options": {
-              "name": "Library",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "library",
+          "instanceId": "2d1",
+          "enabled": true,
+          "options": {
+            "name": "Library",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "services": {
-                "__if": "inputs.connections.routing == redhair",
-                "__value": [
-                  "aiostreams"
-                ]
-              },
-              "mediaTypes": [],
-              "useMultipleInstances": false,
-              "skipProcessing": false,
-              "showRefreshActions": [
-                "stream",
-                "catalog"
-              ],
-              "resources": [
-                "stream",
-                "catalog",
-                "meta"
+              "default": 5000
+            },
+            "services": {
+              "__if": "inputs.connections.routing == redhair",
+              "__value": [
+                "aiostreams"
               ]
             },
-            "category": "Usenet"
-          }
+            "mediaTypes": [],
+            "useMultipleInstances": false,
+            "skipProcessing": false,
+            "showRefreshActions": [
+              "stream",
+              "catalog"
+            ],
+            "resources": [
+              "stream",
+              "catalog",
+              "meta"
+            ]
+          },
+          "category": "Usenet"
         },
         {
           "__if": "inputs.connections.addonIds includes 870",
-          "__value": {
-            "type": "seadex",
-            "instanceId": "870",
-            "enabled": true,
-            "options": {
-              "name": "SeaDex",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "seadex",
+          "instanceId": "870",
+          "enabled": true,
+          "options": {
+            "name": "SeaDex",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "mediaTypes": [
-                "anime"
-              ]
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "mediaTypes": [
+              "anime"
+            ]
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes aaf",
-          "__value": {
-            "type": "neko-bt",
-            "instanceId": "aaf",
-            "enabled": true,
-            "options": {
-              "name": "nekoBT",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "neko-bt",
+          "instanceId": "aaf",
+          "enabled": true,
+          "options": {
+            "name": "nekoBT",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "mediaTypes": [
-                "anime"
-              ],
-              "useMultipleInstances": false
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "mediaTypes": [
+              "anime"
+            ],
+            "useMultipleInstances": false
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes 07f",
-          "__value": {
-            "type": "stremthruTorz",
-            "instanceId": "07f",
-            "enabled": true,
-            "options": {
-              "name": "Torz",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "stremthruTorz",
+          "instanceId": "07f",
+          "enabled": true,
+          "options": {
+            "name": "Torz",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "resources": [
-                "stream"
-              ],
-              "mediaTypes": [],
-              "includeP2P": false,
-              "useMultipleInstances": false
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "resources": [
+              "stream"
+            ],
+            "mediaTypes": [],
+            "includeP2P": false,
+            "useMultipleInstances": false
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes 07a",
-          "__value": {
-            "type": "debridio",
-            "instanceId": "07a",
-            "enabled": true,
-            "options": {
-              "name": "Debridio",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 4000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 4000
+          "type": "debridio",
+          "instanceId": "07a",
+          "enabled": true,
+          "options": {
+            "name": "Debridio",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 4000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "resources": [
-                "stream"
-              ],
-              "mediaTypes": [],
-              "url": ""
+              "default": 4000
             },
-            "category": "Debrid"
-          }
+            "resources": [
+              "stream"
+            ],
+            "mediaTypes": [],
+            "url": ""
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes 8d2",
-          "__value": {
-            "type": "torrentio",
-            "instanceId": "8d2",
-            "enabled": true,
-            "options": {
-              "name": "Torrentio",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "torrentio",
+          "instanceId": "8d2",
+          "enabled": true,
+          "options": {
+            "name": "Torrentio",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "resources": [
-                "stream"
-              ],
-              "providers": [],
-              "mediaTypes": [],
-              "useMultipleInstances": false
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "resources": [
+              "stream"
+            ],
+            "providers": [],
+            "mediaTypes": [],
+            "useMultipleInstances": false
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes eca",
-          "__value": {
-            "type": "meteor",
-            "instanceId": "eca",
-            "enabled": true,
-            "options": {
-              "name": "Meteor",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "meteor",
+          "instanceId": "eca",
+          "enabled": true,
+          "options": {
+            "name": "Meteor",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "resources": [
-                "stream"
-              ],
-              "includeP2P": false,
-              "removeTrash": false,
-              "useMultipleInstances": false,
-              "mediaTypes": [],
-              "usenet": {
-                "enabled": true
-              },
-              "services": {
-                "__if": "inputs.connections.routing == redhair",
-                "__value": [
-                  "torbox"
-                ]
-              }
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "resources": [
+              "stream"
+            ],
+            "includeP2P": false,
+            "removeTrash": false,
+            "useMultipleInstances": false,
+            "mediaTypes": [],
+            "usenet": {
+              "enabled": true
+            },
+            "services": {
+              "__if": "inputs.connections.routing == redhair",
+              "__value": [
+                "torbox"
+              ]
+            }
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes da0",
-          "__value": {
-            "type": "comet",
-            "instanceId": "da0",
-            "enabled": true,
-            "options": {
-              "name": "Comet",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "comet",
+          "instanceId": "da0",
+          "enabled": true,
+          "options": {
+            "name": "Comet",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "resources": [
-                "stream"
-              ],
-              "includeP2P": false,
-              "removeTrash": true,
-              "scrapeDebridAccountTorrents": false,
-              "useMultipleInstances": false,
-              "mediaTypes": [
-                "movie"
-              ]
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "resources": [
+              "stream"
+            ],
+            "includeP2P": false,
+            "removeTrash": true,
+            "scrapeDebridAccountTorrents": false,
+            "useMultipleInstances": false,
+            "mediaTypes": [
+              "movie"
+            ]
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes 75a",
-          "__value": {
-            "type": "mediafusion",
-            "instanceId": "75a",
-            "enabled": true,
-            "options": {
-              "name": "M-Fusion",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "mediafusion",
+          "instanceId": "75a",
+          "enabled": true,
+          "options": {
+            "name": "M-Fusion",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "resources": [
-                "stream"
-              ],
-              "useCachedResultsOnly": true,
-              "enableWatchlistCatalogs": false,
-              "downloadViaBrowser": false,
-              "contributorStreams": false,
-              "certificationLevelsFilter": [],
-              "nudityFilter": [],
-              "mediaTypes": [
-                "movie"
-              ]
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "resources": [
+              "stream"
+            ],
+            "useCachedResultsOnly": true,
+            "enableWatchlistCatalogs": false,
+            "downloadViaBrowser": false,
+            "contributorStreams": false,
+            "certificationLevelsFilter": [],
+            "nudityFilter": [],
+            "mediaTypes": [
+              "movie"
+            ]
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes 119",
-          "__value": {
-            "type": "newznab",
-            "instanceId": "119",
-            "enabled": true,
-            "options": {
-              "name": "Althub",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "newznab",
+          "instanceId": "119",
+          "enabled": true,
+          "options": {
+            "name": "Althub",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "mediaTypes": [],
-              "searchMode": "both",
-              "paginate": false,
-              "checkOwned": true,
-              "useMultipleInstances": false,
-              "services": {
-                "__if": "inputs.connections.routing == redhair",
-                "__value": [
-                  "aiostreams"
-                ]
-              },
-              "api": {
-                "url": "<template_placeholder>"
-              }
+              "default": 5000
             },
-            "category": "Usenet"
-          }
+            "mediaTypes": [],
+            "searchMode": "both",
+            "paginate": false,
+            "checkOwned": true,
+            "useMultipleInstances": false,
+            "services": {
+              "__if": "inputs.connections.routing == redhair",
+              "__value": [
+                "aiostreams"
+              ]
+            },
+            "api": {
+              "url": "<template_placeholder>"
+            }
+          },
+          "category": "Usenet"
         },
         {
           "__if": "inputs.connections.addonIds includes 06f",
-          "__value": {
-            "type": "newznab",
-            "instanceId": "06f",
-            "enabled": true,
-            "options": {
-              "name": "U-Crawler",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "newznab",
+          "instanceId": "06f",
+          "enabled": true,
+          "options": {
+            "name": "U-Crawler",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "mediaTypes": [],
-              "searchMode": "both",
-              "paginate": false,
-              "checkOwned": true,
-              "useMultipleInstances": false,
-              "services": {
-                "__if": "inputs.connections.routing == redhair",
-                "__value": [
-                  "aiostreams"
-                ]
-              },
-              "api": {
-                "url": "<template_placeholder>"
-              }
+              "default": 5000
             },
-            "category": "Usenet"
-          }
+            "mediaTypes": [],
+            "searchMode": "both",
+            "paginate": false,
+            "checkOwned": true,
+            "useMultipleInstances": false,
+            "services": {
+              "__if": "inputs.connections.routing == redhair",
+              "__value": [
+                "aiostreams"
+              ]
+            },
+            "api": {
+              "url": "<template_placeholder>"
+            }
+          },
+          "category": "Usenet"
         },
         {
           "__if": "inputs.connections.addonIds includes 4f9",
-          "__value": {
-            "type": "newznab",
-            "instanceId": "4f9",
-            "enabled": true,
-            "options": {
-              "name": "N-Central",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "newznab",
+          "instanceId": "4f9",
+          "enabled": true,
+          "options": {
+            "name": "N-Central",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "mediaTypes": [],
-              "searchMode": "both",
-              "paginate": false,
-              "checkOwned": true,
-              "useMultipleInstances": false,
-              "services": {
-                "__if": "inputs.connections.routing == redhair",
-                "__value": [
-                  "aiostreams"
-                ]
-              },
-              "api": {
-                "url": "<template_placeholder>"
-              }
+              "default": 5000
             },
-            "category": "Usenet"
-          }
+            "mediaTypes": [],
+            "searchMode": "both",
+            "paginate": false,
+            "checkOwned": true,
+            "useMultipleInstances": false,
+            "services": {
+              "__if": "inputs.connections.routing == redhair",
+              "__value": [
+                "aiostreams"
+              ]
+            },
+            "api": {
+              "url": "<template_placeholder>"
+            }
+          },
+          "category": "Usenet"
         },
         {
           "__if": "inputs.connections.addonIds includes 16b",
-          "__value": {
-            "type": "newznab",
-            "instanceId": "16b",
-            "enabled": true,
-            "options": {
-              "name": "NZBNest",
-              "api": {
-                "url": "<template_placeholder>"
-              },
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
-              },
-              "mediaTypes": [],
-              "searchMode": "auto",
-              "seasonEpisodeStrategy": "episode",
-              "paginate": false,
-              "useMultipleInstances": false
+          "type": "newznab",
+          "instanceId": "16b",
+          "enabled": true,
+          "options": {
+            "name": "NZBNest",
+            "api": {
+              "url": "<template_placeholder>"
             },
-            "category": "Usenet"
-          }
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
+              },
+              "default": 5000
+            },
+            "mediaTypes": [],
+            "searchMode": "auto",
+            "seasonEpisodeStrategy": "episode",
+            "paginate": false,
+            "useMultipleInstances": false
+          },
+          "category": "Usenet"
         },
         {
           "__if": "inputs.connections.addonIds includes 4c5",
-          "__value": {
-            "type": "newznab",
-            "instanceId": "4c5",
-            "enabled": true,
-            "options": {
-              "name": "T-Rasa",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "newznab",
+          "instanceId": "4c5",
+          "enabled": true,
+          "options": {
+            "name": "T-Rasa",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "mediaTypes": [],
-              "searchMode": "auto",
-              "paginate": false,
-              "checkOwned": true,
-              "useMultipleInstances": false,
-              "services": {
-                "__if": "inputs.connections.routing == redhair",
-                "__value": [
-                  "aiostreams"
-                ]
-              },
-              "api": {
-                "url": "<template_placeholder>"
-              }
+              "default": 5000
             },
-            "category": "Usenet"
-          }
+            "mediaTypes": [],
+            "searchMode": "auto",
+            "paginate": false,
+            "checkOwned": true,
+            "useMultipleInstances": false,
+            "services": {
+              "__if": "inputs.connections.routing == redhair",
+              "__value": [
+                "aiostreams"
+              ]
+            },
+            "api": {
+              "url": "<template_placeholder>"
+            }
+          },
+          "category": "Usenet"
         },
         {
           "__if": "inputs.connections.addonIds includes 863",
-          "__value": {
-            "type": "newznab",
-            "instanceId": "863",
-            "enabled": true,
-            "options": {
-              "name": "D-Slug",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "newznab",
+          "instanceId": "863",
+          "enabled": true,
+          "options": {
+            "name": "D-Slug",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "mediaTypes": [],
-              "searchMode": "auto",
-              "paginate": false,
-              "useMultipleInstances": false,
-              "services": {
-                "__if": "inputs.connections.routing == redhair",
-                "__value": [
-                  "aiostreams"
-                ]
-              },
-              "api": {
-                "url": "<template_placeholder>"
-              }
+              "default": 5000
             },
-            "category": "Usenet"
-          }
+            "mediaTypes": [],
+            "searchMode": "auto",
+            "paginate": false,
+            "useMultipleInstances": false,
+            "services": {
+              "__if": "inputs.connections.routing == redhair",
+              "__value": [
+                "aiostreams"
+              ]
+            },
+            "api": {
+              "url": "<template_placeholder>"
+            }
+          },
+          "category": "Usenet"
         },
         {
           "__if": "inputs.connections.addonIds includes 90f",
-          "__value": {
-            "type": "newznab",
-            "instanceId": "90f",
-            "enabled": true,
-            "options": {
-              "name": "AmeNZB",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "newznab",
+          "instanceId": "90f",
+          "enabled": true,
+          "options": {
+            "name": "AmeNZB",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "mediaTypes": [
-                "anime"
-              ],
-              "searchMode": "auto",
-              "paginate": false,
-              "useMultipleInstances": false,
-              "api": {
-                "url": "<template_placeholder>"
-              }
+              "default": 5000
             },
-            "category": "Usenet"
-          }
+            "mediaTypes": [
+              "anime"
+            ],
+            "searchMode": "auto",
+            "paginate": false,
+            "useMultipleInstances": false,
+            "api": {
+              "url": "<template_placeholder>"
+            }
+          },
+          "category": "Usenet"
         },
         {
           "__if": "inputs.connections.addonIds includes 1fa",
-          "__value": {
-            "type": "custom",
-            "instanceId": "1fa",
-            "enabled": true,
-            "options": {
-              "name": "OnePace",
-              "manifestUrl": "<template_placeholder>",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "custom",
+          "instanceId": "1fa",
+          "enabled": true,
+          "options": {
+            "name": "OnePace",
+            "manifestUrl": "<template_placeholder>",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "resources": [],
-              "mediaTypes": [],
-              "libraryAddon": false,
-              "resultPassthrough": true
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "resources": [],
+            "mediaTypes": [],
+            "libraryAddon": false,
+            "resultPassthrough": true
+          },
+          "category": "Debrid"
         },
         {
           "__if": "inputs.connections.addonIds includes c06",
-          "__value": {
-            "type": "newznab",
-            "instanceId": "c06",
-            "enabled": true,
-            "options": {
-              "name": "Indexarr",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "newznab",
+          "instanceId": "c06",
+          "enabled": true,
+          "options": {
+            "name": "Indexarr",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "mediaTypes": [],
-              "searchMode": "both",
-              "paginate": false,
-              "useMultipleInstances": false,
-              "services": {
-                "__if": "inputs.connections.routing == redhair",
-                "__value": [
-                  "nzbdav"
-                ]
-              },
-              "api": {
-                "url": "<template_placeholder>"
-              }
+              "default": 5000
             },
-            "category": "Usenet"
-          }
+            "mediaTypes": [],
+            "searchMode": "both",
+            "paginate": false,
+            "useMultipleInstances": false,
+            "services": {
+              "__if": "inputs.connections.routing == redhair",
+              "__value": [
+                "nzbdav"
+              ]
+            },
+            "api": {
+              "url": "<template_placeholder>"
+            }
+          },
+          "category": "Usenet"
         },
         {
           "__if": "inputs.connections.addonIds includes aa8",
-          "__value": {
-            "type": "custom",
-            "instanceId": "aa8",
-            "enabled": true,
-            "options": {
-              "name": "Amatsu",
-              "manifestUrl": "<template_placeholder>",
-              "timeout": {
-                "__switch": "inputs.connections.timeout",
-                "cases": {
-                  "original": 5000,
-                  "10000": 10000,
-                  "20000": 20000,
-                  "30000": 30000
-                },
-                "default": 5000
+          "type": "custom",
+          "instanceId": "aa8",
+          "enabled": true,
+          "options": {
+            "name": "Amatsu",
+            "manifestUrl": "<template_placeholder>",
+            "timeout": {
+              "__switch": "inputs.connections.timeout",
+              "cases": {
+                "original": 5000,
+                "10000": 10000,
+                "20000": 20000,
+                "30000": 30000
               },
-              "resources": [
-                "stream"
-              ],
-              "mediaTypes": [
-                "anime"
-              ],
-              "libraryAddon": false,
-              "resultPassthrough": false
+              "default": 5000
             },
-            "category": "Debrid"
-          }
+            "resources": [
+              "stream"
+            ],
+            "mediaTypes": [
+              "anime"
+            ],
+            "libraryAddon": false,
+            "resultPassthrough": false
+          },
+          "category": "Debrid"
         }
       ]
     },
@@ -1825,7 +1785,7 @@
     "appliedTemplates": [
       {
         "id": "custom.redhair.full",
-        "version": "1.4.0"
+        "version": "1.4.1"
       }
     ]
   }

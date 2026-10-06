@@ -218,7 +218,9 @@ def build():
             options['services'] = {'__if':'inputs.connections.routing == redhair', '__value':options['services']}
         options['timeout'] = {'__switch':'inputs.connections.timeout', 'cases':{'original':options['timeout'], '10000':10000, '20000':20000, '30000':30000},
                               'default':options['timeout']}
-        presets.append({'__if':f"inputs.connections.addonIds includes {preset['instanceId']}", '__value':preset})
+        # Availability validation reads type before resolving conditionals.
+        # Keep the preset fields beside __if rather than inside __value.
+        presets.append({'__if':f"inputs.connections.addonIds includes {preset['instanceId']}", **preset})
     supplied['presets'] = presets
     supplied['catalogModifications'] = [
         {'__if':f"inputs.connections.addonIds includes {'2d1' if c['addonName']=='Library' else '6fd'} and inputs.connections.routing == redhair", '__value':c}
@@ -237,7 +239,7 @@ def build():
             section = section_for(key)
             if is_full: section_fields[section].append(key)
             config[key] = {'__if':active(section),'__value':value}
-        config['appliedTemplates'] = [{'id':template_id,'version':'1.4.0'}]
+        config['appliedTemplates'] = [{'id':template_id,'version':'1.4.1'}]
         inputs = []
         if not is_full:
             inputs.append({'id':'applyMode','name':'What to update','type':'select','required':True,'default':'selOnly',
@@ -258,7 +260,7 @@ def build():
                      'options':[{'value':'enabled','label':'Use my enabled services (recommended for new setup)'},{'value':'redhair','label':'Redhair’s original service assignments'}]},
                     {'id':'timeout','name':'Add-on timeout','type':'select','default':'original',
                      '__if':active('addons'),'description':'Keep Redhair’s 4–5 second timeouts or allow slower sources more time.',
-                     'options':[{'value':'original','label':'Redhair defaults'},{'value':10000,'label':'10 seconds'},{'value':20000,'label':'20 seconds'},{'value':30000,'label':'30 seconds'}]},
+                     'options':[{'value':'original','label':'Redhair defaults'},{'value':'10000','label':'10 seconds'},{'value':'20000','label':'20 seconds'},{'value':'30000','label':'30 seconds'}]},
                 ])
             if group == 'display':
                 sub.append({'id':'style','name':'Formatter style','type':'select','required':True,'default':'redhair',
@@ -275,7 +277,7 @@ def build():
         # Keep formatter choice in its Appearance group (one subsection level).
         config['formatter']['__value']['__switch']='inputs.display.style'
         metadata={'id':template_id,'name':'Redhair Quality — '+('Full setup' if is_full else 'Update existing setup'),
-            'version':'1.4.0','description':('Customizable Redhair defaults with service onboarding, add-on selection and four formatter previews.' if is_full else
+            'version':'1.4.1','description':('Customizable Redhair defaults with service onboarding, add-on selection and four formatter previews.' if is_full else
                 'Safely update SEL / regex only or selected sections while preserving services, credentials and unselected customizations.'),
             'author':'Local adaptation','source':'custom','category':'AIO','serviceRequired':False,'inputs':inputs}
         if not is_full: metadata['services']=[]
@@ -287,6 +289,6 @@ def build():
         (ROOT/filename).write_text(json.dumps(template,ensure_ascii=False,indent=2)+'\n')
     (ROOT/'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
     (ROOT/'validation/section-inputs.json').write_text(json.dumps(paths,indent=2)+'\n')
-    print('Built v1.4.0: full setup + safe updates, four inline groups and formatter previews.')
+    print('Built v1.4.1: full setup + safe updates, four inline groups and formatter previews.')
 
 if __name__ == '__main__': build()
