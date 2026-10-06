@@ -152,6 +152,20 @@ SECTIONS = {
     'diagnostics': ('Statistics and errors', 'Redhair defaults: show add-on, filtering and timing statistics at the bottom. No resource errors are hidden.'),
 }
 
+SHORT_DEFAULTS = {
+    'sel':'Default: synced 2160p Remux + Anime Remux 1080p, supplied language scoring and 9 overrides. Replaces custom SEL/regex rules too.',
+    'filters':'Default: hide uncached streams, 240p/144p, CAM/SCR/TS/TC and 3D; prefer 2160p/1080p. Digital-release filtering on.',
+    'sorting':'Default: cached first; library → resolution → quality → SEL score. Cached anime: SeaDex → SEL score.',
+    'limits':'Default: simultaneous caps of 3/service, 3/resolution and 4/quality; global size 50 MB–100 GB. SEL may impose further limits.',
+    'addons':'Default: 9 non-Usenet sources. Replaces sources, catalogs and colors; dynamic fetching and groups off.',
+    'formatter':'Default: Redhair layout and RPDB posters. Alternatives below change the stream layout.',
+    'matching':'Default: SeaDex on, exact movie/series titles, strict movie years and season/episode matching.',
+    'deduplication':'Default: filename/info-hash duplicates per service; prefer library results; merging on.',
+    'playback':'Default: first Usenet stream preloaded, owned checks on, next-episode precache/cache-and-play off; failover up to 5 attempts; TorBox wrapping on.',
+    'diagnostics':'Default: add-on/filter/timing statistics at the bottom; no resource errors hidden.',
+}
+
+
 
 def section_for(key):
     if key.startswith('synced') or 'RegexPatterns' in key or key.endswith('StreamExpressions') or key in ('selOverrides','regexOverrides'):
@@ -190,6 +204,7 @@ def build():
         if key not in supplied and (key.startswith('synced') or 'RegexPatterns' in key or key.endswith('StreamExpressions')):
             supplied[key] = []
     supplied['bitrate'] = {'useMetadataRuntime':True}
+    (ROOT/'DEFAULTS.md').write_text('# Section defaults\n\nAn enabled section replaces its matching settings. Off preserves your current values.\n\n'+'\n\n'.join('## '+name+'\n\n'+description for name,description in SECTIONS.values())+'\n')
     formatter_variants = build_formatters()
     supplied['formatter'] = {'__switch':'inputs.formatterStyle',
         'cases':{key:{'id':'custom','definitions':{'custom':value}} for key,value in formatter_variants.items()},
@@ -203,7 +218,7 @@ def build():
         'display': ('Appearance', ['formatter']),
         'behavior': ('Playback and diagnostics', ['playback','diagnostics']),
     }
-    paths = {section: f'{group}.{section}' for group,(_,sections) in groups.items() for section in sections}
+    paths = {section: section+'Enabled' for section in SECTIONS}
     paths['formatter'] = 'formatterEnabled'
     original_presets = copy.deepcopy(supplied['presets'])
     selected_default = [p['instanceId'] for p in original_presets if p['enabled'] and p.get('category') != 'Usenet']
@@ -223,10 +238,10 @@ def build():
                               'default':options['timeout']}
         # Availability validation reads type before resolving conditionals.
         # Keep the preset fields beside __if rather than inside __value.
-        presets.append({'__if':f"inputs.connections.addonIds includes {preset['instanceId']}", **preset})
+        presets.append({'__if':f"inputs.addonIds includes {preset['instanceId']}", **preset})
     supplied['presets'] = presets
     supplied['catalogModifications'] = [
-        {'__if':f"inputs.connections.addonIds includes {'2d1' if c['addonName']=='Library' else '6fd'} and inputs.connections.routing == redhair", '__value':c}
+        {'__if':f"inputs.addonIds includes {'2d1' if c['addonName']=='Library' else '6fd'} and inputs.connections.routing == redhair", '__value':c}
         for c in supplied['catalogModifications']]
     templates = []
     template_id = 'custom.redhair.full'
@@ -238,19 +253,19 @@ def build():
         section = section_for(key)
         section_fields[section].append(key)
         config[key] = {'__if':active(section),'__value':value}
-    config['appliedTemplates'] = [{'id':template_id,'version':'1.5.1'}]
+    config['appliedTemplates'] = [{'id':template_id,'version':'1.6.0'}]
     inputs = []
     inputs.append({'id':'notice','name':'Customize before applying','type':'alert','intent':'info',
         'description':'For a new setup, select your services. For updates that should keep existing accounts, use Skip on the Services step: service selection is separate from the switches below. Enable only the sections you want to replace; switch off the rest. For an SEL-only update, leave only SEL and regex on. Proxy settings and user variants are always preserved. Usenet add-ons and Meteor Usenet search are off by default.'})
     for group,(name,sections) in groups.items():
-        sub=[{'id':key,'name':'Apply '+SECTIONS[key][0],'description':SECTIONS[key][1]+' Off keeps your current settings.','type':'boolean','default':True} for key in sections]
+        sub=[{'id':paths[key],'name':'Replace '+SECTIONS[key][0],'description':SHORT_DEFAULTS[key]+' Off preserves your settings.','type':'boolean','default':True} for key in sections]
         if group == 'connections':
             sub.extend([
                 {'id':'addonIds','name':'Add-ons to include','type':'multi-select','default':selected_default,
-                 '__if':active('addons'),'description':'Default selection: '+', '.join(p['options']['name'] for p in original_presets if p['instanceId'] in selected_default)+'. Optional (off by default, including all Usenet entries): '+', '.join(p['options']['name'] for p in original_presets if p['instanceId'] not in selected_default)+'. Selected entries replace the add-on list; deselected entries do not request credentials. Supply your own endpoints on the Credentials screen.',
-                 'options':[{'value':p['instanceId'],'label':p['options']['name']+(' (optional)' if p['instanceId'] not in selected_default else '')} for p in original_presets]},
+                 '__if':active('addons'),'description':'Default: 9 non-Usenet sources, listed first. Optional sources follow; Usenet entries are labeled and unchecked. Selected sources replace your add-on list. Connection details are entered on Credentials.',
+                 'options':[{'value':p['instanceId'],'label':p['options']['name']+(' — Usenet (optional)' if p.get('category')=='Usenet' else ' (optional)' if p['instanceId'] not in selected_default else '')} for p in sorted(original_presets,key=lambda p: (p['instanceId'] not in selected_default,p.get('category')=='Usenet'))]},
                 {'id':'meteorUsenet','name':'Enable Meteor Usenet search','type':'boolean','default':False,
-                 '__if':active('addons')+' and inputs.connections.addonIds includes eca',
+                 '__if':active('addons')+' and inputs.addonIds includes eca',
                  'description':'Off by default: Meteor searches without its Usenet option. Enable only if you want Usenet results and have a compatible service. Other Usenet add-ons must be explicitly selected above.'},
                 {'id':'routing','name':'Add-on service assignments','type':'select','default':'enabled',
                  '__if':active('addons'),'description':'Use my enabled services (default): each add-on uses your enabled accounts that it supports. Redhair assignments (optional): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Redhair’s Library/Store catalog customizations apply only in Redhair mode. This controls add-on routing, not your saved accounts.',
@@ -267,22 +282,27 @@ def build():
                 sub.append({'id':'preview_'+style,'type':'alert','intent':'info-basic','name':STYLES[style]+' preview',
                     '__if':active('formatter')+f' and inputs.formatterStyle == {style}',
                     'description':preview['name']+'\n'+preview['description']})
-        if group == 'display':
-            # Subsection dialogs buffer local edits until Save. Keep the
-            # selector and conditional previews at wizard level so they
-            # respond to the same onValuesChange event immediately.
-            header={'id':'appearanceHeader','name':'Appearance','type':'alert','intent':'info-basic',
-                    'description':'Choose a formatter and view its sample here without opening a settings dialog.'}
-            sub[0]['id']='formatterEnabled'
+        header={'id':group+'Header','name':name,'type':'alert','intent':'info-basic',
+                'description':{'quality':'Choose the quality settings to replace.',
+                               'connections':'Select your sources here; optional connection settings are below.',
+                               'display':'Choose a style to see its preview immediately.',
+                               'behavior':'Choose the playback and diagnostic settings to replace.'}[group]}
+        if group == 'connections':
+            # Only uncommon settings are buffered behind an Open/Save dialog.
+            # The section toggle and addon selection share live wizard state.
+            inputs.extend([header, *sub[:2]])
+            inputs.append({'id':'connections','name':'Advanced add-on settings',
+                'type':'subsection','subsectionIntent':'inline','__if':active('addons'),
+                'description':'Optional: timeout, service assignments and Meteor Usenet search.',
+                'subOptions':sub[2:]})
+        else:
             inputs.extend([header, *sub])
-            continue
-        option={'id':group,'name':name,'type':'subsection','subsectionIntent':'inline',
-            'description':'Enable the sections you want to replace; switch off anything you want to keep.', 'subOptions':sub}
-        inputs.append(option)
+    inputs.append({'id':'reviewHint','name':'Review before applying','type':'alert','intent':'info-basic',
+        'description':'Enabled sections replace their matching settings; disabled sections stay unchanged. On Review, use “See exactly what changes” to compare with your current configuration before applying. [Full default settings](https://github.com/Jeor/aiored/blob/main/DEFAULTS.md).'})
     # Formatter choice is a top-level control for immediate preview updates.
     config['formatter']['__value']['__switch']='inputs.formatterStyle'
     metadata={'id':template_id,'name':'Redhair Quality — Setup and updater',
-        'version':'1.5.1','description':'One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.',
+        'version':'1.6.0','description':'One customizable template for new setups and updates. Choose which sections to apply. Skip Services to preserve your existing accounts. Usenet add-ons are optional and off by default. Includes four live formatter previews.',
         'author':'Local adaptation','source':'custom','category':'AIO','serviceRequired':False,'inputs':inputs}
     templates.append({'metadata':metadata,'config':copy.deepcopy(config)})
     # One listed template. Legacy direct URLs alias the same ID and behavior.
@@ -292,6 +312,6 @@ def build():
         (ROOT/filename).write_text(json.dumps(templates[0],ensure_ascii=False,indent=2)+'\n')
     (ROOT/'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
     (ROOT/'validation/section-inputs.json').write_text(json.dumps(paths,indent=2)+'\n')
-    print('Built v1.5.1: one setup/updater with Usenet off by default, four settings groups and immediate formatter previews.')
+    print('Built v1.6.0: one setup/updater with Usenet off by default, visible section switches, one advanced dialog and immediate formatter previews.')
 
 if __name__ == '__main__': build()

@@ -1,6 +1,6 @@
 # aiored — Redhair Quality Setup
 
-Version **1.5.1** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
+Version **1.6.0** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
 
 ## Import URL
 
@@ -12,7 +12,7 @@ https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-complete-setup-templa
 
 The URL now provides one template: **Redhair Quality — Setup and updater** (`custom.redhair.full`). Use it for both new setups and selective updates. The separate partial-update template has been removed from the list.
 
-Featured template ID: `custom.redhair.full`. Remove the old `custom.redhair.complete` featured ID if you added it. Refresh/reimport to load v1.5.1; GitHub changes do not automatically reapply your configuration.
+Featured template ID: `custom.redhair.full`. Remove the old `custom.redhair.complete` featured ID if you added it. Refresh/reimport to load v1.6.0; GitHub changes do not automatically reapply your configuration.
 
 The old direct full/update URLs remain compatibility aliases for the same updater and ID; they no longer expose different workflows.
 
@@ -23,13 +23,15 @@ Choose exactly which sections to apply. On replaces that section; off preserves 
 | Group | Independent switches and controls |
 | --- | --- |
 | Quality and ranking | SEL / regex, basic filters, sorting, size / bitrate / result limits, metadata matching / SeaDex, deduplication |
-| Add-ons and connections | Apply add-ons, choose individual add-ons, service assignments, timeout |
+| Add-ons and connections | Visible replace switch and source picker; one optional advanced dialog for timeout, service routing and Meteor Usenet |
 | Appearance | Apply formatter / posters, choose one of four formatters, see its preview |
 | Playback and diagnostics | Apply playback / download / failover settings; apply statistics / error settings |
 
-On the optional **Services** step, choose services for a new setup or click **Skip** to preserve existing accounts during an update. Quality, connections and playback controls open their settings dialogs. Appearance stays directly on the Options screen so choosing a formatter immediately changes the visible preview; no Save or reopening is needed. No additional wizard steps are added. Proxy settings, variants and account trust are omitted from the updater.
+On the optional **Services** step, choose services for a new setup or click **Skip** to preserve existing accounts during an update. All ten “Replace…” switches and the add-on picker are visible directly on Options. Only timeout, service routing and Meteor Usenet search are inside **Advanced add-on settings**. Appearance stays directly on the Options screen so choosing a formatter immediately changes the visible preview; no Save or reopening is needed. No additional wizard steps are added. Proxy settings, variants and account trust are omitted from the updater.
 
 SEL-only updates preserve add-ons, formatter, sorting and every other section, but replace your custom SEL / regex edits. Keep Stream Expression Score in your existing sort order to use the updated scores.
+
+The native template format cannot make a shortcut button set several editable switches at once. For SEL-only, switch off all sections except SEL / regex. The Review screen’s **See exactly what changes** comparison shows the actual effect before applying.
 
 ## Customize add-ons and services
 
@@ -37,7 +39,7 @@ The default selection contains **9 non-Usenet add-ons**: Store, SeaDex, nekoBT, 
 
 Choose **Use my enabled services** to let each add-on use the services it supports from your enabled accounts. This is the full-setup default, so the configuration works with your service selection instead of restricting it to Redhair’s accounts. **Redhair’s original service assignments** retains the original TorBox / AIOStreams / NZBDAV restrictions and is an optional alternative. Catalog customizations tied to those assignments are retained only in Redhair mode, and only for selected add-ons.
 
-The default timeout is **4 seconds for Debridio and 5 seconds for every other bundled add-on**. Choosing **10, 20 or 30 seconds** applies that timeout to every selected add-on. Longer timeouts allow slower sources more time but can delay results. Each section description now lists the concrete Redhair settings it applies; switching the section off preserves your settings instead. The Credentials screen asks for your own required indexer endpoints, custom manifests and other add-on credentials. Select only the sources you intend to configure.
+The default timeout is **4 seconds for Debridio and 5 seconds for every other bundled add-on**. Choosing **10, 20 or 30 seconds** applies that timeout to every selected add-on. Longer timeouts allow slower sources more time but can delay results. Each switch has a short default summary, with the full [section defaults](DEFAULTS.md) available separately; switching the section off preserves your settings instead. The Credentials screen asks for your own required indexer endpoints, custom manifests and other add-on credentials. Select only the sources you intend to configure.
 
 Service selection is separate from the section switches. **Click Skip on the Services step to preserve your existing services and credentials.** Leaving a configuration section off does not undo an explicit service selection. For an SEL-only update, skip services, leave SEL / regex on and switch off the other nine sections.
 

@@ -1,12 +1,12 @@
 {
-  "sel": "quality.sel",
-  "filters": "quality.filters",
-  "sorting": "quality.sorting",
-  "limits": "quality.limits",
-  "matching": "quality.matching",
-  "deduplication": "quality.deduplication",
-  "addons": "connections.addons",
+  "sel": "selEnabled",
+  "filters": "filtersEnabled",
+  "sorting": "sortingEnabled",
+  "limits": "limitsEnabled",
+  "addons": "addonsEnabled",
   "formatter": "formatterEnabled",
-  "playback": "behavior.playback",
-  "diagnostics": "behavior.diagnostics"
+  "matching": "matchingEnabled",
+  "deduplication": "deduplicationEnabled",
+  "playback": "playbackEnabled",
+  "diagnostics": "diagnosticsEnabled"
 }

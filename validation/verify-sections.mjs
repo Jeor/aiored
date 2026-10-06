@@ -19,8 +19,8 @@ let combinations=0;
 for(const t of templates){
  makeTemplateSchema(z).parse(t);
  const isFull=t.metadata.id==='custom.redhair.full';
- assert.equal(t.metadata.version,'1.5.1');
- assert.equal(t.metadata.inputs.filter(o=>o.type==='subsection').length,3);
+ assert.equal(t.metadata.version,'1.6.0');
+ assert.equal(t.metadata.inputs.filter(o=>o.type==='subsection').length,1);
  if(isFull)assert(!('services' in t.metadata));else assert.deepEqual(t.metadata.services,[]);
  const d=defaults(t);
  const resolveConfig=(inputs,svcs=[])=>applyTemplateConditionals(t.config,inputs,svcs);
@@ -45,7 +45,7 @@ for(const t of templates){
   const merged={...existing,...patch};
   for(const [key,value] of Object.entries(existing))if(!expected.has(key))assert.deepEqual(merged[key],value);
   for(const k of expected)assert.deepEqual(patch[k],full[k]);
-  if(!input.connections.addons)assert(!JSON.stringify(patch).includes('template_placeholder'));
+  if(!input.addonsEnabled)assert(!JSON.stringify(patch).includes('template_placeholder'));
   combinations++;
  }
  const sel=structuredClone(d);
@@ -62,14 +62,14 @@ for(const t of templates){
  // Each addon can be included alone; optional selections become enabled and
  // require a fresh endpoint. No other addon or stale catalog entry remains.
  for(const p of source.presets){
-  const input=structuredClone(d);input.connections.addonIds=[p.instanceId];input.connections.timeout='20000';
+  const input=structuredClone(d);input.addonIds=[p.instanceId];input.connections.timeout='20000';
   const cfg=resolveConfig(input,['realdebrid']);
   assert.equal(cfg.presets.length,1);assert.equal(cfg.presets[0].instanceId,p.instanceId);
   assert.equal(cfg.presets[0].enabled,true);assert.equal(cfg.presets[0].options.timeout,20000);
   assert(!JSON.stringify(cfg).includes('<optional_template_placeholder>'));
   for(const c of cfg.catalogModifications)assert.equal(c.addonName,p.options.name);
  }
- const empty=structuredClone(d);empty.connections.addonIds=[];
+ const empty=structuredClone(d);empty.addonIds=[];
  const cfg=resolveConfig(empty);assert.deepEqual(cfg.presets,[]);assert.deepEqual(cfg.catalogModifications,[]);
  assert(!JSON.stringify(cfg).includes('template_placeholder'));
  // Enabled routing omits the restriction. An empty array would disable every
@@ -82,6 +82,6 @@ for(const t of templates){
  const declared=new Set(t.metadata.inputs.flatMap(o=>[o.id,...(o.subOptions||[]).map(s=>o.id+'.'+s.id)]));
  assert(refs.every(r=>declared.has(r)),`Undeclared inputs: ${refs.filter(r=>!declared.has(r))}`);
 }
-const report={version:'1.5.1',result:'pass',sectionToggleCombinations:combinations,templates:1,settingsGroups:4,subsectionDialogs:3,appearanceInline:true,individualAddonSelections:20,redhairQualityDefaultsPreserved:true,selOnlyPreservesOtherSections:true,proxyAbsent:true,serviceSelectionOptional:true,usenetOffByDefault:true,liveImportTested:false};
+const report={version:'1.6.0',result:'pass',sectionToggleCombinations:combinations,templates:1,settingsGroups:4,subsectionDialogs:1,appearanceInline:true,individualAddonSelections:20,redhairQualityDefaultsPreserved:true,selOnlyPreservesOtherSections:true,proxyAbsent:true,serviceSelectionOptional:true,usenetOffByDefault:true,liveImportTested:false};
 writeFileSync(resolve(root,'validation/section-results.json'),JSON.stringify(report,null,2)+'\n');
 console.log(`PASS: ${combinations} section combinations, 20 addon selections, schemas, defaults, service routing and safe updates.`);
