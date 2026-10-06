@@ -12,7 +12,7 @@ const t=read('Redhair-full-setup-template.json');
 const source=read('sources/redhair-default-config.json').formatter;
 const styles=['redhair','jeormatter','jeormatter_alt','jeormatter_filename'];
 assert.deepEqual(read('formatters/redhair.json'),source.definitions.custom);
-assert.equal(t.metadata.inputs.find(x=>x.id==='display').subOptions.find(x=>x.id==='style').default,'redhair');
+assert.equal(t.metadata.inputs.find(x=>x.id==='formatterStyle').default,'redhair');
 const hooks={comparators:comparatorFunctions,resolveVariable:()=>undefined,resolveValues:()=>undefined,onDepthExceeded:()=>{throw Error('Formatter nesting too deep');}};
 const base={stream:{title:'Example Film',year:2025,seasonEpisode:[],resolution:'2160p',quality:'BluRay REMUX',visualTags:['HDR10'],audioTags:['TrueHD','Atmos'],audioChannels:['7.1'],uLanguageCodes:['EN'],uSubtitleCodes:['EN'],library:false,preloading:false,seasonPack:false,size:40e9,folderSize:0,bitrate:50e6,proxied:false,type:'debrid',indexer:null,seeders:0,subbed:false,releaseGroup:'FraMeSToR',seScore:95000,nSeScore:95,seadex:false,seadexBest:false,rseMatched:[],network:'Netflix',editions:[],message:null,filename:'Example.Film.2025.2160p.REMUX.mkv'},addon:{name:'Torrentio'},service:{shortName:'TB',name:'TorBox',cached:true}};
 const scenarios=[
@@ -25,10 +25,10 @@ let renders=0;const previews=read('validation/formatter-previews.json');
 for(const style of styles){
  const formatter=read(`formatters/${style}.json`);
  for(const [field,text] of Object.entries(formatter))assert.deepEqual(parseTemplate(text).diagnostics,[],`${style}.${field} parse errors`);
- const full=applyTemplateConditionals(t.config,{display:{formatter:true,style}},[]);
+ const full=applyTemplateConditionals(t.config,{formatterEnabled:true,formatterStyle:style},[]);
  assert.deepEqual(full.formatter,{id:'custom',definitions:{custom:formatter}});
  for(const mode of ['selOnly','selected']){
-  const cfg=applyTemplateConditionals(read('Redhair-update-template.json').config,{applyMode:mode,display:{style,formatter:false},quality:{sel:true}},[]);
+  const cfg=applyTemplateConditionals(read('Redhair-update-template.json').config,{applyMode:mode,formatterStyle:style,formatterEnabled:false,quality:{sel:true}},[]);
   assert(!('formatter' in cfg));assert(!('posterService' in cfg));
  }
  if(style==='redhair')continue;
@@ -55,11 +55,11 @@ for(const style of styles){
 assert.equal(Object.keys(previews).length,4);
 for(const [style,p] of Object.entries(previews)){
  assert(!JSON.stringify(p).includes('unknown_propertyName'));
- const alert=t.metadata.inputs.find(o=>o.id==='display').subOptions.find(o=>o.id==='preview_'+style);
+ const alert=t.metadata.inputs.find(o=>o.id==='preview_'+style);
  assert(alert.description.includes(p.name)&&alert.description.includes(p.description));
- const alerts=t.metadata.inputs.find(o=>o.id==='display').subOptions.filter(o=>o.id.startsWith('preview_'));
- assert.deepEqual(alerts.filter(o=>evaluateTemplateCondition(o.__if,{display:{formatter:true,style}},[])).map(o=>o.id),['preview_'+style]);
- assert.equal(alerts.filter(o=>evaluateTemplateCondition(o.__if,{display:{formatter:false,style}},[])).length,0);
+ const alerts=t.metadata.inputs.filter(o=>o.id.startsWith('preview_'));
+ assert.deepEqual(alerts.filter(o=>evaluateTemplateCondition(o.__if,{formatterEnabled:true,formatterStyle:style},[])).map(o=>o.id),['preview_'+style]);
+ assert.equal(alerts.filter(o=>evaluateTemplateCondition(o.__if,{formatterEnabled:false,formatterStyle:style},[])).length,0);
 }
-writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.4.1',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
+writeFileSync(resolve(root,'validation/formatter-results.json'),JSON.stringify({version:'1.4.2',result:'pass',styles:4,adaptedBadgeScenarios:renders,sectionIsolation:true,redhairOriginalUnchanged:true,liveClientTested:false},null,2)+'\n');
 console.log(`PASS: four formatter options; ${renders} rendered badge scenarios; layout, source labels and section isolation.`);

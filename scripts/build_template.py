@@ -140,16 +140,16 @@ def build_custom():
 
 # Every imported field belongs to exactly one selectable section.
 SECTIONS = {
-    'sel': ('SEL and regex', 'All stream expressions, regex patterns, synced URLs and score overrides. Replaces the selected section, including custom SEL edits.'),
-    'filters': ('Basic filters', 'Resolution, quality, language, audio/video, keyword, cached-stream and other basic filters.'),
-    'sorting': ('Sorting', 'All cached, uncached, movie, series and anime sort orders.'),
-    'limits': ('Result, size and bitrate limits', 'Result counts, size ranges and bitrate settings.'),
-    'addons': ('Add-ons, catalogs and fetching', 'Add-on list, category colors, catalogs, groups and dynamic fetching. Includes connection placeholders for your own endpoints.'),
-    'formatter': ('Formatter and posters', 'Stream display formatter and poster service selection.'),
-    'matching': ('Metadata matching and SeaDex', 'Year/title/episode matching, language inference and SeaDex enablement.'),
-    'deduplication': ('Deduplication', 'Duplicate handling and grouping rules.'),
-    'playback': ('Playback, downloads and failover', 'Autoplay, preloading, cache-and-play, owned checks, failover and service wrapping.'),
-    'diagnostics': ('Statistics and errors', 'Statistics display and hidden error resources.'),
+    'sel': ('SEL and regex', 'Redhair defaults: live 2160p Remux + Anime Remux 1080p profiles, supplied Original/English/Tamil language scoring, exclusion expressions and nine score overrides. Replaces all SEL/regex lists and sync URLs, including your custom rules.'),
+    'filters': ('Basic filters', 'Redhair defaults: exclude uncached streams, 240p/144p, CAM/SCR/TS/TC and 3D; prefer 2160p then 1080p, Remux/WEB-DL/WEBRip and debrid/Usenet. Digital-release filtering is enabled. Clears other basic filter lists to the supplied defaults.'),
+    'sorting': ('Sorting', 'Redhair defaults: cached first. Cached results prioritize library, resolution, quality, then SEL score; cached anime uses SeaDex then SEL score. Uncached order: stream type, seeders, matched expressions, SEL score, size. Replaces all sort orders.'),
+    'limits': ('Result, size and bitrate limits', 'Redhair defaults: conjunctive caps of 3 results per service, 3 per resolution and 4 per quality; a stream must fit all caps. Global size range is 50 MB–100 GB for movies, series and anime; resolution-specific ranges also cap at 100 GB. Metadata runtime is used for bitrate calculation. SEL exclusions can impose additional limits.'),
+    'addons': ('Add-ons, catalogs and fetching', 'Redhair defaults: 14 enabled add-ons, with 6 disabled entries offered as optional choices below. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below.'),
+    'formatter': ('Formatter and posters', 'Redhair defaults: original Redhair stream layout and RPDB poster service. The Jeormatter alternatives below change the stream layout while retaining Redhair Best/Tier scoring; the poster choice remains RPDB.'),
+    'matching': ('Metadata matching and SeaDex', 'Redhair defaults: SeaDex enabled; year matching enabled with strict movie years and initial air dates; exact title matching for movies/series; strict season/episode matching. Episode-title matching request types and language-inference sources are empty.'),
+    'deduplication': ('Deduplication', 'Redhair defaults: deduplicate by filename and info hash, per service for cached/uncached results, and a single result for P2P. Prefer library results. Duplicate merging and failover variants are enabled.'),
+    'playback': ('Playback, downloads and failover', 'Redhair defaults: preload the first Usenet result; owned checks on; next-episode precaching and cache-and-play off. Failover supports Usenet/debrid across types, with 5 attempts and 1 in parallel, before limiting. Service wrapping is enabled for TorBox. Autoplay matching attributes: resolution, quality, encode and visual tags.'),
+    'diagnostics': ('Statistics and errors', 'Redhair defaults: show add-on, filtering and timing statistics at the bottom. No resource errors are hidden.'),
 }
 
 
@@ -204,6 +204,7 @@ def build():
         'behavior': ('Playback and diagnostics', ['playback','diagnostics']),
     }
     paths = {section: f'{group}.{section}' for group,(_,sections) in groups.items() for section in sections}
+    paths['formatter'] = 'formatterEnabled'
     original_presets = copy.deepcopy(supplied['presets'])
     selected_default = [p['instanceId'] for p in original_presets if p['enabled']]
     presets = []
@@ -239,7 +240,7 @@ def build():
             section = section_for(key)
             if is_full: section_fields[section].append(key)
             config[key] = {'__if':active(section),'__value':value}
-        config['appliedTemplates'] = [{'id':template_id,'version':'1.4.1'}]
+        config['appliedTemplates'] = [{'id':template_id,'version':'1.4.2'}]
         inputs = []
         if not is_full:
             inputs.append({'id':'applyMode','name':'What to update','type':'select','required':True,'default':'selOnly',
@@ -253,31 +254,43 @@ def build():
             if group == 'connections':
                 sub.extend([
                     {'id':'addonIds','name':'Add-ons to include','type':'multi-select','default':selected_default,
-                     '__if':active('addons'),'description':'Starts with Redhair’s enabled add-ons. Select any optional add-ons too. This replaces the add-on list; deselected entries are omitted and do not request credentials. Enter your own endpoints on the Credentials screen.',
+                     '__if':active('addons'),'description':'Default selection: '+', '.join(p['options']['name'] for p in original_presets if p['enabled'])+'. Optional (off by default): '+', '.join(p['options']['name'] for p in original_presets if not p['enabled'])+'. Selected entries replace the add-on list; deselected entries do not request credentials. Supply your own endpoints on the Credentials screen.',
                      'options':[{'value':p['instanceId'],'label':p['options']['name']+(' (optional)' if not p['enabled'] else '')} for p in original_presets]},
                     {'id':'routing','name':'Add-on service assignments','type':'select','default':'enabled' if is_full else 'redhair',
-                     '__if':active('addons'),'description':'Use enabled services lets each add-on use your enabled services that it supports. Redhair assignments retains the original TorBox / AIOStreams / NZBDAV restrictions. Catalog customizations tied to those assignments are only applied in Redhair mode.',
+                     '__if':active('addons'),'description':'Use my enabled services (Full setup default): each add-on uses your enabled accounts that it supports. Redhair assignments (Update default): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Redhair’s Library/Store catalog customizations apply only in Redhair mode. This controls add-on routing, not your saved accounts.',
                      'options':[{'value':'enabled','label':'Use my enabled services (recommended for new setup)'},{'value':'redhair','label':'Redhair’s original service assignments'}]},
                     {'id':'timeout','name':'Add-on timeout','type':'select','default':'original',
-                     '__if':active('addons'),'description':'Keep Redhair’s 4–5 second timeouts or allow slower sources more time.',
-                     'options':[{'value':'original','label':'Redhair defaults'},{'value':'10000','label':'10 seconds'},{'value':'20000','label':'20 seconds'},{'value':'30000','label':'30 seconds'}]},
+                     '__if':active('addons'),'description':'Redhair defaults: Debridio waits up to 4 seconds; every other bundled add-on waits up to 5 seconds. The 10 / 20 / 30 second choices give every selected add-on that same timeout. Longer waits can include slower sources but may delay results. This does not change playback timeouts.',
+                     'options':[{'value':'original','label':'Redhair: Debridio 4s, all others 5s'},{'value':'10000','label':'10 seconds for every selected add-on'},{'value':'20000','label':'20 seconds for every selected add-on'},{'value':'30000','label':'30 seconds for every selected add-on'}]},
                 ])
             if group == 'display':
-                sub.append({'id':'style','name':'Formatter style','type':'select','required':True,'default':'redhair',
-                    '__if':active('formatter'),'description':'Select a style to see its sample below. All four use Redhair’s Best / Tier scoring. The three Jeormatter layouts keep their original structure.',
+                sub.append({'id':'formatterStyle','name':'Formatter style','type':'select','required':True,'default':'redhair',
+                    '__if':active('formatter'),'description':'Preview updates when you select a style. Redhair (default): multi-line name with source, resolution, score and size. Jeormatter: title as the name, compact technical details below. Alt: quality as the name, title below. Filename: Jeormatter plus the complete filename. All use Redhair’s Best/Tier scoring.',
                     'options':[{'value':key,'label':label} for key,label in STYLES.items()]})
                 for style,preview in previews.items():
                     sub.append({'id':'preview_'+style,'type':'alert','intent':'info-basic','name':STYLES[style]+' preview',
-                        '__if':active('formatter')+f' and inputs.display.style == {style}',
+                        '__if':active('formatter')+f' and inputs.formatterStyle == {style}',
                         'description':'**Stream name**\n'+preview['name']+'\n\n**Stream description**\n'+preview['description']+'\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md).'})
+            if group == 'display':
+                # Subsection dialogs buffer local edits until Save. Keep the
+                # selector and conditional previews at wizard level so they
+                # respond to the same onValuesChange event immediately.
+                header={'id':'appearanceHeader','name':'Appearance','type':'alert','intent':'info-basic',
+                        'description':'Choose a formatter and view its sample here without opening a settings dialog.'}
+                sub[0]['id']='formatterEnabled'
+                if not is_full:
+                    header['__if']='inputs.applyMode != selOnly'
+                    sub[0]['__if']='inputs.applyMode != selOnly'
+                inputs.extend([header, *sub])
+                continue
             option={'id':group,'name':name,'type':'subsection','subsectionIntent':'inline',
                 'description':'Enable the sections you want to replace; switch off anything you want to keep.', 'subOptions':sub}
             if not is_full: option['__if']='inputs.applyMode != selOnly'
             inputs.append(option)
-        # Keep formatter choice in its Appearance group (one subsection level).
-        config['formatter']['__value']['__switch']='inputs.display.style'
+        # Formatter choice is a top-level control for immediate preview updates.
+        config['formatter']['__value']['__switch']='inputs.formatterStyle'
         metadata={'id':template_id,'name':'Redhair Quality — '+('Full setup' if is_full else 'Update existing setup'),
-            'version':'1.4.1','description':('Customizable Redhair defaults with service onboarding, add-on selection and four formatter previews.' if is_full else
+            'version':'1.4.2','description':('Customizable Redhair defaults with service onboarding, add-on selection and four formatter previews.' if is_full else
                 'Safely update SEL / regex only or selected sections while preserving services, credentials and unselected customizations.'),
             'author':'Local adaptation','source':'custom','category':'AIO','serviceRequired':False,'inputs':inputs}
         if not is_full: metadata['services']=[]
@@ -289,6 +302,6 @@ def build():
         (ROOT/filename).write_text(json.dumps(template,ensure_ascii=False,indent=2)+'\n')
     (ROOT/'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
     (ROOT/'validation/section-inputs.json').write_text(json.dumps(paths,indent=2)+'\n')
-    print('Built v1.4.1: full setup + safe updates, four inline groups and formatter previews.')
+    print('Built v1.4.2: full setup + safe updates, four settings groups and immediate formatter previews.')
 
 if __name__ == '__main__': build()

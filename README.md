@@ -1,6 +1,6 @@
 # aiored — Redhair Quality Setup
 
-Version **1.4.1** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
+Version **1.4.2** starts from Redhair’s supplied configuration and lets you customize which sections, add-ons and formatter to apply.
 
 ## Import URL
 
@@ -12,10 +12,10 @@ https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-complete-setup-templa
 
 It now provides two setup choices:
 
-- **Redhair Quality — Full setup** (`custom.redhair.full`): normal AIOStreams service selection and credentials, followed by four customizable groups on one Options screen.
+- **Redhair Quality — Full setup** (`custom.redhair.full`): normal AIOStreams service selection and credentials, followed by four settings groups on one Options screen.
 - **Redhair Quality — Update existing setup** (`custom.redhair.complete`): defaults to **SEL / regex only**. Choose sections to update other settings. Services and their credentials are always preserved.
 
-Featured template IDs: `custom.redhair.full` and `custom.redhair.complete`. Refresh/reimport to load v1.4.1; GitHub changes do not automatically reapply your configuration.
+Featured template IDs: `custom.redhair.full` and `custom.redhair.complete`. Refresh/reimport to load v1.4.2; GitHub changes do not automatically reapply your configuration.
 
 For a direct single-template import, use [Full setup](https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-full-setup-template.json) or [Update existing setup](https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-update-template.json).
 
@@ -30,7 +30,7 @@ All section switches work in **Full setup** too. On replaces that section; off p
 | Appearance | Apply formatter / posters, choose one of four formatters, see its preview |
 | Playback and diagnostics | Apply playback / download / failover settings; apply statistics / error settings |
 
-Full setup adds only the normal **Services** step. Updates skip it. No additional pages are added for individual sections. Proxy settings, variants and account trust are omitted from both workflows.
+Full setup adds only the normal **Services** step. Updates skip it. Quality, connections and playback controls open their settings dialogs. Appearance stays directly on the Options screen so choosing a formatter immediately changes the visible preview; no Save or reopening is needed. No additional wizard steps are added. Proxy settings, variants and account trust are omitted from both workflows.
 
 SEL-only updates preserve add-ons, formatter, sorting and every other section, but replace your custom SEL / regex edits. Keep Stream Expression Score in your existing sort order to use the updated scores.
 
@@ -40,7 +40,7 @@ The add-on selector starts with the **14 enabled add-ons** in Redhair’s export
 
 Choose **Use my enabled services** to let each add-on use the services it supports from your enabled accounts. This is the full-setup default, so the configuration works with your service selection instead of restricting it to Redhair’s accounts. **Redhair’s original service assignments** retains the original TorBox / AIOStreams / NZBDAV restrictions and is the update-template default. Catalog customizations tied to those assignments are retained only in Redhair mode, and only for selected add-ons.
 
-Timeouts can stay at Redhair’s 4–5 seconds or change to 10, 20 or 30 seconds. The Credentials screen asks for your own required indexer endpoints, custom manifests and other add-on credentials. Select only the sources you intend to configure.
+The default timeout is **4 seconds for Debridio and 5 seconds for every other bundled add-on**. Choosing **10, 20 or 30 seconds** applies that timeout to every selected add-on. Longer timeouts allow slower sources more time but can delay results. Each section description now lists the concrete Redhair settings it applies; switching the section off preserves your settings instead. The Credentials screen asks for your own required indexer endpoints, custom manifests and other add-on credentials. Select only the sources you intend to configure.
 
 Service selection is separate from the section switches in Full setup. Use **Update existing setup** for partial updates that must preserve services. This separation is necessary because AIOStreams selects services before template options and can otherwise replace services even during an SEL-only import.
 
@@ -97,6 +97,7 @@ validation/formatter/node_modules/.bin/tsc -p validation/formatter/tsconfig.json
 npm ci --ignore-scripts --prefix validation/sel
 python scripts/build_template.py
 node --experimental-strip-types validation/verify-frontend.mjs
+node --experimental-strip-types validation/verify-preview-selection.mjs
 node --experimental-strip-types validation/verify-sections.mjs
 node --experimental-strip-types validation/verify-formatters.mjs
 npm run build --prefix validation/sel

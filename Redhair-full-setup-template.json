@@ -2,7 +2,7 @@
   "metadata": {
     "id": "custom.redhair.full",
     "name": "Redhair Quality — Full setup",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "Customizable Redhair defaults with service onboarding, add-on selection and four formatter previews.",
     "author": "Local adaptation",
     "source": "custom",
@@ -26,42 +26,42 @@
           {
             "id": "sel",
             "name": "Apply SEL and regex",
-            "description": "All stream expressions, regex patterns, synced URLs and score overrides. Replaces the selected section, including custom SEL edits. Off keeps your current settings.",
+            "description": "Redhair defaults: live 2160p Remux + Anime Remux 1080p profiles, supplied Original/English/Tamil language scoring, exclusion expressions and nine score overrides. Replaces all SEL/regex lists and sync URLs, including your custom rules. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           },
           {
             "id": "filters",
             "name": "Apply Basic filters",
-            "description": "Resolution, quality, language, audio/video, keyword, cached-stream and other basic filters. Off keeps your current settings.",
+            "description": "Redhair defaults: exclude uncached streams, 240p/144p, CAM/SCR/TS/TC and 3D; prefer 2160p then 1080p, Remux/WEB-DL/WEBRip and debrid/Usenet. Digital-release filtering is enabled. Clears other basic filter lists to the supplied defaults. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           },
           {
             "id": "sorting",
             "name": "Apply Sorting",
-            "description": "All cached, uncached, movie, series and anime sort orders. Off keeps your current settings.",
+            "description": "Redhair defaults: cached first. Cached results prioritize library, resolution, quality, then SEL score; cached anime uses SeaDex then SEL score. Uncached order: stream type, seeders, matched expressions, SEL score, size. Replaces all sort orders. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           },
           {
             "id": "limits",
             "name": "Apply Result, size and bitrate limits",
-            "description": "Result counts, size ranges and bitrate settings. Off keeps your current settings.",
+            "description": "Redhair defaults: conjunctive caps of 3 results per service, 3 per resolution and 4 per quality; a stream must fit all caps. Global size range is 50 MB–100 GB for movies, series and anime; resolution-specific ranges also cap at 100 GB. Metadata runtime is used for bitrate calculation. SEL exclusions can impose additional limits. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           },
           {
             "id": "matching",
             "name": "Apply Metadata matching and SeaDex",
-            "description": "Year/title/episode matching, language inference and SeaDex enablement. Off keeps your current settings.",
+            "description": "Redhair defaults: SeaDex enabled; year matching enabled with strict movie years and initial air dates; exact title matching for movies/series; strict season/episode matching. Episode-title matching request types and language-inference sources are empty. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           },
           {
             "id": "deduplication",
             "name": "Apply Deduplication",
-            "description": "Duplicate handling and grouping rules. Off keeps your current settings.",
+            "description": "Redhair defaults: deduplicate by filename and info hash, per service for cached/uncached results, and a single result for P2P. Prefer library results. Duplicate merging and failover variants are enabled. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           }
@@ -77,7 +77,7 @@
           {
             "id": "addons",
             "name": "Apply Add-ons, catalogs and fetching",
-            "description": "Add-on list, category colors, catalogs, groups and dynamic fetching. Includes connection placeholders for your own endpoints. Off keeps your current settings.",
+            "description": "Redhair defaults: 14 enabled add-ons, with 6 disabled entries offered as optional choices below. Applying replaces the add-on list and catalog/category settings; dynamic fetching and groups are disabled. Customize the selection, service routing and timeouts below. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           },
@@ -102,7 +102,7 @@
               "16b"
             ],
             "__if": "inputs.connections.addons",
-            "description": "Starts with Redhair’s enabled add-ons. Select any optional add-ons too. This replaces the add-on list; deselected entries are omitted and do not request credentials. Enter your own endpoints on the Credentials screen.",
+            "description": "Default selection: Store, Library, SeaDex, nekoBT, Torz, Debridio, Torrentio, Meteor, Comet, M-Fusion, Althub, U-Crawler, N-Central, NZBNest. Optional (off by default): T-Rasa, D-Slug, AmeNZB, OnePace, Indexarr, Amatsu. Selected entries replace the add-on list; deselected entries do not request credentials. Supply your own endpoints on the Credentials screen.",
             "options": [
               {
                 "value": "6fd",
@@ -192,7 +192,7 @@
             "type": "select",
             "default": "enabled",
             "__if": "inputs.connections.addons",
-            "description": "Use enabled services lets each add-on use your enabled services that it supports. Redhair assignments retains the original TorBox / AIOStreams / NZBDAV restrictions. Catalog customizations tied to those assignments are only applied in Redhair mode.",
+            "description": "Use my enabled services (Full setup default): each add-on uses your enabled accounts that it supports. Redhair assignments (Update default): Store/Meteor → TorBox; Library, Althub, U-Crawler, N-Central, T-Rasa and D-Slug → AIOStreams; Indexarr → NZBDAV. Other add-ons have no explicit service restriction. Redhair’s Library/Store catalog customizations apply only in Redhair mode. This controls add-on routing, not your saved accounts.",
             "options": [
               {
                 "value": "enabled",
@@ -210,102 +210,100 @@
             "type": "select",
             "default": "original",
             "__if": "inputs.connections.addons",
-            "description": "Keep Redhair’s 4–5 second timeouts or allow slower sources more time.",
+            "description": "Redhair defaults: Debridio waits up to 4 seconds; every other bundled add-on waits up to 5 seconds. The 10 / 20 / 30 second choices give every selected add-on that same timeout. Longer waits can include slower sources but may delay results. This does not change playback timeouts.",
             "options": [
               {
                 "value": "original",
-                "label": "Redhair defaults"
+                "label": "Redhair: Debridio 4s, all others 5s"
               },
               {
                 "value": "10000",
-                "label": "10 seconds"
+                "label": "10 seconds for every selected add-on"
               },
               {
                 "value": "20000",
-                "label": "20 seconds"
+                "label": "20 seconds for every selected add-on"
               },
               {
                 "value": "30000",
-                "label": "30 seconds"
+                "label": "30 seconds for every selected add-on"
               }
             ]
           }
         ]
       },
       {
-        "id": "display",
+        "id": "appearanceHeader",
         "name": "Appearance",
-        "type": "subsection",
-        "subsectionIntent": "inline",
-        "description": "Enable the sections you want to replace; switch off anything you want to keep.",
-        "subOptions": [
+        "type": "alert",
+        "intent": "info-basic",
+        "description": "Choose a formatter and view its sample here without opening a settings dialog."
+      },
+      {
+        "id": "formatterEnabled",
+        "name": "Apply Formatter and posters",
+        "description": "Redhair defaults: original Redhair stream layout and RPDB poster service. The Jeormatter alternatives below change the stream layout while retaining Redhair Best/Tier scoring; the poster choice remains RPDB. Off keeps your current settings.",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "id": "formatterStyle",
+        "name": "Formatter style",
+        "type": "select",
+        "required": true,
+        "default": "redhair",
+        "__if": "inputs.formatterEnabled",
+        "description": "Preview updates when you select a style. Redhair (default): multi-line name with source, resolution, score and size. Jeormatter: title as the name, compact technical details below. Alt: quality as the name, title below. Filename: Jeormatter plus the complete filename. All use Redhair’s Best/Tier scoring.",
+        "options": [
           {
-            "id": "formatter",
-            "name": "Apply Formatter and posters",
-            "description": "Stream display formatter and poster service selection. Off keeps your current settings.",
-            "type": "boolean",
-            "default": true
+            "value": "redhair",
+            "label": "Redhair (default)"
           },
           {
-            "id": "style",
-            "name": "Formatter style",
-            "type": "select",
-            "required": true,
-            "default": "redhair",
-            "__if": "inputs.display.formatter",
-            "description": "Select a style to see its sample below. All four use Redhair’s Best / Tier scoring. The three Jeormatter layouts keep their original structure.",
-            "options": [
-              {
-                "value": "redhair",
-                "label": "Redhair (default)"
-              },
-              {
-                "value": "jeormatter",
-                "label": "Jeormatter"
-              },
-              {
-                "value": "jeormatter_alt",
-                "label": "Jeormatter Alt"
-              },
-              {
-                "value": "jeormatter_filename",
-                "label": "Jeormatter Filename"
-              }
-            ]
+            "value": "jeormatter",
+            "label": "Jeormatter"
           },
           {
-            "id": "preview_redhair",
-            "type": "alert",
-            "intent": "info-basic",
-            "name": "Redhair (default) preview",
-            "__if": "inputs.display.formatter and inputs.display.style == redhair",
-            "description": "**Stream name**\n⚡Torrentio\n✨ 4K\n🍁 Debrid\n🏆 SE Score: 95000\n\n**Stream description**\n💾 TorBox 📂  40 GB\n🎟️ Example Film (2025) \n 🏷️ FraMeSToR \n🎥 BluRay REMUX 📺 HDR10 🎞️ HEVC \n🎧 TrueHD | Atmos \n📣 ᴇɴɢ\n🏆 Best | 🔓\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
+            "value": "jeormatter_alt",
+            "label": "Jeormatter Alt"
           },
           {
-            "id": "preview_jeormatter",
-            "type": "alert",
-            "intent": "info-basic",
-            "name": "Jeormatter preview",
-            "__if": "inputs.display.formatter and inputs.display.style == jeormatter",
-            "description": "**Stream name**\nExample Film (2025)\n\n**Stream description**\n✦ 4K · Remux · HDR10\n♬ Atmos/TrueHD 7.1 · EN · SUB EN\n◈ 37.3 GiB · 50 Mbps\n⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
-          },
-          {
-            "id": "preview_jeormatter_alt",
-            "type": "alert",
-            "intent": "info-basic",
-            "name": "Jeormatter Alt preview",
-            "__if": "inputs.display.formatter and inputs.display.style == jeormatter_alt",
-            "description": "**Stream name**\n4K · Remux · HDR10\n\n**Stream description**\n✦ Example Film (2025)\n♬ Atmos/TrueHD 7.1 · EN · SUB EN\n◈ 37.3 GiB · 50 Mbps\n⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
-          },
-          {
-            "id": "preview_jeormatter_filename",
-            "type": "alert",
-            "intent": "info-basic",
-            "name": "Jeormatter Filename preview",
-            "__if": "inputs.display.formatter and inputs.display.style == jeormatter_filename",
-            "description": "**Stream name**\nExample Film (2025)\n\n**Stream description**\n✦ 4K · Remux · HDR10\n♬ Atmos/TrueHD 7.1 · EN · SUB EN\n◈ 37.3 GiB · 50 Mbps\n⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix\nExample.Film.2025.2160p.REMUX.mkv\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
+            "value": "jeormatter_filename",
+            "label": "Jeormatter Filename"
           }
         ]
+      },
+      {
+        "id": "preview_redhair",
+        "type": "alert",
+        "intent": "info-basic",
+        "name": "Redhair (default) preview",
+        "__if": "inputs.formatterEnabled and inputs.formatterStyle == redhair",
+        "description": "**Stream name**\n⚡Torrentio\n✨ 4K\n🍁 Debrid\n🏆 SE Score: 95000\n\n**Stream description**\n💾 TorBox 📂  40 GB\n🎟️ Example Film (2025) \n 🏷️ FraMeSToR \n🎥 BluRay REMUX 📺 HDR10 🎞️ HEVC \n🎧 TrueHD | Atmos \n📣 ᴇɴɢ\n🏆 Best | 🔓\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
+      },
+      {
+        "id": "preview_jeormatter",
+        "type": "alert",
+        "intent": "info-basic",
+        "name": "Jeormatter preview",
+        "__if": "inputs.formatterEnabled and inputs.formatterStyle == jeormatter",
+        "description": "**Stream name**\nExample Film (2025)\n\n**Stream description**\n✦ 4K · Remux · HDR10\n♬ Atmos/TrueHD 7.1 · EN · SUB EN\n◈ 37.3 GiB · 50 Mbps\n⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
+      },
+      {
+        "id": "preview_jeormatter_alt",
+        "type": "alert",
+        "intent": "info-basic",
+        "name": "Jeormatter Alt preview",
+        "__if": "inputs.formatterEnabled and inputs.formatterStyle == jeormatter_alt",
+        "description": "**Stream name**\n4K · Remux · HDR10\n\n**Stream description**\n✦ Example Film (2025)\n♬ Atmos/TrueHD 7.1 · EN · SUB EN\n◈ 37.3 GiB · 50 Mbps\n⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
+      },
+      {
+        "id": "preview_jeormatter_filename",
+        "type": "alert",
+        "intent": "info-basic",
+        "name": "Jeormatter Filename preview",
+        "__if": "inputs.formatterEnabled and inputs.formatterStyle == jeormatter_filename",
+        "description": "**Stream name**\nExample Film (2025)\n\n**Stream description**\n✦ 4K · Remux · HDR10\n♬ Atmos/TrueHD 7.1 · EN · SUB EN\n◈ 37.3 GiB · 50 Mbps\n⛉ [TB] Torrentio · FraMeSToR (95000) · 🏆 Best · Netflix\nExample.Film.2025.2160p.REMUX.mkv\n\nSample cached 4K Remux, normalized score 95. Client wrapping may differ. [Compare all four previews](https://github.com/Jeor/aiored/blob/main/FORMATTER-PREVIEWS.md)."
       },
       {
         "id": "behavior",
@@ -317,14 +315,14 @@
           {
             "id": "playback",
             "name": "Apply Playback, downloads and failover",
-            "description": "Autoplay, preloading, cache-and-play, owned checks, failover and service wrapping. Off keeps your current settings.",
+            "description": "Redhair defaults: preload the first Usenet result; owned checks on; next-episode precaching and cache-and-play off. Failover supports Usenet/debrid across types, with 5 attempts and 1 in parallel, before limiting. Service wrapping is enabled for TorBox. Autoplay matching attributes: resolution, quality, encode and visual tags. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           },
           {
             "id": "diagnostics",
             "name": "Apply Statistics and errors",
-            "description": "Statistics display and hidden error resources. Off keeps your current settings.",
+            "description": "Redhair defaults: show add-on, filtering and timing statistics at the bottom. No resource errors are hidden. Off keeps your current settings.",
             "type": "boolean",
             "default": true
           }
@@ -792,13 +790,13 @@
       }
     },
     "posterService": {
-      "__if": "inputs.display.formatter",
+      "__if": "inputs.formatterEnabled",
       "__value": "rpdb"
     },
     "formatter": {
-      "__if": "inputs.display.formatter",
+      "__if": "inputs.formatterEnabled",
       "__value": {
-        "__switch": "inputs.display.style",
+        "__switch": "inputs.formatterStyle",
         "cases": {
           "redhair": {
             "id": "custom",
@@ -1785,7 +1783,7 @@
     "appliedTemplates": [
       {
         "id": "custom.redhair.full",
-        "version": "1.4.1"
+        "version": "1.4.2"
       }
     ]
   }

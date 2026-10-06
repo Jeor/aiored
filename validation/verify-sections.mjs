@@ -17,8 +17,8 @@ let combinations=0;
 for(const t of templates){
  makeTemplateSchema(z).parse(t);
  const isFull=t.metadata.id==='custom.redhair.full';
- assert.equal(t.metadata.version,'1.4.1');
- assert.equal(t.metadata.inputs.filter(o=>o.type==='subsection').length,4);
+ assert.equal(t.metadata.version,'1.4.2');
+ assert.equal(t.metadata.inputs.filter(o=>o.type==='subsection').length,3);
  if(isFull)assert(!('services' in t.metadata));else assert.deepEqual(t.metadata.services,[]);
  const d=defaults(t);d.applyMode='selected';
  const resolveConfig=(inputs,svcs=[])=>applyTemplateConditionals(t.config,inputs,svcs);
@@ -36,7 +36,7 @@ for(const t of templates){
  Object.assign(existing,{proxy:{enabled:true,url:'https://example.invalid/proxy'},services:[{id:'torbox',credentials:{apiKey:'test-only'}}],variants:[{id:'user-variant'}],addonName:'My custom name',trusted:true});
  for(let mask=0;mask<(1<<keys.length);mask++){
   const input=structuredClone(d);
-  for(const [i,k] of keys.entries()){const [g,s]=paths[k].split('.');input[g][s]=Boolean(mask&(1<<i));}
+  for(const [i,k] of keys.entries()){const [g,s]=paths[k].split('.');if(s)input[g][s]=Boolean(mask&(1<<i));else input[g]=Boolean(mask&(1<<i));}
   const patch=resolveConfig(input);
   const expected=new Set(['appliedTemplates',...keys.filter((k,i)=>mask&(1<<i)).flatMap(k=>sections[k])]);
   assert.deepEqual(new Set(Object.keys(patch)),expected);
@@ -74,6 +74,6 @@ for(const t of templates){
  const declared=new Set(t.metadata.inputs.flatMap(o=>[o.id,...(o.subOptions||[]).map(s=>o.id+'.'+s.id)]));
  assert(refs.every(r=>declared.has(r)),`Undeclared inputs: ${refs.filter(r=>!declared.has(r))}`);
 }
-const report={version:'1.4.1',result:'pass',sectionToggleCombinations:combinations,templates:2,inlineGroups:4,individualAddonSelections:40,redhairQualityDefaultsPreserved:true,selOnlyPreservesOtherSections:true,proxyAbsent:true,serviceWizardFullSetupOnly:true,liveImportTested:false};
+const report={version:'1.4.2',result:'pass',sectionToggleCombinations:combinations,templates:2,settingsGroups:4,subsectionDialogs:3,appearanceInline:true,individualAddonSelections:40,redhairQualityDefaultsPreserved:true,selOnlyPreservesOtherSections:true,proxyAbsent:true,serviceWizardFullSetupOnly:true,liveImportTested:false};
 writeFileSync(resolve(root,'validation/section-results.json'),JSON.stringify(report,null,2)+'\n');
 console.log(`PASS: ${combinations} section combinations, 40 addon selections, schemas, defaults, service routing and safe updates.`);

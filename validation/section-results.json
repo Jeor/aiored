@@ -1,9 +1,11 @@
 {
-  "version": "1.4.1",
+  "version": "1.4.2",
   "result": "pass",
   "sectionToggleCombinations": 2048,
   "templates": 2,
-  "inlineGroups": 4,
+  "settingsGroups": 4,
+  "subsectionDialogs": 3,
+  "appearanceInline": true,
   "individualAddonSelections": 40,
   "redhairQualityDefaultsPreserved": true,
   "selOnlyPreservesOtherSections": true,

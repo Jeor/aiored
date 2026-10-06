@@ -6,7 +6,7 @@
   "matching": "quality.matching",
   "deduplication": "quality.deduplication",
   "addons": "connections.addons",
-  "formatter": "display.formatter",
+  "formatter": "formatterEnabled",
   "playback": "behavior.playback",
   "diagnostics": "behavior.diagnostics"
 }
