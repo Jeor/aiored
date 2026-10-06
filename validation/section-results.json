@@ -1,0 +1,11 @@
+{
+  "version": "1.2.0",
+  "result": "pass",
+  "sectionToggleCombinations": 1024,
+  "fullDefaultsMatchSanitizedSource": true,
+  "selOnlyPreservesOtherSections": true,
+  "allOffPreservesUserSettings": true,
+  "proxyAbsent": true,
+  "serviceWizardSkipped": true,
+  "liveImportTested": false
+}

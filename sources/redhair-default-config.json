@@ -286,14 +286,6 @@
       }
     }
   },
-  "proxy": {
-    "enabled": true,
-    "id": "builtin",
-    "proxiedAddons": [
-      "6fd"
-    ],
-    "proxiedServices": []
-  },
   "resultLimits": {
     "service": 3,
     "resolution": 3,

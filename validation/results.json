@@ -1,6 +1,6 @@
 {
   "template": "Redhair-complete-setup-template.json",
-  "defaultConfiguration": "supplied Redhair export; all non-service fields equal sanitized source",
+  "defaultConfiguration": "section-based supplied Redhair defaults; see section-results.json",
   "profileCount": 13,
   "combinations": 198,
   "expressionEvaluations": 95904,

@@ -1,20 +1,20 @@
 # Optional bundled-profile wizard
 
-Import **`Redhair-complete-setup-template.json`** into AIOStreams. This is a local adaptation of Tam’s complete setup wizard using all 13 profiles from Redhair’s AIO Quality Profiles repository. It is not an official release by either author.
+Import **`Redhair-custom-profile-template.json`** into AIOStreams. This is a local adaptation of Tam’s complete setup wizard using all 13 profiles from Redhair’s AIO Quality Profiles repository. It is not an official release by either author.
 
-This document describes **Custom bundled-profile wizard** mode, not the default supplied Redhair configuration. Select that mode during template import.
+This document describes the **Bundled Profile Wizard**, not the default supplied Redhair configuration. Import the separate bundled-profile template using the URL below.
 
 ## Import
 
 Paste this public URL into **Save & Install → Import Template → URL**:
 
 ```text
-https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-complete-setup-template.json
+https://raw.githubusercontent.com/Jeor/aiored/main/Redhair-custom-profile-template.json
 ```
 
 Or download the JSON and import from a file:
 
-1. In AIOStreams, open **Save & Install → Import Template → Import from File** and select `Redhair-complete-setup-template.json`.
+1. In AIOStreams, open **Save & Install → Import Template → Import from File** and select `Redhair-custom-profile-template.json`.
 2. Load **Redhair Quality — Complete Setup** and select your services, or skip services for P2P.
 3. Choose **one Movie / TV Quality Profile** and **one Anime Quality Profile**, or disable anime scoring.
 4. Select languages, add-ons, formatter, and any device exclusions. To preserve existing add-ons, choose **None (Use Your Current Addons)**. Enter credentials in AIOStreams when prompted.

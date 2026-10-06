@@ -1,0 +1,119 @@
+{
+  "sel": [
+    "preferredRegexPatterns",
+    "syncedRankedRegexUrls",
+    "syncedRankedStreamExpressionUrls",
+    "excludedStreamExpressions",
+    "preferredStreamExpressions",
+    "rankedStreamExpressions",
+    "rankedRegexPatterns",
+    "regexOverrides",
+    "selOverrides",
+    "excludedRegexPatterns",
+    "syncedExcludedRegexUrls",
+    "includedRegexPatterns",
+    "requiredRegexPatterns",
+    "syncedPreferredRegexUrls",
+    "syncedPreferredStreamExpressionUrls",
+    "syncedExcludedStreamExpressionUrls",
+    "syncedIncludedStreamExpressionUrls",
+    "requiredStreamExpressions",
+    "includedStreamExpressions",
+    "syncedIncludedRegexUrls",
+    "syncedRequiredRegexUrls",
+    "syncedRequiredStreamExpressionUrls"
+  ],
+  "filters": [
+    "excludedResolutions",
+    "includedResolutions",
+    "requiredResolutions",
+    "preferredResolutions",
+    "excludedQualities",
+    "includedQualities",
+    "requiredQualities",
+    "preferredQualities",
+    "excludedLanguages",
+    "includedLanguages",
+    "requiredLanguages",
+    "preferredLanguages",
+    "excludedSubtitles",
+    "includedSubtitles",
+    "requiredSubtitles",
+    "preferredSubtitles",
+    "excludedVisualTags",
+    "includedVisualTags",
+    "requiredVisualTags",
+    "preferredVisualTags",
+    "excludedAudioTags",
+    "includedAudioTags",
+    "requiredAudioTags",
+    "preferredAudioTags",
+    "excludedAudioChannels",
+    "includedAudioChannels",
+    "requiredAudioChannels",
+    "preferredAudioChannels",
+    "excludedStreamTypes",
+    "includedStreamTypes",
+    "requiredStreamTypes",
+    "preferredStreamTypes",
+    "excludedEncodes",
+    "includedEncodes",
+    "requiredEncodes",
+    "preferredEncodes",
+    "includedKeywords",
+    "preferredKeywords",
+    "seederRangeTypes",
+    "ageRangeTypes",
+    "digitalReleaseFilter",
+    "excludeCachedFromAddons",
+    "excludeCachedFromServices",
+    "excludeCachedFromStreamTypes",
+    "excludeUncached",
+    "excludeUncachedFromAddons",
+    "excludeUncachedFromServices",
+    "excludeUncachedFromStreamTypes"
+  ],
+  "sorting": [
+    "sortCriteria"
+  ],
+  "limits": [
+    "resultLimits",
+    "size",
+    "bitrate"
+  ],
+  "addons": [
+    "dynamicAddonFetching",
+    "groups",
+    "presets",
+    "addonCategoryColors",
+    "catalogModifications"
+  ],
+  "formatter": [
+    "posterService",
+    "formatter"
+  ],
+  "matching": [
+    "enableSeadex",
+    "yearMatching",
+    "titleMatching",
+    "seasonEpisodeMatching",
+    "episodeTitleMatching",
+    "languageInference"
+  ],
+  "deduplication": [
+    "deduplicator"
+  ],
+  "playback": [
+    "autoPlay",
+    "precacheNextEpisode",
+    "preloadStreams",
+    "cacheAndPlay",
+    "checkOwned",
+    "failover",
+    "serviceWrap"
+  ],
+  "diagnostics": [
+    "hideErrorsForResources",
+    "statistics"
+  ]
+}

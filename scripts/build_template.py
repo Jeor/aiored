@@ -136,45 +136,84 @@ def build_custom():
     return template
 
 
+# Every imported field belongs to exactly one selectable section.
+SECTIONS = {
+    'sel': ('SEL and regex', 'All stream expressions, regex patterns, synced URLs and score overrides. Replaces the selected section, including custom SEL edits.'),
+    'filters': ('Basic filters', 'Resolution, quality, language, audio/video, keyword, cached-stream and other basic filters.'),
+    'sorting': ('Sorting', 'All cached, uncached, movie, series and anime sort orders.'),
+    'limits': ('Result, size and bitrate limits', 'Result counts, size ranges and bitrate settings.'),
+    'addons': ('Add-ons, catalogs and fetching', 'Add-on list, category colors, catalogs, groups and dynamic fetching. Includes connection placeholders for your own endpoints.'),
+    'formatter': ('Formatter and posters', 'Stream display formatter and poster service selection.'),
+    'matching': ('Metadata matching and SeaDex', 'Year/title/episode matching, language inference and SeaDex enablement.'),
+    'deduplication': ('Deduplication', 'Duplicate handling and grouping rules.'),
+    'playback': ('Playback, downloads and failover', 'Autoplay, preloading, cache-and-play, owned checks, failover and service wrapping.'),
+    'diagnostics': ('Statistics and errors', 'Statistics display and hidden error resources.'),
+}
+
+
+def section_for(key):
+    if key.startswith('synced') or 'RegexPatterns' in key or key.endswith('StreamExpressions') or key in ('selOverrides','regexOverrides'):
+        return 'sel'
+    explicit = {
+        'sorting': ['sortCriteria'],
+        'limits': ['resultLimits','size','bitrate'],
+        'addons': ['presets','addonCategoryColors','catalogModifications','mergedCatalogs','dynamicAddonFetching','groups'],
+        'formatter': ['formatter','posterService','usePosterRedirectApi'],
+        'matching': ['yearMatching','titleMatching','seasonEpisodeMatching','episodeTitleMatching','languageInference','enableSeadex'],
+        'deduplication': ['deduplicator'],
+        'playback': ['autoPlay','precacheNextEpisode','preloadStreams','cacheAndPlay','checkOwned','failover','serviceWrap'],
+        'diagnostics': ['statistics','hideErrorsForResources'],
+    }
+    for section, keys in explicit.items():
+        if key in keys: return section
+    if key.startswith(('excluded','included','required','preferred','exclude','include')) or key in ('seederRangeTypes','ageRangeTypes','digitalReleaseFilter'):
+        return 'filters'
+    raise ValueError(f'Unassigned configuration field: {key}')
+
+
 def build():
-    template = build_custom()
+    # Retain the original profile wizard as a separate optional template.
+    bundled = build_custom()
+    bundled['metadata']['id'] = 'custom.redhair.profiles'
+    bundled['metadata']['name'] = 'Redhair Quality — Bundled Profile Wizard'
+    bundled['config']['appliedTemplates'] = [{'id':'custom.redhair.profiles','version':'1.0.0'}]
+    bundled['config'].pop('proxy', None)
+    (ROOT / 'Redhair-custom-profile-template.json').write_text(json.dumps(bundled,ensure_ascii=False,indent=2)+'\n')
     supplied = json.loads((ROOT / 'sources/redhair-default-config.json').read_text())
-    original = copy.deepcopy(supplied)
-    # Credentials are collected by AIOStreams' service wizard, never overwritten by empty exports.
-    supplied.pop('services', None)
-    supplied['appliedTemplates'] = [{'id':'custom.redhair.complete', 'version':'1.1.0'}]
-    supplied['presets'] = {'__if':'inputs.importExportAddons', '__value': supplied['presets']}
-    # Clear the prior template's fields absent from the export, so old scoring cannot stack.
-    for key in template['config']:
+    # Never touch account credentials, proxy settings, trust or user variants.
+    for key in ('services','proxy','trusted','showChanges','variants'):
+        supplied.pop(key, None)
+    # Clear old rules only when their own section is selected.
+    for key in bundled['config']:
         if key not in supplied and (key.startswith('synced') or 'RegexPatterns' in key or key.endswith('StreamExpressions')):
             supplied[key] = []
     supplied['bitrate'] = {'useMetadataRuntime':True}
-    supplied['variants'] = []
-    custom = template['config']
-    template['config'] = {key: {'__switch':'inputs.setupMode',
-        'cases':{'custom':custom.get(key, {'__remove':True})},
-        'default':supplied.get(key, {'__remove':True})}
-        for key in sorted(set(custom) | set(supplied))}
-    template['config']['appliedTemplates'] = supplied['appliedTemplates']
-    for option in template['metadata']['inputs']:
-        prior = option.get('__if')
-        option['__if'] = 'inputs.setupMode == custom' + (f' and {prior}' if prior else '')
-    template['metadata']['inputs'][:0] = [
-        {'id':'setupMode','name':'Setup Defaults','description':'Use the supplied Redhair configuration, or customize the previous bundled-profile wizard.',
-         'type':'select','required':True,'default':'redhair','options':[
-             {'value':'redhair','label':'Redhair supplied configuration (default)'},
-             {'value':'custom','label':'Custom bundled-profile wizard'}]},
-        {'id':'exportNotice','name':'Redhair supplied defaults','type':'alert','intent':'info',
-         '__if':'inputs.setupMode == redhair',
-         'description':'2160p Remux + Anime Remux 1080p, synced from Redhair. Uses the supplied filters, score overrides, sorting, formatter and result limits. Choose services and enter credentials separately. Local indexer addresses require your own connection URLs. Disabled custom add-on URLs have been replaced with placeholders.'},
-        {'id':'importExportAddons','name':'Import Redhair add-ons','type':'boolean','default':True,
-         '__if':'inputs.setupMode == redhair',
-         'description':'Import the supplied add-on list (including TorBox/AIOStreams assignments and indexer URL placeholders). Disable to keep your current add-ons. Enter missing keys and connection URLs in AIOStreams.'},
-    ]
-    template['metadata']['version'] = '1.1.0'
-    template['metadata']['description'] = 'Defaults to the supplied Redhair configuration: synced 2160p Remux and Anime Remux 1080p, its filters, scores, sorting, formatter and limits. Service credentials are entered separately. Optional custom mode retains the earlier Tam-style bundled-profile wizard. Encoded custom add-on URLs are replaced with placeholders. Community adaptation, not an official Redhair release.'
-    output = ROOT / 'Redhair-complete-setup-template.json'
-    output.write_text(json.dumps(template,ensure_ascii=False,indent=2)+'\n')
-    print(f'Built {output.name} v1.1.0')
+    section_fields = {section: [] for section in SECTIONS}
+    config = {}
+    for key, value in supplied.items():
+        section = section_for(key)
+        section_fields[section].append(key)
+        condition = f'inputs.applyMode == full or inputs.applyMode == selected and inputs.sections.{section}'
+        if section == 'sel': condition += ' or inputs.applyMode == selOnly'
+        config[key] = {'__if':condition, '__value':value}
+    config['appliedTemplates'] = [{'id':'custom.redhair.complete','version':'1.2.0'}]
+    template = {'metadata': {
+        'id':'custom.redhair.complete','name':'Redhair Quality — Complete Setup','version':'1.2.0',
+        'description':'Redhair supplied defaults with independently selectable sections. Apply full setup, SEL/regex only, or selected sections. Unselected fields are omitted to preserve existing customizations. Never imports proxy settings, service credentials or variants. Default profiles: synced 2160p Remux and Anime Remux 1080p.',
+        'author':'Local adaptation','source':'custom','category':'AIO',
+        'services':[], 'serviceRequired':False,
+        'inputs':[
+            {'id':'applyMode','name':'What to apply','type':'select','required':True,'default':'full',
+             'description':'Full setup applies Redhair’s defaults. SEL/regex only preserves everything else. Choose sections enables individual switches.',
+             'options':[{'value':'full','label':'Full setup (Redhair defaults)'},{'value':'selOnly','label':'SEL / regex only'},{'value':'selected','label':'Choose sections'}]},
+            {'id':'sections','name':'Sections to apply','type':'subsection','subsectionIntent':'inline',
+             '__if':'inputs.applyMode == selected','description':'Enabled sections replace their current settings. Disabled sections stay exactly as they are.',
+             'subOptions':[{'id':key,'name':name,'description':description,'type':'boolean','default':True} for key,(name,description) in SECTIONS.items()]},
+            {'id':'notice','name':'Your existing connections are preserved','type':'alert','intent':'info',
+             'description':'Proxy settings, service credentials and variants are never imported. Configure services separately for a new setup. Importing add-ons replaces the add-on list and may prompt for connection details. SEL/regex includes synced 2160p Remux + Anime Remux 1080p and Redhair’s score overrides.'},
+        ]}, 'config':config}
+    (ROOT / 'Redhair-complete-setup-template.json').write_text(json.dumps(template,ensure_ascii=False,indent=2)+'\n')
+    (ROOT / 'validation/section-fields.json').write_text(json.dumps(section_fields,indent=2)+'\n')
+    print(f'Built v1.2.0 with {len(SECTIONS)} independently selectable sections; proxy omitted.')
 
 if __name__ == '__main__': build()
